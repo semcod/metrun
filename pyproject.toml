@@ -9,7 +9,7 @@ description = "Execution Intelligence Tool — Bottleneck Engine + Human Report 
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.9"
-keywords = ["profiling", "performance", "bottleneck", "tracing"]
+keywords = ["profiling", "performance", "bottleneck", "tracing", "flamegraph"]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -17,9 +17,16 @@ classifiers = [
     "Topic :: Software Development :: Libraries",
     "Topic :: System :: Monitoring",
 ]
+dependencies = [
+    "click>=7.0",
+]
 
 [project.optional-dependencies]
-dev = ["pytest>=7"]
+flamegraph = ["flameprof>=0.4"]
+dev = ["pytest>=7", "flameprof>=0.4"]
+
+[project.scripts]
+metrun = "metrun.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
