@@ -38,9 +38,8 @@ import cProfile
 import functools
 import io
 import pstats
-import tempfile
 from contextlib import contextmanager
-from typing import Callable, Dict, Optional
+from typing import Callable, Dict
 
 from metrun.profiler import FunctionRecord
 

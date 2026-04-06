@@ -1,0 +1,16 @@
+loop:
+  max_iterations: 3
+  quality_gate:
+    - test
+    - lint
+
+tasks:
+  test:
+    name: "Run tests"
+    command: "python -m pytest tests/ -v"
+    fix: "python -m pytest tests/ --tb=short"
+
+  lint:
+    name: "Check code style"
+    command: "python -m ruff check metrun/"
+    fix: "python -m ruff check --fix metrun/"

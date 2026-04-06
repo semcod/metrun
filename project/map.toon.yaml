@@ -1,0 +1,75 @@
+# metrun | 11f 1725L | shell:1,python:10 | 2026-04-06
+# stats: 47 func | 0 cls | 11 mod | CC̄=2.8 | critical:1 | cycles:0
+# alerts[5]: CC generate_report=17; fan-out find_critical_path=13; fan-out inspect=13; fan-out BottleneckEngine.analyse=12; fan-out profile=12
+# hotspots[5]: inspect fan=13; find_critical_path fan=13; profile fan=12; BottleneckEngine.analyse fan=12; generate_report fan=8
+# evolution: baseline
+# Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
+M[11]:
+  demo.py,14
+  metrun/__init__.py,107
+  metrun/bottleneck.py,154
+  metrun/cli.py,220
+  metrun/cprofile_bridge.py,165
+  metrun/critical_path.py,211
+  metrun/flamegraph.py,222
+  metrun/profiler.py,180
+  metrun/report.py,164
+  metrun/suggestions.py,253
+  project.sh,35
+D:
+  metrun/report.py:
+    e: generate_report,print_report
+    generate_report(bottlenecks)
+    print_report(bottlenecks)
+  metrun/critical_path.py:
+    e: CriticalPathNode,CriticalPath,find_critical_path,format_critical_path,print_critical_path
+    CriticalPathNode:  # A single node in the critical path...
+    CriticalPath:  # The result of a critical-path analysis...
+    find_critical_path(records)
+    format_critical_path(path)
+    print_critical_path(path)
+  metrun/cprofile_bridge.py:
+    e: CProfileBridge
+    CProfileBridge: __init__(0),profile_func(1),profile_block(0),get_stats(0),to_records(0),save(1),reset(0),__enter__(0),__exit__(0)  # Thin wrapper around :class:`cProfile.Profile` that exposes p...
+  metrun/bottleneck.py:
+    e: Bottleneck,BottleneckEngine,analyse
+    Bottleneck:  # A single bottleneck entry produced by the engine...
+    BottleneckEngine: __init__(1),_total_wall_time(0),_compute_score(3),_diagnose(2),analyse(0)  # Analyse a dict of FunctionRecords and return a ranked list o...
+    analyse(records)
+  metrun/suggestions.py:
+    e: Suggestion,suggest,format_suggestions,print_suggestions
+    Suggestion:  # A single actionable fix suggestion...
+    suggest(bottleneck)
+    format_suggestions(name;suggestions)
+    print_suggestions(name;suggestions)
+  metrun/flamegraph.py:
+    e: render_ascii,print_ascii,render_svg,render_svg_string
+    render_ascii(bottlenecks)
+    print_ascii(bottlenecks)
+    render_svg(stats;output_path)
+    render_svg_string(stats)
+  metrun/cli.py:
+    e: _run_script,cli,profile,inspect,flame,main
+    _run_script(script_path)
+    cli()
+    profile(script;top;flame;ascii_flame)
+    inspect(script;top;flame)
+    flame(prof_file;output;width)
+    main()
+  metrun/profiler.py:
+    e: FunctionRecord,ExecutionTracer,trace,section,get_records,reset
+    FunctionRecord:  # Aggregated stats for a single function (or call-site)...
+    ExecutionTracer: __init__(0),_get_stack(0),_ensure_record(1),_enter(1),_exit(2),reset(0),trace(1),section(1)  # Thread-local call-stack tracer.
+
+Usage — decorator:
+    trac...
+    trace(func)
+    section(name)
+    get_records()
+    reset()
+  demo.py:
+    e: slow_query,handler
+    slow_query(n)
+    handler(items)
+  project.sh:
+  metrun/__init__.py:

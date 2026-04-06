@@ -42,8 +42,6 @@ Install CLI entry-point::
 from __future__ import annotations
 
 import runpy
-import sys
-import tempfile
 from typing import Optional
 
 import click
@@ -53,7 +51,6 @@ from metrun.cprofile_bridge import CProfileBridge
 from metrun.critical_path import find_critical_path, print_critical_path
 from metrun.flamegraph import print_ascii, render_svg
 from metrun.report import print_report
-from metrun.suggestions import suggest, format_suggestions
 
 
 # ---------------------------------------------------------------------------

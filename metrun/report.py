@@ -20,7 +20,6 @@ from typing import TYPE_CHECKING, Dict, List, Optional
 from metrun.bottleneck import Bottleneck
 
 if TYPE_CHECKING:
-    from metrun.critical_path import CriticalPath
     from metrun.profiler import FunctionRecord
 
 

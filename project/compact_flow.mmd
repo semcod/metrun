@@ -1,0 +1,13 @@
+flowchart TD
+    metrun__bottleneck["metrun.bottleneck<br/>6 funcs"]
+    metrun__cli["metrun.cli<br/>6 funcs"]
+    metrun__critical_path["metrun.critical_path<br/>3 funcs"]
+    metrun__flamegraph["metrun.flamegraph<br/>4 funcs"]
+    metrun__report["metrun.report<br/>2 funcs"]
+    metrun__suggestions["metrun.suggestions<br/>3 funcs"]
+    metrun__cli ==>|4| metrun__flamegraph
+    metrun__cli -->|2| metrun__bottleneck
+    metrun__cli -->|2| metrun__report
+    metrun__cli -->|2| metrun__critical_path
+    metrun__report -->|2| metrun__critical_path
+    metrun__report -->|2| metrun__suggestions

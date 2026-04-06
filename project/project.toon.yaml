@@ -1,0 +1,44 @@
+# metrun | 47 func | 9f | 3070L | python | 2026-04-06
+
+HEALTH:
+  CC̄=2.8  critical=2 (limit:10)  dup=0  cycles=0
+
+ALERTS[5]:
+  !   cc_exceeded      generate_report = 17 (limit:15)
+  !   high_fan_out     inspect = 13 (limit:10)
+  !   high_fan_out     find_critical_path = 13 (limit:10)
+  !   high_fan_out     profile = 12 (limit:10)
+  !   high_fan_out     BottleneckEngine.analyse = 12 (limit:10)
+
+MODULES[11] (top by size):
+  M[metrun/suggestions.py] 253L C:1 F:3 CC↑6 D:1 (python)
+  M[metrun/flamegraph.py] 222L C:0 F:4 CC↑5 D:1 (python)
+  M[metrun/cli.py] 220L C:0 F:6 CC↑4 D:0 (python)
+  M[metrun/critical_path.py] 211L C:2 F:3 CC↑11 D:2 (python)
+  M[metrun/profiler.py] 180L C:2 F:12 CC↑4 D:0 (python)
+  M[metrun/cprofile_bridge.py] 165L C:1 F:9 CC↑8 D:0 (python)
+  M[metrun/report.py] 164L C:0 F:2 CC↑17 D:1 (python)
+  M[metrun/bottleneck.py] 154L C:2 F:6 CC↑7 D:1 (python)
+  M[metrun/__init__.py] 107L C:0 F:0 CC↑0 D:0 (python)
+  M[project.sh] 35L C:0 F:0 CC↑0 D:0 (shell)
+  M[demo.py] 14L C:0 F:2 CC↑2 D:0 (python)
+  LANGS: python:10/shell:1
+
+HOTSPOTS[4]:
+  ★ inspect fan=13  // Enhanced profile of SCRIPT: bottlenecks + critical path + suggestions.
+
+SCRIPT i
+  ★ find_critical_path fan=13  // Find the critical (hottest) execution path through the call graph.
+
+Parameters
+-
+  ★ profile fan=12  // Profile SCRIPT and display the bottleneck report.
+
+SCRIPT is the path to a Pytho
+  ★ BottleneckEngine.analyse fan=12  // Return bottlenecks sorted by score descending.
+
+REFACTOR[1]:
+  [1] M/L Split generate_report (CC=17 → target CC<10)
+
+EVOLUTION:
+  2026-04-06 CC̄=2.8 crit=2 3070L // Automated analysis
