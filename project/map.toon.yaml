@@ -1,8 +1,8 @@
-# metrun | 11f 1725L | shell:1,python:10 | 2026-04-06
-# stats: 47 func | 0 cls | 11 mod | CC̄=2.8 | critical:1 | cycles:0
-# alerts[5]: CC generate_report=17; fan-out find_critical_path=13; fan-out inspect=13; fan-out BottleneckEngine.analyse=12; fan-out profile=12
+# metrun | 11f 1782L | shell:1,python:10 | 2026-04-06
+# stats: 55 func | 0 cls | 11 mod | CC̄=2.6 | critical:0 | cycles:0
+# alerts[4]: fan-out find_critical_path=13; fan-out inspect=13; fan-out BottleneckEngine.analyse=12; fan-out profile=12
 # hotspots[5]: inspect fan=13; find_critical_path fan=13; profile fan=12; BottleneckEngine.analyse fan=12; generate_report fan=8
-# evolution: baseline
+# evolution: CC̄ 2.7→2.6 (improved -0.1)
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
 M[11]:
   demo.py,14
@@ -13,14 +13,10 @@ M[11]:
   metrun/critical_path.py,211
   metrun/flamegraph.py,222
   metrun/profiler.py,180
-  metrun/report.py,164
+  metrun/report.py,190
   metrun/suggestions.py,253
-  project.sh,35
+  project.sh,66
 D:
-  metrun/report.py:
-    e: generate_report,print_report
-    generate_report(bottlenecks)
-    print_report(bottlenecks)
   metrun/critical_path.py:
     e: CriticalPathNode,CriticalPath,find_critical_path,format_critical_path,print_critical_path
     CriticalPathNode:  # A single node in the critical path...
@@ -31,6 +27,16 @@ D:
   metrun/cprofile_bridge.py:
     e: CProfileBridge
     CProfileBridge: __init__(0),profile_func(1),profile_block(0),get_stats(0),to_records(0),save(1),reset(0),__enter__(0),__exit__(0)  # Thin wrapper around :class:`cProfile.Profile` that exposes p...
+  metrun/report.py:
+    e: _severity_icon,_format_bottleneck_entry,_format_dependency_graph,_format_critical_path_section,_format_suggestions_section,_format_summary,generate_report,print_report
+    _severity_icon(diagnosis)
+    _format_bottleneck_entry(b)
+    _format_dependency_graph(bottlenecks)
+    _format_critical_path_section(records)
+    _format_suggestions_section(bottlenecks)
+    _format_summary(worst)
+    generate_report(bottlenecks)
+    print_report(bottlenecks)
   metrun/bottleneck.py:
     e: Bottleneck,BottleneckEngine,analyse
     Bottleneck:  # A single bottleneck entry produced by the engine...
@@ -72,4 +78,7 @@ Usage — decorator:
     slow_query(n)
     handler(items)
   project.sh:
+    e: print,print_report
+    print()
+    print_report()
   metrun/__init__.py:

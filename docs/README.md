@@ -1,12 +1,12 @@
 <!-- code2docs:start --># metrun
 
-![version](https://img.shields.io/badge/version-0.1.0-blue) ![python](https://img.shields.io/badge/python-%3E%3D3.9-blue) ![coverage](https://img.shields.io/badge/coverage-unknown-lightgrey) ![functions](https://img.shields.io/badge/functions-47-green)
-> **47** functions | **8** classes | **11** files | CC̄ = 2.8
+![version](https://img.shields.io/badge/version-0.1.0-blue) ![python](https://img.shields.io/badge/python-%3E%3D3.9-blue) ![coverage](https://img.shields.io/badge/coverage-unknown-lightgrey) ![functions](https://img.shields.io/badge/functions-55-green)
+> **55** functions | **8** classes | **11** files | CC̄ = 2.7
 
 > Auto-generated project documentation from source code analysis.
 
 **Author:** Tom Softreck <tom@sapletta.com>  
-**License:** Apache License 2.0[(LICENSE)](./LICENSE)  
+**License:** Apache-2.0[(LICENSE)](./LICENSE)  
 **Repository:** [https://github.com/semcod/metrun](https://github.com/semcod/metrun)
 
 ## Installation
@@ -147,23 +147,25 @@ Content outside the markers is preserved when regenerating. Enable this with `sy
 
 ```
 metrun/
-├── project├── metrun/├── demo    ├── cli    ├── suggestions    ├── report    ├── critical_path    ├── flamegraph    ├── bottleneck    ├── profiler    ├── cprofile_bridge```
+├── project├── demo    ├── cli├── metrun/    ├── suggestions    ├── report    ├── bottleneck    ├── flamegraph    ├── critical_path    ├── profiler    ├── cprofile_bridge```
 
 ## API Overview
 
 ### Classes
 
 - **`Suggestion`** — A single actionable fix suggestion.
-- **`CriticalPathNode`** — A single node in the critical path.
-- **`CriticalPath`** — The result of a critical-path analysis.
 - **`Bottleneck`** — A single bottleneck entry produced by the engine.
 - **`BottleneckEngine`** — Analyse a dict of FunctionRecords and return a ranked list of Bottlenecks.
+- **`CriticalPathNode`** — A single node in the critical path.
+- **`CriticalPath`** — The result of a critical-path analysis.
 - **`FunctionRecord`** — Aggregated stats for a single function (or call-site).
 - **`ExecutionTracer`** — Thread-local call-stack tracer.
 - **`CProfileBridge`** — Thin wrapper around :class:`cProfile.Profile` that exposes profiling
 
 ### Functions
 
+- `print()` — —
+- `print_report()` — —
 - `slow_query(n)` — —
 - `handler(items)` — —
 - `cli()` — metrun — Execution Intelligence Tool.
@@ -176,14 +178,14 @@ metrun/
 - `print_suggestions(name, suggestions)` — Print suggestions for a single function to stdout.
 - `generate_report(bottlenecks)` — Render a human-readable performance report.
 - `print_report(bottlenecks)` — Print the performance report to stdout.
-- `find_critical_path(records)` — Find the critical (hottest) execution path through the call graph.
-- `format_critical_path(path)` — Render a :class:`CriticalPath` as a human-readable string.
-- `print_critical_path(path)` — Print the critical path to stdout.
+- `analyse(records)` — Convenience function: run the engine and return ranked bottlenecks.
 - `render_ascii(bottlenecks)` — Render an ASCII flamegraph as a multi-line string.
 - `print_ascii(bottlenecks)` — Print the ASCII flamegraph to stdout.
 - `render_svg(stats, output_path)` — Generate an SVG flamegraph from a ``pstats.Stats`` object and write it to
 - `render_svg_string(stats)` — Like :func:`render_svg` but return the SVG markup as a string instead of
-- `analyse(records)` — Convenience function: run the engine and return ranked bottlenecks.
+- `find_critical_path(records)` — Find the critical (hottest) execution path through the call graph.
+- `format_critical_path(path)` — Render a :class:`CriticalPath` as a human-readable string.
+- `print_critical_path(path)` — Print the critical path to stdout.
 - `trace(func)` — Decorator using the default (or supplied) tracer.
 - `section(name)` — Context manager using the default (or supplied) tracer.
 - `get_records()` — Return all collected records from the default (or supplied) tracer.
@@ -200,9 +202,9 @@ metrun/
 📄 `metrun.critical_path` (3 functions, 2 classes)
 📄 `metrun.flamegraph` (4 functions)
 📄 `metrun.profiler` (12 functions, 2 classes)
-📄 `metrun.report` (2 functions)
+📄 `metrun.report` (8 functions)
 📄 `metrun.suggestions` (3 functions, 1 classes)
-📄 `project`
+📄 `project` (2 functions)
 
 ## Requirements
 
@@ -214,6 +216,7 @@ metrun/
 **Contributors:**
 - copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>
 - Tom Sapletta <tom-sapletta-com@users.noreply.github.com>
+- Tom Softreck <tom@sapletta.com>
 
 We welcome contributions! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 

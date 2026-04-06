@@ -1,0 +1,442 @@
+🔍 Inspecting: demo.py
+
+🔥 METRUN PERFORMANCE REPORT
+=============================
+
+🟡 handler
+   → time:      0.0017s  (100.0%)
+   → calls:     1
+   → score:     10.8
+   → diagnosis: 🐢 slow execution
+
+🟡 slow_query
+   → time:      0.0011s  (65.1%)
+   → calls:     100
+   → score:     8.51
+   → diagnosis: 🐢 slow execution
+   → called by: handler
+
+── Dependency Graph ──────────────────────────
+   handler  →  slow_query
+
+── Summary ───────────────────────────────────
+   Top bottleneck : handler
+   Score          : 10.8
+   Diagnosis      : 🐢 slow execution
+
+
+🔥 METRUN PERFORMANCE REPORT
+=============================
+
+🟠 run_path
+   → time:      0.0033s  (100.0%)
+   → calls:     1
+   → score:     13.8
+   → diagnosis: 🌲 dependency bottleneck
+
+🟠 <module>
+   → time:      0.0022s  (68.3%)
+   → calls:     3
+   → score:     12.43
+   → diagnosis: 🌲 dependency bottleneck
+   → called by: <built-in method builtins.exec>, <built-in method builtins.eval>
+
+🟠 _run_module_code
+   → time:      0.0020s  (62.3%)
+   → calls:     1
+   → score:     9.03
+   → diagnosis: 🌲 dependency bottleneck
+   → called by: run_path
+
+🟠 wrapper
+   → time:      0.0018s  (54.2%)
+   → calls:     1
+   → score:     8.22
+   → diagnosis: 🌲 dependency bottleneck
+   → called by: handler, <module>
+
+🟡 <built-in method builtins.exec>
+   → time:      0.0022s  (68.5%)
+   → calls:     2
+   → score:     7.82
+   → diagnosis: 🐢 slow execution
+   → called by: _run_code, _call_with_frames_removed
+
+🟡 _run_code
+   → time:      0.0020s  (61.6%)
+   → calls:     1
+   → score:     7.46
+   → diagnosis: 🐢 slow execution
+   → called by: _run_module_code
+
+🟠 analyse
+   → time:      0.0003s  (7.7%)
+   → calls:     2
+   → score:     7.25
+   → diagnosis: 🌲 dependency bottleneck
+   → called by: analyse, <module>
+
+🟠 namedtuple
+   → time:      0.0001s  (4.2%)
+   → calls:     1
+   → score:     6.72
+   → diagnosis: 🌲 dependency bottleneck
+   → called by: <module>
+
+🟡 handler
+   → time:      0.0017s  (53.4%)
+   → calls:     1
+   → score:     6.14
+   → diagnosis: 🐢 slow execution
+   → called by: wrapper
+
+🟠 _find_and_load
+   → time:      0.0009s  (27.4%)
+   → calls:     1
+   → score:     6.04
+   → diagnosis: 🌲 dependency bottleneck
+   → called by: run_path
+
+── Dependency Graph ──────────────────────────
+   run_path  →  <method 'rpartition' of 'str' objects>
+   run_path  →  <built-in method builtins.isinstance>
+   run_path  →  _find_and_load
+   run_path  →  _run_module_code
+   run_path  →  _get_code_from_file
+   run_path  →  get_importer
+   run_path  →  fsdecode
+   <module>  →  _handle_fromlist
+   <module>  →  register
+   <module>  →  singledispatch
+   <module>  →  namedtuple
+   <module>  →  wrapper
+   <module>  →  analyse
+   <module>  →  print_report
+   <module>  →  get_records
+   <module>  →  __getattr__
+   <module>  →  trace
+   _run_module_code  →  <method 'copy' of 'dict' objects>
+   _run_module_code  →  __exit__
+   _run_module_code  →  __init__
+   _run_module_code  →  __enter__
+   _run_module_code  →  _run_code
+   wrapper  →  <built-in method time.perf_counter>
+   wrapper  →  _enter
+   wrapper  →  slow_query
+   wrapper  →  handler
+   wrapper  →  _exit
+   <built-in method builtins.exec>  →  <module>
+   _run_code  →  <method 'update' of 'dict' objects>
+   _run_code  →  <built-in method builtins.exec>
+   analyse  →  <method 'items' of 'dict' objects>
+   analyse  →  <method 'values' of 'dict' objects>
+   analyse  →  <method 'append' of 'list' objects>
+   analyse  →  <method 'sort' of 'list' objects>
+   analyse  →  <built-in method builtins.len>
+   analyse  →  <built-in method builtins.max>
+   analyse  →  <built-in method builtins.round>
+   analyse  →  analyse
+   analyse  →  _total_wall_time
+   analyse  →  __init__
+   analyse  →  _diagnose
+   analyse  →  _compute_score
+   namedtuple  →  <method '__contains__' of 'frozenset' objects>
+   namedtuple  →  <method 'add' of 'set' objects>
+   namedtuple  →  <method 'replace' of 'str' objects>
+   namedtuple  →  <method 'split' of 'str' objects>
+   namedtuple  →  <method 'join' of 'str' objects>
+   namedtuple  →  <method 'startswith' of 'str' objects>
+   namedtuple  →  <method 'isidentifier' of 'str' objects>
+   namedtuple  →  <built-in method sys._getframemodulename>
+   namedtuple  →  <built-in method sys.intern>
+   namedtuple  →  <built-in method builtins.eval>
+   namedtuple  →  <built-in method builtins.isinstance>
+   namedtuple  →  <built-in method builtins.len>
+   handler  →  wrapper
+   _find_and_load  →  <method 'get' of 'dict' objects>
+   _find_and_load  →  _find_and_load_unlocked
+   _find_and_load  →  cb
+   _find_and_load  →  __exit__
+   _find_and_load  →  __init__
+   _find_and_load  →  __enter__
+
+── Critical Path ─────────────────────────────
+🧨 Critical Path  (depth=3, hottest leaf: 0.0002s)
+
+  run_path  [0.0033s, 1 calls]
+    └─ _get_code_from_file  [0.0002s, 1 calls]
+      └─ <built-in method builtins.compile>  [0.0002s, 1 calls]   ← 🔥 hottest leaf (0.0002s)
+
+── Fix Suggestions ───────────────────────────
+  💡 Fix suggestions for: run_path
+     1. Run independent child calls concurrently [concurrent.futures]
+        When child functions are independent (no shared state), execute them in parallel to overlap their wall time.
+           from concurrent.futures import ThreadPoolExecutor
+           
+           with ThreadPoolExecutor() as ex:
+               results = list(ex.map(child_func, items))
+
+     2. Use asyncio for I/O-bound child calls [asyncio]
+        If child functions are blocked on I/O (network, disk), rewrite them as async coroutines and await them concurrently.
+           import asyncio
+           
+           async def fetch_all(urls):
+               tasks = [fetch(u) for u in urls]
+               return await asyncio.gather(*tasks)
+
+     3. Reduce fan-out with batching
+        Many small calls to the same child (e.g. individual DB queries) can often be replaced by a single batched call, cutting round-trip overhead.
+           # Instead of: for id in ids: db.get(id)
+           results = db.get_many(ids)
+
+     4. Profile memory with Scalene [scalene]
+        Scalene provides CPU, GPU and memory profiling at line-level precision — it can reveal hidden allocation costs that slow execution.
+           # pip install scalene
+           # python -m scalene my_script.py
+
+     5. Visualise with VizTracer [viztracer]
+        VizTracer records a full execution trace with microsecond precision and renders an interactive HTML flamegraph — great for understanding nested call patterns.
+           from viztracer import VizTracer
+           
+           with VizTracer(output_file='trace.json'):
+               my_func()
+           # then: vizviewer trace.json
+
+  💡 Fix suggestions for: <module>
+     1. Run independent child calls concurrently [concurrent.futures]
+        When child functions are independent (no shared state), execute them in parallel to overlap their wall time.
+           from concurrent.futures import ThreadPoolExecutor
+           
+           with ThreadPoolExecutor() as ex:
+               results = list(ex.map(child_func, items))
+
+     2. Use asyncio for I/O-bound child calls [asyncio]
+        If child functions are blocked on I/O (network, disk), rewrite them as async coroutines and await them concurrently.
+           import asyncio
+           
+           async def fetch_all(urls):
+               tasks = [fetch(u) for u in urls]
+               return await asyncio.gather(*tasks)
+
+     3. Reduce fan-out with batching
+        Many small calls to the same child (e.g. individual DB queries) can often be replaced by a single batched call, cutting round-trip overhead.
+           # Instead of: for id in ids: db.get(id)
+           results = db.get_many(ids)
+
+     4. Profile memory with Scalene [scalene]
+        Scalene provides CPU, GPU and memory profiling at line-level precision — it can reveal hidden allocation costs that slow execution.
+           # pip install scalene
+           # python -m scalene my_script.py
+
+     5. Visualise with VizTracer [viztracer]
+        VizTracer records a full execution trace with microsecond precision and renders an interactive HTML flamegraph — great for understanding nested call patterns.
+           from viztracer import VizTracer
+           
+           with VizTracer(output_file='trace.json'):
+               my_func()
+           # then: vizviewer trace.json
+
+  💡 Fix suggestions for: _run_module_code
+     1. Run independent child calls concurrently [concurrent.futures]
+        When child functions are independent (no shared state), execute them in parallel to overlap their wall time.
+           from concurrent.futures import ThreadPoolExecutor
+           
+           with ThreadPoolExecutor() as ex:
+               results = list(ex.map(child_func, items))
+
+     2. Use asyncio for I/O-bound child calls [asyncio]
+        If child functions are blocked on I/O (network, disk), rewrite them as async coroutines and await them concurrently.
+           import asyncio
+           
+           async def fetch_all(urls):
+               tasks = [fetch(u) for u in urls]
+               return await asyncio.gather(*tasks)
+
+     3. Reduce fan-out with batching
+        Many small calls to the same child (e.g. individual DB queries) can often be replaced by a single batched call, cutting round-trip overhead.
+           # Instead of: for id in ids: db.get(id)
+           results = db.get_many(ids)
+
+     4. Profile memory with Scalene [scalene]
+        Scalene provides CPU, GPU and memory profiling at line-level precision — it can reveal hidden allocation costs that slow execution.
+           # pip install scalene
+           # python -m scalene my_script.py
+
+     5. Visualise with VizTracer [viztracer]
+        VizTracer records a full execution trace with microsecond precision and renders an interactive HTML flamegraph — great for understanding nested call patterns.
+           from viztracer import VizTracer
+           
+           with VizTracer(output_file='trace.json'):
+               my_func()
+           # then: vizviewer trace.json
+
+  💡 Fix suggestions for: wrapper
+     1. Run independent child calls concurrently [concurrent.futures]
+        When child functions are independent (no shared state), execute them in parallel to overlap their wall time.
+           from concurrent.futures import ThreadPoolExecutor
+           
+           with ThreadPoolExecutor() as ex:
+               results = list(ex.map(child_func, items))
+
+     2. Use asyncio for I/O-bound child calls [asyncio]
+        If child functions are blocked on I/O (network, disk), rewrite them as async coroutines and await them concurrently.
+           import asyncio
+           
+           async def fetch_all(urls):
+               tasks = [fetch(u) for u in urls]
+               return await asyncio.gather(*tasks)
+
+     3. Reduce fan-out with batching
+        Many small calls to the same child (e.g. individual DB queries) can often be replaced by a single batched call, cutting round-trip overhead.
+           # Instead of: for id in ids: db.get(id)
+           results = db.get_many(ids)
+
+     4. Profile memory with Scalene [scalene]
+        Scalene provides CPU, GPU and memory profiling at line-level precision — it can reveal hidden allocation costs that slow execution.
+           # pip install scalene
+           # python -m scalene my_script.py
+
+     5. Visualise with VizTracer [viztracer]
+        VizTracer records a full execution trace with microsecond precision and renders an interactive HTML flamegraph — great for understanding nested call patterns.
+           from viztracer import VizTracer
+           
+           with VizTracer(output_file='trace.json'):
+               my_func()
+           # then: vizviewer trace.json
+
+  💡 Fix suggestions for: <built-in method builtins.exec>
+     1. Profile deeper with cProfile + snakeviz [cProfile / snakeviz]
+        The function is slow but the root cause is not yet clear.  Use cProfile to drill into sub-call timings and snakeviz for an interactive flame view.
+           import cProfile
+           cProfile.run('my_func()', 'profile.prof')
+           # then: snakeviz profile.prof
+
+     2. Check algorithmic complexity
+        A single slow call often hides an O(n²) or O(n³) algorithm.  Review loops, sorting, and lookups; switch lists to sets/dicts for O(1) membership tests.
+           # O(n) lookup — use a set:
+           lookup = set(items)
+           if value in lookup: ...
+
+     3. Cache pure function results [joblib]
+        If the slow function always returns the same result for the same inputs, wrap it with lru_cache or joblib.Memory.
+           from joblib import Memory
+           memory = Memory('/tmp/cache')
+           
+           @memory.cache
+           def slow_pure_func(x): ...
+
+  💡 Fix suggestions for: _run_code
+     1. Profile deeper with cProfile + snakeviz [cProfile / snakeviz]
+        The function is slow but the root cause is not yet clear.  Use cProfile to drill into sub-call timings and snakeviz for an interactive flame view.
+           import cProfile
+           cProfile.run('my_func()', 'profile.prof')
+           # then: snakeviz profile.prof
+
+     2. Check algorithmic complexity
+        A single slow call often hides an O(n²) or O(n³) algorithm.  Review loops, sorting, and lookups; switch lists to sets/dicts for O(1) membership tests.
+           # O(n) lookup — use a set:
+           lookup = set(items)
+           if value in lookup: ...
+
+     3. Cache pure function results [joblib]
+        If the slow function always returns the same result for the same inputs, wrap it with lru_cache or joblib.Memory.
+           from joblib import Memory
+           memory = Memory('/tmp/cache')
+           
+           @memory.cache
+           def slow_pure_func(x): ...
+
+  💡 Fix suggestions for: analyse
+     1. Run independent child calls concurrently [concurrent.futures]
+        When child functions are independent (no shared state), execute them in parallel to overlap their wall time.
+           from concurrent.futures import ThreadPoolExecutor
+           
+           with ThreadPoolExecutor() as ex:
+               results = list(ex.map(child_func, items))
+
+     2. Use asyncio for I/O-bound child calls [asyncio]
+        If child functions are blocked on I/O (network, disk), rewrite them as async coroutines and await them concurrently.
+           import asyncio
+           
+           async def fetch_all(urls):
+               tasks = [fetch(u) for u in urls]
+               return await asyncio.gather(*tasks)
+
+     3. Reduce fan-out with batching
+        Many small calls to the same child (e.g. individual DB queries) can often be replaced by a single batched call, cutting round-trip overhead.
+           # Instead of: for id in ids: db.get(id)
+           results = db.get_many(ids)
+
+  💡 Fix suggestions for: namedtuple
+     1. Run independent child calls concurrently [concurrent.futures]
+        When child functions are independent (no shared state), execute them in parallel to overlap their wall time.
+           from concurrent.futures import ThreadPoolExecutor
+           
+           with ThreadPoolExecutor() as ex:
+               results = list(ex.map(child_func, items))
+
+     2. Use asyncio for I/O-bound child calls [asyncio]
+        If child functions are blocked on I/O (network, disk), rewrite them as async coroutines and await them concurrently.
+           import asyncio
+           
+           async def fetch_all(urls):
+               tasks = [fetch(u) for u in urls]
+               return await asyncio.gather(*tasks)
+
+     3. Reduce fan-out with batching
+        Many small calls to the same child (e.g. individual DB queries) can often be replaced by a single batched call, cutting round-trip overhead.
+           # Instead of: for id in ids: db.get(id)
+           results = db.get_many(ids)
+
+  💡 Fix suggestions for: handler
+     1. Profile deeper with cProfile + snakeviz [cProfile / snakeviz]
+        The function is slow but the root cause is not yet clear.  Use cProfile to drill into sub-call timings and snakeviz for an interactive flame view.
+           import cProfile
+           cProfile.run('my_func()', 'profile.prof')
+           # then: snakeviz profile.prof
+
+     2. Check algorithmic complexity
+        A single slow call often hides an O(n²) or O(n³) algorithm.  Review loops, sorting, and lookups; switch lists to sets/dicts for O(1) membership tests.
+           # O(n) lookup — use a set:
+           lookup = set(items)
+           if value in lookup: ...
+
+     3. Cache pure function results [joblib]
+        If the slow function always returns the same result for the same inputs, wrap it with lru_cache or joblib.Memory.
+           from joblib import Memory
+           memory = Memory('/tmp/cache')
+           
+           @memory.cache
+           def slow_pure_func(x): ...
+
+  💡 Fix suggestions for: _find_and_load
+     1. Run independent child calls concurrently [concurrent.futures]
+        When child functions are independent (no shared state), execute them in parallel to overlap their wall time.
+           from concurrent.futures import ThreadPoolExecutor
+           
+           with ThreadPoolExecutor() as ex:
+               results = list(ex.map(child_func, items))
+
+     2. Use asyncio for I/O-bound child calls [asyncio]
+        If child functions are blocked on I/O (network, disk), rewrite them as async coroutines and await them concurrently.
+           import asyncio
+           
+           async def fetch_all(urls):
+               tasks = [fetch(u) for u in urls]
+               return await asyncio.gather(*tasks)
+
+     3. Reduce fan-out with batching
+        Many small calls to the same child (e.g. individual DB queries) can often be replaced by a single batched call, cutting round-trip overhead.
+           # Instead of: for id in ids: db.get(id)
+           results = db.get_many(ids)
+
+── Summary ───────────────────────────────────
+   Top bottleneck : run_path
+   Score          : 13.8
+   Diagnosis      : 🌲 dependency bottleneck
+
+🧨 Critical Path  (depth=3, hottest leaf: 0.0002s)
+
+  run_path  [0.0033s, 1 calls]
+    └─ _get_code_from_file  [0.0002s, 1 calls]
+      └─ <built-in method builtins.compile>  [0.0002s, 1 calls]   ← 🔥 hottest leaf (0.0002s)

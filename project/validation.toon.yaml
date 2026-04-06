@@ -1,15 +1,9 @@
-# vallm batch | 33f | 23✓ 1⚠ 0✗ | 2026-04-06
+# vallm batch | 35f | 23✓ 0⚠ 0✗ | 2026-04-06
 
 SUMMARY:
-  scanned: 33  passed: 23 (69.7%)  warnings: 1  errors: 0  unsupported: 10
-
-WARNINGS[1]{path,score}:
-  metrun/report.py,0.97
-    issues[2]{rule,severity,message,line}:
-      complexity.cyclomatic,warning,generate_report has cyclomatic complexity 17 (max: 15),26
-      complexity.lizard_cc,warning,generate_report: CC=17 exceeds limit 15,26
+  scanned: 35  passed: 23 (65.7%)  warnings: 0  errors: 0  unsupported: 12
 
 UNSUPPORTED[3]{bucket,count}:
-  *.md,4
+  *.md,5
   *.txt,1
-  other,5
+  other,6

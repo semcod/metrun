@@ -15,20 +15,20 @@ flowchart TD
     subgraph Core
         demo__handler["handler"]
         metrun__suggestions__print_suggestions["print_suggestions"]
-        metrun__report__generate_report{{generate_report CC=17}}
+        metrun__report___severity_icon["_severity_icon"]
+        metrun__report___format_bottleneck_entry["_format_bottleneck_entry"]
+        metrun__report__generate_report["generate_report"]
         metrun__report__print_report["print_report"]
-        metrun__critical_path__find_critical_path("find_critical_path CC=11")
-        metrun__flamegraph__render_svg_string["render_svg_string"]
-        metrun__bottleneck__BottleneckEngine___total_wall_time["_total_wall_time"]
-        metrun__bottleneck__BottleneckEngine___compute_score["_compute_score"]
-        metrun__bottleneck__BottleneckEngine___diagnose["_diagnose"]
-        metrun__bottleneck__analyse["analyse"]
         metrun__profiler__ExecutionTracer___get_stack["_get_stack"]
         metrun__profiler__ExecutionTracer___ensure_record["_ensure_record"]
         metrun__profiler__ExecutionTracer___enter["_enter"]
         metrun__profiler__ExecutionTracer___exit["_exit"]
         metrun__profiler__ExecutionTracer__reset["reset"]
-        ...["+14 more"]
+        metrun__profiler__ExecutionTracer__trace["trace"]
+        metrun__profiler__ExecutionTracer__section["section"]
+        metrun__profiler__trace["trace"]
+        metrun__profiler__section["section"]
+        ...["+15 more"]
     end
 
-    class metrun__cli___run_script,metrun__cli__cli,metrun__cli__profile,metrun__cli__inspect,metrun__cli__flame,metrun__cli__main,demo__handler,metrun__suggestions__print_suggestions,metrun__flamegraph__render_svg_string,metrun__bottleneck__BottleneckEngine___total_wall_time entry
+    class demo__handler,metrun__cli___run_script,metrun__cli__cli,metrun__cli__profile,metrun__cli__inspect,metrun__cli__flame,metrun__cli__main,metrun__suggestions__print_suggestions,metrun__report__print_report,metrun__profiler__ExecutionTracer___get_stack entry

@@ -32,4 +32,35 @@ $PIP install code2docs --upgrade --quiet
 $VENV/bin/code2docs ./ --readme-only
 $VENV/bin/redup scan . --format toon --output ./project
 $VENV/bin/vallm batch . --recursive --format toon --output ./project
-$VENV/bin/prefact -a -e "examples/**"
+$VENV/bin/prefact -a --skip-examples
+
+echo ""
+echo "=== metrun performance profiling ==="
+$PIP install -e ".[dev]" --quiet
+
+# Profile demo.py with full report
+$VENV/bin/metrun inspect demo.py > project/metrun-demo.txt 2>&1 || true
+
+# Profile with ASCII flamegraph
+$VENV/bin/metrun profile demo.py --ascii-flame > project/metrun-flame.txt 2>&1 || true
+
+# Profile CLI endpoints using cProfile bridge
+$VENV/bin/python -c "
+import sys
+sys.path.insert(0, '.')
+from metrun.cprofile_bridge import CProfileBridge
+from metrun import analyse, print_report
+
+bridge = CProfileBridge()
+
+# Profile 'metrun profile' command
+with bridge.profile_block():
+    import subprocess
+    subprocess.run([sys.executable, '-m', 'metrun', 'profile', 'demo.py'], 
+                   capture_output=True, timeout=30)
+bottlenecks = analyse(bridge.to_records())
+print('=== CLI: metrun profile ===')
+print_report(bottlenecks)
+" > project/metrun-cli-profile.txt 2>&1 || true
+
+echo "✓ Performance reports saved to project/metrun-*.txt"

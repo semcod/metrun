@@ -1,0 +1,175 @@
+🔍 Profiling: demo.py
+
+🔥 METRUN PERFORMANCE REPORT
+=============================
+
+🟡 handler
+   → time:      0.0017s  (100.0%)
+   → calls:     1
+   → score:     10.8
+   → diagnosis: 🐢 slow execution
+
+🟡 slow_query
+   → time:      0.0011s  (66.0%)
+   → calls:     100
+   → score:     8.61
+   → diagnosis: 🐢 slow execution
+   → called by: handler
+
+── Dependency Graph ──────────────────────────
+   handler  →  slow_query
+
+── Summary ───────────────────────────────────
+   Top bottleneck : handler
+   Score          : 10.8
+   Diagnosis      : 🐢 slow execution
+
+
+🔥 METRUN PERFORMANCE REPORT
+=============================
+
+🟠 run_path
+   → time:      0.0030s  (100.0%)
+   → calls:     1
+   → score:     13.8
+   → diagnosis: 🌲 dependency bottleneck
+
+🟠 <module>
+   → time:      0.0021s  (72.0%)
+   → calls:     3
+   → score:     12.8
+   → diagnosis: 🌲 dependency bottleneck
+   → called by: <built-in method builtins.exec>, <built-in method builtins.eval>
+
+🟠 _run_module_code
+   → time:      0.0020s  (65.7%)
+   → calls:     1
+   → score:     9.37
+   → diagnosis: 🌲 dependency bottleneck
+   → called by: run_path
+
+🟠 wrapper
+   → time:      0.0017s  (58.6%)
+   → calls:     1
+   → score:     8.66
+   → diagnosis: 🌲 dependency bottleneck
+   → called by: handler, <module>
+
+🟡 <built-in method builtins.exec>
+   → time:      0.0021s  (72.1%)
+   → calls:     2
+   → score:     8.19
+   → diagnosis: 🐢 slow execution
+   → called by: _run_code, _call_with_frames_removed
+
+🟡 _run_code
+   → time:      0.0019s  (64.8%)
+   → calls:     1
+   → score:     7.78
+   → diagnosis: 🐢 slow execution
+   → called by: _run_module_code
+
+🟠 analyse
+   → time:      0.0002s  (5.1%)
+   → calls:     2
+   → score:     6.99
+   → diagnosis: 🌲 dependency bottleneck
+   → called by: analyse, <module>
+
+🟠 namedtuple
+   → time:      0.0001s  (4.5%)
+   → calls:     1
+   → score:     6.76
+   → diagnosis: 🌲 dependency bottleneck
+   → called by: <module>
+
+🟡 handler
+   → time:      0.0017s  (57.6%)
+   → calls:     1
+   → score:     6.56
+   → diagnosis: 🐢 slow execution
+   → called by: wrapper
+
+🟡 slow_query
+   → time:      0.0011s  (36.0%)
+   → calls:     100
+   → score:     6.11
+   → diagnosis: 🐢 slow execution
+   → called by: wrapper
+
+── Dependency Graph ──────────────────────────
+   run_path  →  <method 'rpartition' of 'str' objects>
+   run_path  →  <built-in method builtins.isinstance>
+   run_path  →  _find_and_load
+   run_path  →  _run_module_code
+   run_path  →  _get_code_from_file
+   run_path  →  get_importer
+   run_path  →  fsdecode
+   <module>  →  _handle_fromlist
+   <module>  →  register
+   <module>  →  singledispatch
+   <module>  →  namedtuple
+   <module>  →  wrapper
+   <module>  →  analyse
+   <module>  →  print_report
+   <module>  →  get_records
+   <module>  →  __getattr__
+   <module>  →  trace
+   _run_module_code  →  <method 'copy' of 'dict' objects>
+   _run_module_code  →  __exit__
+   _run_module_code  →  __init__
+   _run_module_code  →  __enter__
+   _run_module_code  →  _run_code
+   wrapper  →  <built-in method time.perf_counter>
+   wrapper  →  _enter
+   wrapper  →  slow_query
+   wrapper  →  handler
+   wrapper  →  _exit
+   <built-in method builtins.exec>  →  <module>
+   _run_code  →  <method 'update' of 'dict' objects>
+   _run_code  →  <built-in method builtins.exec>
+   analyse  →  <method 'items' of 'dict' objects>
+   analyse  →  <method 'values' of 'dict' objects>
+   analyse  →  <method 'append' of 'list' objects>
+   analyse  →  <method 'sort' of 'list' objects>
+   analyse  →  <built-in method builtins.len>
+   analyse  →  <built-in method builtins.max>
+   analyse  →  <built-in method builtins.round>
+   analyse  →  analyse
+   analyse  →  _total_wall_time
+   analyse  →  __init__
+   analyse  →  _diagnose
+   analyse  →  _compute_score
+   namedtuple  →  <method '__contains__' of 'frozenset' objects>
+   namedtuple  →  <method 'add' of 'set' objects>
+   namedtuple  →  <method 'replace' of 'str' objects>
+   namedtuple  →  <method 'split' of 'str' objects>
+   namedtuple  →  <method 'join' of 'str' objects>
+   namedtuple  →  <method 'startswith' of 'str' objects>
+   namedtuple  →  <method 'isidentifier' of 'str' objects>
+   namedtuple  →  <built-in method sys._getframemodulename>
+   namedtuple  →  <built-in method sys.intern>
+   namedtuple  →  <built-in method builtins.eval>
+   namedtuple  →  <built-in method builtins.isinstance>
+   namedtuple  →  <built-in method builtins.len>
+   handler  →  wrapper
+   slow_query  →  <built-in method builtins.sum>
+
+── Summary ───────────────────────────────────
+   Top bottleneck : run_path
+   Score          : 13.8
+   Diagnosis      : 🌲 dependency bottleneck
+
+🔥 Flamegraph
+────────────────────────────────────────────────────────────────────────────────────────────
+  run_path                         ████████████████████████████████████████████████████████████████████████  100.0%  score=13.8
+  <module>                         ████████████████████████████████████████████████████░░░░░░░░░░░░░░░░░░░░   72.0%  score=12.8
+  _run_module_code                 ███████████████████████████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░░   65.7%  score=9.37
+  wrapper                          ██████████████████████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░   58.6%  score=8.66
+  <built-in method builtins.exec>  ████████████████████████████████████████████████████░░░░░░░░░░░░░░░░░░░░   72.1%  score=8.19
+  _run_code                        ███████████████████████████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░░   64.8%  score=7.78
+  analyse                          ████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░    5.1%  score=6.99
+  namedtuple                       ███░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░    4.5%  score=6.76
+  handler                          █████████████████████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░   57.6%  score=6.56
+  slow_query                       ██████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░   36.0%  score=6.11
+────────────────────────────────────────────────────────────────────────────────────────────
