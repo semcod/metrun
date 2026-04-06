@@ -1,11 +1,11 @@
-# code2llm/evolution | 55 func | 10f | 2026-04-06
+# code2llm/evolution | 58 func | 10f | 2026-04-06
 
 NEXT[0]: no refactoring needed
 
 RISKS[0]: none
 
 METRICS-TARGET:
-  CC̄:          2.6 → ≤1.8
+  CC̄:          2.4 → ≤1.7
   max-CC:      11 → ≤5
   god-modules: 0 → 0
   high-CC(≥15): 0 → ≤0
@@ -36,4 +36,4 @@ PATTERNS (language parser shared logic):
     - Standardized FunctionInfo/ClassInfo models
 
 HISTORY:
-  prev CC̄=2.7 → now CC̄=2.6
+  prev CC̄=2.4 → now CC̄=2.4

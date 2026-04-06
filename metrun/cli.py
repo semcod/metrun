@@ -41,14 +41,15 @@ Install CLI entry-point::
 
 from __future__ import annotations
 
+import io
 import runpy
+from contextlib import redirect_stdout
 from typing import Optional
 
 import click
 
 from metrun.bottleneck import analyse
 from metrun.cprofile_bridge import CProfileBridge
-from metrun.critical_path import find_critical_path, print_critical_path
 from metrun.flamegraph import print_ascii, render_svg
 from metrun.report import print_report
 
@@ -60,7 +61,7 @@ from metrun.report import print_report
 def _run_script(script_path: str) -> CProfileBridge:
     """Run *script_path* under a CProfileBridge and return the bridge."""
     bridge = CProfileBridge()
-    with bridge.profile_block():
+    with bridge.profile_block(), redirect_stdout(io.StringIO()):
         runpy.run_path(script_path, run_name="__main__")
     return bridge
 
@@ -104,14 +105,21 @@ def cli():
     default=False,
     help="Print an ASCII flamegraph to the terminal.",
 )
-def profile(script: str, top: int, flame: Optional[str], ascii_flame: bool):
+@click.option(
+    "--include-stdlib",
+    "include_stdlib",
+    is_flag=True,
+    default=False,
+    help="Include Python stdlib / C-builtin functions in the report.",
+)
+def profile(script: str, top: int, flame: Optional[str], ascii_flame: bool, include_stdlib: bool):
     """Profile SCRIPT and display the bottleneck report.
 
     SCRIPT is the path to a Python file to profile.
     """
     click.echo(f"🔍 Profiling: {script}")
     bridge = _run_script(script)
-    records = bridge.to_records()
+    records = bridge.to_records(exclude_stdlib=not include_stdlib)
 
     if not records:
         click.echo("⚠️  No profiling data collected.")
@@ -147,14 +155,21 @@ def profile(script: str, top: int, flame: Optional[str], ascii_flame: bool):
     metavar="FILE",
     help="Also generate an SVG flamegraph and save to FILE.",
 )
-def inspect(script: str, top: int, flame: Optional[str]):
+@click.option(
+    "--include-stdlib",
+    "include_stdlib",
+    is_flag=True,
+    default=False,
+    help="Include Python stdlib / C-builtin functions in the report.",
+)
+def inspect(script: str, top: int, flame: Optional[str], include_stdlib: bool):
     """Enhanced profile of SCRIPT: bottlenecks + critical path + suggestions.
 
     SCRIPT is the path to a Python file to profile.
     """
     click.echo(f"🔍 Inspecting: {script}")
     bridge = _run_script(script)
-    records = bridge.to_records()
+    records = bridge.to_records(exclude_stdlib=not include_stdlib)
 
     if not records:
         click.echo("⚠️  No profiling data collected.")
@@ -171,10 +186,6 @@ def inspect(script: str, top: int, flame: Optional[str]):
         records=records,
         show_suggestions=True,
     )
-
-    # Critical path (standalone block)
-    path = find_critical_path(records)
-    print_critical_path(path)
 
     if flame:
         stats = bridge.get_stats()

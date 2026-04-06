@@ -2,10 +2,10 @@
 
 ## AI Cost Tracking
 
-![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-0.1.3-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
-![AI Cost](https://img.shields.io/badge/AI%20Cost-$0.30-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-3.5h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
+![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-0.1.4-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![AI Cost](https://img.shields.io/badge/AI%20Cost-$0.45-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-3.5h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
 
-- 🤖 **LLM usage:** $0.3000 (2 commits)
+- 🤖 **LLM usage:** $0.4500 (3 commits)
 - 👤 **Human dev:** ~$350 (3.5h @ $100/h, 30min dedup)
 
 Generated on 2026-04-06 using [openrouter/qwen/qwen3-coder-next](https://openrouter.ai/qwen/qwen3-coder-next)
@@ -142,8 +142,14 @@ print_report(
 |---|---|
 | 🔥 `loop hotspot` | `calls ≥ 1 000` |
 | 🌲 `dependency bottleneck` | `≥ 3 direct children` in the execution graph |
-| 🐢 `slow execution` | `≥ 30 %` of total wall time, low calls |
+| 🐢 `slow execution` | `≥ 30 %` of total wall time (`time_pct ≥ 0.30`), low calls |
 | ✅ `nominal` | below all thresholds |
+
+**Score formula:**
+
+```
+score = (total_time / max_time) × 10  +  log10(calls + 1)  +  n_children × 0.5
+```
 
 ---
 
@@ -293,6 +299,30 @@ metrun flame profile.prof -o flame.svg
 
 ---
 
+## Architecture
+
+```
+  @trace / section()          cProfile.Profile
+       │                            │
+       ▼                            ▼
+ ExecutionTracer              CProfileBridge
+  (FunctionRecord)             .to_records()
+       │                            │
+       └──────────┬─────────────────┘
+                  ▼
+         BottleneckEngine.analyse()
+          score + diagnosis + rank
+                  │
+       ┌──────────┼──────────────┐
+       ▼          ▼              ▼
+  print_report  find_critical  suggest()
+  (report.py)    _path()      (suggestions.py)
+                            
+  ASCII/SVG flamegraph ← flamegraph.py
+```
+
+The two tracing backends (`ExecutionTracer` for decorator/section API and `CProfileBridge` for cProfile API) both produce the same `Dict[str, FunctionRecord]` structure consumed by the engine.
+
 ## Module overview
 
 ```
@@ -300,13 +330,21 @@ metrun/
 ├── profiler.py        # ExecutionTracer — decorator + context-manager tracing
 ├── bottleneck.py      # BottleneckEngine — score, diagnosis, ranking
 ├── report.py          # Human Report Generator
-├── critical_path.py   # Critical path analysis
+├── critical_path.py   # Critical path analysis (DFS on call graph)
 ├── suggestions.py     # Fix Suggestion Engine
 ├── flamegraph.py      # ASCII + SVG (flameprof) flamegraphs
 ├── cprofile_bridge.py # cProfile ↔ metrun bridge
 └── cli.py             # Click CLI entry-point
 ```
 
+## Known limitations
+
+| Limitation | Detail |
+|---|---|
+| **Name collisions in cProfile mode** | `CProfileBridge.to_records()` uses function name only as key (no file:lineno) — functions with the same name in different modules are merged |
+| **Decorator tracing is opt-in** | Only functions decorated with `@trace` or wrapped in `section()` appear in `get_records()` — not the full call tree |
+| **Thread-local call stack** | Each thread has an independent call stack; cross-thread parent→child links are not recorded |
+| **No async support** | `asyncio` coroutines are not automatically traced by the decorator backend |
 
 ## License
 

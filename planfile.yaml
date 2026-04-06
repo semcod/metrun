@@ -1,0 +1,292 @@
+name: Code Quality Improvement
+project_name: ''
+project_type: prefactoring
+domain: dev-tools
+goal: Improve code quality using prefact
+goals:
+- Fix all prefact-detected issues
+- Improve code maintainability
+- Ensure consistent code style
+quality_gates:
+- metric: Prefact Issues
+  threshold: '0'
+sprints:
+- id: sprint-1
+  name: Code Quality Improvements
+  duration: 2 weeks
+  objectives:
+  - Fix code quality issues
+  task_patterns:
+  - id: ticket-669afa97
+    name: Fix string-concat issues
+    description: Resolve 3 string-concat issues in metrun/bottleneck.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - metrun/bottleneck.py
+    rule_id: string-concat
+    count: 3
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-dd81ce1e
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in metrun/bottleneck.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - metrun/bottleneck.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-ec51eda5
+    name: Fix llm-generated-code issues
+    description: Resolve 1 llm-generated-code issues in metrun/bottleneck.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - metrun/bottleneck.py
+    rule_id: llm-generated-code
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-03bfe0c1
+    name: Fix smart-return-type issues
+    description: Resolve 2 smart-return-type issues in demo.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - demo.py
+    rule_id: smart-return-type
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-fc2aa2e5
+    name: Fix ai-boilerplate issues
+    description: Resolve 1 ai-boilerplate issues in demo.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - demo.py
+    rule_id: ai-boilerplate
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-667355b7
+    name: Fix smart-return-type issues
+    description: Resolve 5 smart-return-type issues in metrun/cli.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - metrun/cli.py
+    rule_id: smart-return-type
+    count: 5
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-5ac10040
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in metrun/cli.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - metrun/cli.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-237fc1a2
+    name: Fix magic-numbers issues
+    description: Resolve 1 magic-numbers issues in metrun/cli.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - metrun/cli.py
+    rule_id: magic-numbers
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-f6603825
+    name: Fix ai-boilerplate issues
+    description: Resolve 2 ai-boilerplate issues in metrun/cli.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - metrun/cli.py
+    rule_id: ai-boilerplate
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-193291c9
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in metrun/critical_path.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - metrun/critical_path.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-dcb20d6a
+    name: Fix smart-return-type issues
+    description: Resolve 4 smart-return-type issues in metrun/profiler.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - metrun/profiler.py
+    rule_id: smart-return-type
+    count: 4
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-d11fa4f0
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in metrun/profiler.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - metrun/profiler.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-b89ad96e
+    name: Fix string-concat issues
+    description: Resolve 3 string-concat issues in metrun/flamegraph.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - metrun/flamegraph.py
+    rule_id: string-concat
+    count: 3
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-ee310602
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in metrun/flamegraph.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - metrun/flamegraph.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-f7d49f28
+    name: Fix duplicate-imports issues
+    description: Resolve 1 duplicate-imports issues in metrun/flamegraph.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - metrun/flamegraph.py
+    rule_id: duplicate-imports
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-7fdeaa6a
+    name: Fix magic-numbers issues
+    description: Resolve 6 magic-numbers issues in metrun/flamegraph.py
+    task_type: prefactor
+    priority: high
+    estimate: 2d
+    files:
+    - metrun/flamegraph.py
+    rule_id: magic-numbers
+    count: 6
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-af2e7bd7
+    name: Fix smart-return-type issues
+    description: Resolve 2 smart-return-type issues in metrun/cprofile_bridge.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - metrun/cprofile_bridge.py
+    rule_id: smart-return-type
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-afd4a21d
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in metrun/cprofile_bridge.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - metrun/cprofile_bridge.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-dbe250cc
+    name: Fix string-concat issues
+    description: Resolve 1 string-concat issues in metrun/report.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - metrun/report.py
+    rule_id: string-concat
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-cf926a5c
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in metrun/report.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - metrun/report.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-c579906e
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in metrun/suggestions.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - metrun/suggestions.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced

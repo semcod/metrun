@@ -1,4 +1,10 @@
 # Byte-compiled / optimized / DLL files
+.idea/inspectionProfiles/Project_Default.xml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/metrun.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
 .env.example
 __pycache__/
 *.py[codz]

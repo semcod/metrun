@@ -1,7 +1,7 @@
 <!-- code2docs:start --># metrun
 
-![version](https://img.shields.io/badge/version-0.1.0-blue) ![python](https://img.shields.io/badge/python-%3E%3D3.9-blue) ![coverage](https://img.shields.io/badge/coverage-unknown-lightgrey) ![functions](https://img.shields.io/badge/functions-55-green)
-> **55** functions | **8** classes | **11** files | CC̄ = 2.7
+![version](https://img.shields.io/badge/version-0.1.0-blue) ![python](https://img.shields.io/badge/python-%3E%3D3.9-blue) ![coverage](https://img.shields.io/badge/coverage-unknown-lightgrey) ![functions](https://img.shields.io/badge/functions-58-green)
+> **58** functions | **8** classes | **11** files | CC̄ = 2.7
 
 > Auto-generated project documentation from source code analysis.
 
@@ -147,7 +147,7 @@ Content outside the markers is preserved when regenerating. Enable this with `sy
 
 ```
 metrun/
-├── project├── demo    ├── cli├── metrun/    ├── suggestions    ├── report    ├── bottleneck    ├── flamegraph    ├── critical_path    ├── profiler    ├── cprofile_bridge```
+├── project├── metrun/    ├── cli├── demo    ├── suggestions    ├── report    ├── bottleneck    ├── flamegraph    ├── critical_path    ├── cprofile_bridge    ├── profiler```
 
 ## API Overview
 
@@ -158,21 +158,23 @@ metrun/
 - **`BottleneckEngine`** — Analyse a dict of FunctionRecords and return a ranked list of Bottlenecks.
 - **`CriticalPathNode`** — A single node in the critical path.
 - **`CriticalPath`** — The result of a critical-path analysis.
+- **`CProfileBridge`** — Thin wrapper around :class:`cProfile.Profile` that exposes profiling
 - **`FunctionRecord`** — Aggregated stats for a single function (or call-site).
 - **`ExecutionTracer`** — Thread-local call-stack tracer.
-- **`CProfileBridge`** — Thin wrapper around :class:`cProfile.Profile` that exposes profiling
 
 ### Functions
 
+- `write_cli_report()` — —
+- `slow_query()` — —
+- `handler()` — —
 - `print()` — —
-- `print_report()` — —
-- `slow_query(n)` — —
-- `handler(items)` — —
 - `cli()` — metrun — Execution Intelligence Tool.
 - `profile(script, top, flame, ascii_flame)` — Profile SCRIPT and display the bottleneck report.
 - `inspect(script, top, flame)` — Enhanced profile of SCRIPT: bottlenecks + critical path + suggestions.
 - `flame(prof_file, output, width)` — Convert an existing .prof file to an SVG flamegraph.
 - `main()` — —
+- `slow_query(n)` — —
+- `handler(items)` — —
 - `suggest(bottleneck)` — Return a list of :class:`Suggestion` objects for a single bottleneck.
 - `format_suggestions(name, suggestions)` — Render suggestions for a single function as a human-readable string.
 - `print_suggestions(name, suggestions)` — Print suggestions for a single function to stdout.
@@ -204,7 +206,7 @@ metrun/
 📄 `metrun.profiler` (12 functions, 2 classes)
 📄 `metrun.report` (8 functions)
 📄 `metrun.suggestions` (3 functions, 1 classes)
-📄 `project` (2 functions)
+📄 `project` (8 functions)
 
 ## Requirements
 
@@ -214,9 +216,9 @@ metrun/
 ## Contributing
 
 **Contributors:**
+- Tom Softreck <tom@sapletta.com>
 - copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>
 - Tom Sapletta <tom-sapletta-com@users.noreply.github.com>
-- Tom Softreck <tom@sapletta.com>
 
 We welcome contributions! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 

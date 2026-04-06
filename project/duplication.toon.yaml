@@ -1,9 +1,9 @@
-# redup/duplication | 0 groups | 10f 1716L | 2026-04-06
+# redup/duplication | 0 groups | 10f 1710L | 2026-04-06
 
 SUMMARY:
   files_scanned: 10
-  total_lines:   1716
+  total_lines:   1710
   dup_groups:    0
   dup_fragments: 0
   saved_lines:   0
-  scan_ms:       4304
+  scan_ms:       4541

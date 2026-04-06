@@ -6,10 +6,10 @@
 - **Primary Language**: python
 - **Languages**: python: 10, shell: 1
 - **Analysis Mode**: static
-- **Total Functions**: 55
+- **Total Functions**: 58
 - **Total Classes**: 8
 - **Modules**: 11
-- **Entry Points**: 34
+- **Entry Points**: 38
 
 ## Architecture by Module
 
@@ -22,6 +22,10 @@
 - **Functions**: 9
 - **Classes**: 1
 - **File**: `cprofile_bridge.py`
+
+### project
+- **Functions**: 8
+- **File**: `project.sh`
 
 ### metrun.report
 - **Functions**: 8
@@ -49,10 +53,6 @@
 - **Functions**: 3
 - **Classes**: 2
 - **File**: `critical_path.py`
-
-### project
-- **Functions**: 2
-- **File**: `project.sh`
 
 ### demo
 - **Functions**: 2
@@ -96,10 +96,6 @@ PROF_FILE is the path to a cProfile .prof dump
 > Decorator: trace every call to *func*.
 - **Calls**: functools.wraps, self._enter, time.perf_counter, func, self._exit, time.perf_counter
 
-### metrun.profiler.ExecutionTracer.section
-> Context manager: trace a named code section.
-- **Calls**: self._enter, time.perf_counter, self._exit, time.perf_counter
-
 ### metrun.flamegraph.render_svg_string
 > Like :func:`render_svg` but return the SVG markup as a string instead of
 writing to a file.
@@ -111,6 +107,10 @@ Useful for embedding flamegraphs in HTML reports or Jupyt
 > Sum of all top-level (root) function times, or max if no roots exist.
 - **Calls**: sum, max, self._records.values, self._records.values
 
+### metrun.profiler.ExecutionTracer.section
+> Context manager: trace a named code section.
+- **Calls**: self._enter, time.perf_counter, self._exit, time.perf_counter
+
 ### metrun.profiler.ExecutionTracer._exit
 - **Calls**: self._get_stack, stack.pop, self._ensure_record
 
@@ -118,9 +118,16 @@ Useful for embedding flamegraphs in HTML reports or Jupyt
 > Print suggestions for a single function to stdout.
 - **Calls**: project.print, metrun.suggestions.format_suggestions
 
-### metrun.report.print_report
-> Print the performance report to stdout.
-- **Calls**: project.print, metrun.report.generate_report
+### metrun.critical_path.print_critical_path
+> Print the critical path to stdout.
+- **Calls**: project.print, metrun.critical_path.format_critical_path
+
+### metrun.bottleneck.BottleneckEngine._compute_score
+- **Calls**: math.log10, round
+
+### metrun.bottleneck.analyse
+> Convenience function: run the engine and return ranked bottlenecks.
+- **Calls**: None.analyse, BottleneckEngine
 
 ### metrun.profiler.ExecutionTracer.__init__
 - **Calls**: threading.Lock, threading.local
@@ -134,13 +141,6 @@ Can be used with or without parentheses:
 
     @trace(tracer=my_tracer
 - **Calls**: _tracer.trace, _tracer.trace
-
-### metrun.bottleneck.BottleneckEngine._compute_score
-- **Calls**: math.log10, round
-
-### metrun.bottleneck.analyse
-> Convenience function: run the engine and return ranked bottlenecks.
-- **Calls**: None.analyse, BottleneckEngine
 
 ### metrun.cprofile_bridge.CProfileBridge.profile_func
 > Decorator: profile every call to *func* with cProfile.
@@ -229,19 +229,19 @@ _enter [metrun.profiler.ExecutionTracer]
 trace [metrun.profiler.ExecutionTracer]
 ```
 
-### Flow 7: section
-```
-section [metrun.profiler.ExecutionTracer]
-```
-
-### Flow 8: render_svg_string
+### Flow 7: render_svg_string
 ```
 render_svg_string [metrun.flamegraph]
 ```
 
-### Flow 9: _total_wall_time
+### Flow 8: _total_wall_time
 ```
 _total_wall_time [metrun.bottleneck.BottleneckEngine]
+```
+
+### Flow 9: section
+```
+section [metrun.profiler.ExecutionTracer]
 ```
 
 ### Flow 10: _exit
@@ -276,26 +276,26 @@ Example::
 - **Methods**: 5
 - **Key Methods**: metrun.bottleneck.BottleneckEngine.__init__, metrun.bottleneck.BottleneckEngine._total_wall_time, metrun.bottleneck.BottleneckEngine._compute_score, metrun.bottleneck.BottleneckEngine._diagnose, metrun.bottleneck.BottleneckEngine.analyse
 
-### metrun.profiler.FunctionRecord
-> Aggregated stats for a single function (or call-site).
-- **Methods**: 1
-- **Key Methods**: metrun.profiler.FunctionRecord.avg_time
-
 ### metrun.critical_path.CriticalPath
 > The result of a critical-path analysis.
 - **Methods**: 1
 - **Key Methods**: metrun.critical_path.CriticalPath.length
 
+### metrun.profiler.FunctionRecord
+> Aggregated stats for a single function (or call-site).
+- **Methods**: 1
+- **Key Methods**: metrun.profiler.FunctionRecord.avg_time
+
 ### metrun.suggestions.Suggestion
 > A single actionable fix suggestion.
 - **Methods**: 0
 
-### metrun.bottleneck.Bottleneck
-> A single bottleneck entry produced by the engine.
-- **Methods**: 0
-
 ### metrun.critical_path.CriticalPathNode
 > A single node in the critical path.
+- **Methods**: 0
+
+### metrun.bottleneck.Bottleneck
+> A single bottleneck entry produced by the engine.
 - **Methods**: 0
 
 ## Data Transformation Functions
@@ -355,8 +355,8 @@ Example output::
 Functions exposed as public API (no underscore prefix):
 
 - `metrun.cli.profile` - 16 calls
-- `metrun.cli.inspect` - 16 calls
 - `metrun.critical_path.find_critical_path` - 16 calls
+- `metrun.cli.inspect` - 14 calls
 - `metrun.report.generate_report` - 14 calls
 - `metrun.flamegraph.render_ascii` - 13 calls
 - `metrun.bottleneck.BottleneckEngine.analyse` - 13 calls
@@ -366,17 +366,17 @@ Functions exposed as public API (no underscore prefix):
 - `metrun.critical_path.format_critical_path` - 7 calls
 - `metrun.profiler.ExecutionTracer.trace` - 6 calls
 - `metrun.suggestions.suggest` - 4 calls
-- `metrun.profiler.ExecutionTracer.section` - 4 calls
 - `metrun.flamegraph.render_svg_string` - 4 calls
+- `metrun.profiler.ExecutionTracer.section` - 4 calls
 - `metrun.flamegraph.render_svg` - 3 calls
 - `demo.slow_query` - 2 calls
 - `metrun.cli.cli` - 2 calls
 - `metrun.suggestions.print_suggestions` - 2 calls
 - `metrun.report.print_report` - 2 calls
-- `metrun.profiler.trace` - 2 calls
+- `metrun.critical_path.print_critical_path` - 2 calls
 - `metrun.flamegraph.print_ascii` - 2 calls
 - `metrun.bottleneck.analyse` - 2 calls
-- `metrun.critical_path.print_critical_path` - 2 calls
+- `metrun.profiler.trace` - 2 calls
 - `metrun.cprofile_bridge.CProfileBridge.profile_func` - 2 calls
 - `metrun.cprofile_bridge.CProfileBridge.profile_block` - 2 calls
 - `metrun.cprofile_bridge.CProfileBridge.get_stats` - 2 calls
@@ -387,8 +387,10 @@ Functions exposed as public API (no underscore prefix):
 - `metrun.profiler.reset` - 1 calls
 - `metrun.cprofile_bridge.CProfileBridge.save` - 1 calls
 - `metrun.cprofile_bridge.CProfileBridge.reset` - 1 calls
+- `project.write_cli_report` - 0 calls
+- `project.slow_query` - 0 calls
+- `project.handler` - 0 calls
 - `project.print` - 0 calls
-- `project.print_report` - 0 calls
 - `metrun.profiler.get_records` - 0 calls
 
 ## System Interactions
@@ -420,13 +422,13 @@ graph TD
     trace --> perf_counter
     trace --> func
     trace --> _exit
-    section --> _enter
-    section --> perf_counter
-    section --> _exit
     render_svg_string --> StringIO
     render_svg_string --> render
     render_svg_string --> getvalue
     render_svg_string --> ImportError
+    _total_wall_time --> sum
+    _total_wall_time --> max
+    _total_wall_time --> values
 ```
 
 ## Reverse Engineering Guidelines

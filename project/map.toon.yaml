@@ -1,21 +1,21 @@
-# metrun | 11f 1782L | shell:1,python:10 | 2026-04-06
-# stats: 55 func | 0 cls | 11 mod | CC̄=2.6 | critical:0 | cycles:0
-# alerts[4]: fan-out find_critical_path=13; fan-out inspect=13; fan-out BottleneckEngine.analyse=12; fan-out profile=12
-# hotspots[5]: inspect fan=13; find_critical_path fan=13; profile fan=12; BottleneckEngine.analyse fan=12; generate_report fan=8
-# evolution: CC̄ 2.7→2.6 (improved -0.1)
+# metrun | 11f 1841L | shell:1,python:10 | 2026-04-06
+# stats: 58 func | 0 cls | 11 mod | CC̄=2.4 | critical:0 | cycles:0
+# alerts[4]: fan-out find_critical_path=13; fan-out BottleneckEngine.analyse=12; fan-out profile=12; fan-out inspect=11
+# hotspots[5]: find_critical_path fan=13; profile fan=12; BottleneckEngine.analyse fan=12; inspect fan=11; generate_report fan=8
+# evolution: CC̄ 2.4→2.4 (flat 0.0)
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
 M[11]:
   demo.py,14
   metrun/__init__.py,107
   metrun/bottleneck.py,154
-  metrun/cli.py,220
+  metrun/cli.py,215
   metrun/cprofile_bridge.py,165
   metrun/critical_path.py,211
   metrun/flamegraph.py,222
   metrun/profiler.py,180
   metrun/report.py,190
   metrun/suggestions.py,253
-  project.sh,66
+  project.sh,130
 D:
   metrun/critical_path.py:
     e: CriticalPathNode,CriticalPath,find_critical_path,format_critical_path,print_critical_path
@@ -78,7 +78,13 @@ Usage — decorator:
     slow_query(n)
     handler(items)
   project.sh:
-    e: print,print_report
+    e: write_cli_report,write_cli_report,write_cli_report,_benchmark,slow_query,handler,_benchmark,print
+    write_cli_report()
+    write_cli_report()
+    write_cli_report()
+    _benchmark()
+    slow_query()
+    handler()
+    _benchmark()
     print()
-    print_report()
   metrun/__init__.py:

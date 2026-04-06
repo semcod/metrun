@@ -124,13 +124,12 @@ class BottleneckEngine:
         results: List[Bottleneck] = []
         for name, record in self._records.items():
             n_children = len(record.children)
-            normalized_time = record.total_time / max_time if max_time > 0 else 0.0
             time_pct = (record.total_time / total_wall * 100) if total_wall > 0 else 0.0
 
             score = self._compute_score(
                 record.total_time, max_time, record.calls, n_children
             )
-            diagnosis = self._diagnose(normalized_time, record.calls, n_children)
+            diagnosis = self._diagnose(time_pct / 100.0, record.calls, n_children)
 
             results.append(
                 Bottleneck(

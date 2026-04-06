@@ -4,15 +4,15 @@
 =============================
 
 🟡 handler
-   → time:      0.0017s  (100.0%)
+   → time:      0.0018s  (100.0%)
    → calls:     1
    → score:     10.8
    → diagnosis: 🐢 slow execution
 
 🟡 slow_query
-   → time:      0.0011s  (65.4%)
+   → time:      0.0012s  (66.1%)
    → calls:     100
-   → score:     8.54
+   → score:     8.62
    → diagnosis: 🐢 slow execution
    → called by: handler
 
@@ -29,50 +29,50 @@
 =============================
 
 🟠 run_path
-   → time:      0.0033s  (100.0%)
+   → time:      0.0032s  (100.0%)
    → calls:     1
    → score:     13.8
    → diagnosis: 🌲 dependency bottleneck
 
 🟠 <module>
-   → time:      0.0022s  (65.2%)
+   → time:      0.0022s  (69.7%)
    → calls:     3
-   → score:     12.12
+   → score:     12.58
    → diagnosis: 🌲 dependency bottleneck
    → called by: <built-in method builtins.exec>, <built-in method builtins.eval>
 
 🟠 _run_module_code
-   → time:      0.0020s  (59.2%)
+   → time:      0.0020s  (63.5%)
    → calls:     1
-   → score:     8.72
+   → score:     9.15
    → diagnosis: 🌲 dependency bottleneck
    → called by: run_path
 
 🟠 wrapper
-   → time:      0.0017s  (52.5%)
+   → time:      0.0018s  (56.8%)
    → calls:     1
-   → score:     8.05
+   → score:     8.48
    → diagnosis: 🌲 dependency bottleneck
    → called by: handler, <module>
 
 🟡 <built-in method builtins.exec>
-   → time:      0.0022s  (65.3%)
+   → time:      0.0022s  (69.9%)
    → calls:     2
-   → score:     7.51
+   → score:     7.97
    → diagnosis: 🐢 slow execution
    → called by: _run_code, _call_with_frames_removed
 
 🟡 _run_code
-   → time:      0.0019s  (58.5%)
+   → time:      0.0020s  (62.8%)
    → calls:     1
-   → score:     7.15
+   → score:     7.58
    → diagnosis: 🐢 slow execution
    → called by: _run_module_code
 
 🟠 analyse
-   → time:      0.0002s  (4.7%)
+   → time:      0.0001s  (4.6%)
    → calls:     2
-   → score:     6.95
+   → score:     6.94
    → diagnosis: 🌲 dependency bottleneck
    → called by: analyse, <module>
 
@@ -83,17 +83,17 @@
    → diagnosis: 🌲 dependency bottleneck
    → called by: <module>
 
-🟠 _find_and_load
-   → time:      0.0010s  (30.4%)
-   → calls:     1
-   → score:     6.34
-   → diagnosis: 🌲 dependency bottleneck
-   → called by: run_path
-
 🟡 handler
-   → time:      0.0017s  (51.6%)
+   → time:      0.0018s  (56.0%)
    → calls:     1
-   → score:     5.96
+   → score:     6.4
+   → diagnosis: 🐢 slow execution
+   → called by: wrapper
+
+🟡 slow_query
+   → time:      0.0011s  (35.0%)
+   → calls:     100
+   → score:     6.0
    → diagnosis: 🐢 slow execution
    → called by: wrapper
 
@@ -152,18 +152,13 @@
    namedtuple  →  <built-in method builtins.eval>
    namedtuple  →  <built-in method builtins.isinstance>
    namedtuple  →  <built-in method builtins.len>
-   _find_and_load  →  <method 'get' of 'dict' objects>
-   _find_and_load  →  _find_and_load_unlocked
-   _find_and_load  →  cb
-   _find_and_load  →  __exit__
-   _find_and_load  →  __init__
-   _find_and_load  →  __enter__
    handler  →  wrapper
+   slow_query  →  <built-in method builtins.sum>
 
 ── Critical Path ─────────────────────────────
 🧨 Critical Path  (depth=3, hottest leaf: 0.0002s)
 
-  run_path  [0.0033s, 1 calls]
+  run_path  [0.0032s, 1 calls]
     └─ _get_code_from_file  [0.0002s, 1 calls]
       └─ <built-in method builtins.compile>  [0.0002s, 1 calls]   ← 🔥 hottest leaf (0.0002s)
 
@@ -388,28 +383,28 @@
            # Instead of: for id in ids: db.get(id)
            results = db.get_many(ids)
 
-  💡 Fix suggestions for: _find_and_load
-     1. Run independent child calls concurrently [concurrent.futures]
-        When child functions are independent (no shared state), execute them in parallel to overlap their wall time.
-           from concurrent.futures import ThreadPoolExecutor
-           
-           with ThreadPoolExecutor() as ex:
-               results = list(ex.map(child_func, items))
-
-     2. Use asyncio for I/O-bound child calls [asyncio]
-        If child functions are blocked on I/O (network, disk), rewrite them as async coroutines and await them concurrently.
-           import asyncio
-           
-           async def fetch_all(urls):
-               tasks = [fetch(u) for u in urls]
-               return await asyncio.gather(*tasks)
-
-     3. Reduce fan-out with batching
-        Many small calls to the same child (e.g. individual DB queries) can often be replaced by a single batched call, cutting round-trip overhead.
-           # Instead of: for id in ids: db.get(id)
-           results = db.get_many(ids)
-
   💡 Fix suggestions for: handler
+     1. Profile deeper with cProfile + snakeviz [cProfile / snakeviz]
+        The function is slow but the root cause is not yet clear.  Use cProfile to drill into sub-call timings and snakeviz for an interactive flame view.
+           import cProfile
+           cProfile.run('my_func()', 'profile.prof')
+           # then: snakeviz profile.prof
+
+     2. Check algorithmic complexity
+        A single slow call often hides an O(n²) or O(n³) algorithm.  Review loops, sorting, and lookups; switch lists to sets/dicts for O(1) membership tests.
+           # O(n) lookup — use a set:
+           lookup = set(items)
+           if value in lookup: ...
+
+     3. Cache pure function results [joblib]
+        If the slow function always returns the same result for the same inputs, wrap it with lru_cache or joblib.Memory.
+           from joblib import Memory
+           memory = Memory('/tmp/cache')
+           
+           @memory.cache
+           def slow_pure_func(x): ...
+
+  💡 Fix suggestions for: slow_query
      1. Profile deeper with cProfile + snakeviz [cProfile / snakeviz]
         The function is slow but the root cause is not yet clear.  Use cProfile to drill into sub-call timings and snakeviz for an interactive flame view.
            import cProfile

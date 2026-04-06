@@ -5,7 +5,58 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.10] - 2026-04-06
+
+### Fixed
+- Fix string-concat issues (ticket-669afa97)
+- Fix unused-imports issues (ticket-dd81ce1e)
+- Fix llm-generated-code issues (ticket-ec51eda5)
+- Fix smart-return-type issues (ticket-03bfe0c1)
+- Fix ai-boilerplate issues (ticket-fc2aa2e5)
+- Fix smart-return-type issues (ticket-667355b7)
+- Fix unused-imports issues (ticket-5ac10040)
+- Fix magic-numbers issues (ticket-237fc1a2)
+- Fix ai-boilerplate issues (ticket-f6603825)
+- Fix unused-imports issues (ticket-193291c9)
+- Fix smart-return-type issues (ticket-dcb20d6a)
+- Fix unused-imports issues (ticket-d11fa4f0)
+- Fix string-concat issues (ticket-b89ad96e)
+- Fix unused-imports issues (ticket-ee310602)
+- Fix duplicate-imports issues (ticket-f7d49f28)
+- Fix magic-numbers issues (ticket-7fdeaa6a)
+- Fix smart-return-type issues (ticket-af2e7bd7)
+- Fix unused-imports issues (ticket-afd4a21d)
+- Fix string-concat issues (ticket-dbe250cc)
+- Fix unused-imports issues (ticket-cf926a5c)
+- Fix unused-imports issues (ticket-c579906e)
+
 ## [Unreleased]
+
+## [0.1.4] - 2026-04-06
+
+### Docs
+- Update CHANGELOG.md
+- Update README.md
+- Update TODO.md
+- Update docs/README.md
+- Update project/README.md
+- Update project/context.md
+
+### Test
+- Update tests/test_cprofile_bridge.py
+
+### Other
+- Update .gitignore
+- Update .pyqual/pipeline.db
+- Update metrun/bottleneck.py
+- Update metrun/cli.py
+- Update metrun/cprofile_bridge.py
+- Update planfile.yaml
+- Update prefact.yaml
+- Update project.sh
+- Update project/analysis.toon.yaml
+- Update project/calls.mmd
+- ... and 18 more files
 
 ## [0.1.3] - 2026-04-06
 

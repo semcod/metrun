@@ -10,9 +10,9 @@
    → diagnosis: 🐢 slow execution
 
 🟡 slow_query
-   → time:      0.0011s  (64.8%)
+   → time:      0.0011s  (65.0%)
    → calls:     100
-   → score:     8.48
+   → score:     8.5
    → diagnosis: 🐢 slow execution
    → called by: handler
 
@@ -35,65 +35,65 @@
    → diagnosis: 🌲 dependency bottleneck
 
 🟠 <module>
-   → time:      0.0022s  (74.8%)
+   → time:      0.0021s  (72.5%)
    → calls:     3
-   → score:     13.08
+   → score:     12.85
    → diagnosis: 🌲 dependency bottleneck
    → called by: <built-in method builtins.exec>, <built-in method builtins.eval>
 
 🟠 _run_module_code
-   → time:      0.0020s  (67.7%)
+   → time:      0.0019s  (65.9%)
    → calls:     1
-   → score:     9.57
+   → score:     9.39
    → diagnosis: 🌲 dependency bottleneck
    → called by: run_path
 
 🟠 wrapper
-   → time:      0.0017s  (59.6%)
+   → time:      0.0017s  (58.3%)
    → calls:     1
-   → score:     8.76
+   → score:     8.63
    → diagnosis: 🌲 dependency bottleneck
    → called by: handler, <module>
 
 🟡 <built-in method builtins.exec>
-   → time:      0.0022s  (74.9%)
+   → time:      0.0021s  (72.6%)
    → calls:     2
-   → score:     8.47
+   → score:     8.24
    → diagnosis: 🐢 slow execution
    → called by: _run_code, _call_with_frames_removed
 
 🟡 _run_code
-   → time:      0.0019s  (66.9%)
+   → time:      0.0019s  (65.2%)
    → calls:     1
-   → score:     8.0
+   → score:     7.82
    → diagnosis: 🐢 slow execution
    → called by: _run_module_code
 
 🟠 analyse
-   → time:      0.0002s  (6.4%)
+   → time:      0.0002s  (6.0%)
    → calls:     2
-   → score:     7.12
+   → score:     7.07
    → diagnosis: 🌲 dependency bottleneck
    → called by: analyse, <module>
 
 🟠 namedtuple
-   → time:      0.0001s  (4.9%)
+   → time:      0.0001s  (4.5%)
    → calls:     1
-   → score:     6.79
+   → score:     6.75
    → diagnosis: 🌲 dependency bottleneck
    → called by: <module>
 
 🟡 handler
-   → time:      0.0017s  (58.3%)
+   → time:      0.0017s  (57.3%)
    → calls:     1
-   → score:     6.63
+   → score:     6.53
    → diagnosis: 🐢 slow execution
    → called by: wrapper
 
 🟡 slow_query
-   → time:      0.0010s  (35.6%)
+   → time:      0.0010s  (35.1%)
    → calls:     100
-   → score:     6.06
+   → score:     6.01
    → diagnosis: 🐢 slow execution
    → called by: wrapper
 
@@ -163,13 +163,13 @@
 🔥 Flamegraph
 ────────────────────────────────────────────────────────────────────────────────────────────
   run_path                         ████████████████████████████████████████████████████████████████████████  100.0%  score=13.8
-  <module>                         ██████████████████████████████████████████████████████░░░░░░░░░░░░░░░░░░   74.8%  score=13.08
-  _run_module_code                 █████████████████████████████████████████████████░░░░░░░░░░░░░░░░░░░░░░░   67.7%  score=9.57
-  wrapper                          ███████████████████████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░   59.6%  score=8.76
-  <built-in method builtins.exec>  ██████████████████████████████████████████████████████░░░░░░░░░░░░░░░░░░   74.9%  score=8.47
-  _run_code                        ████████████████████████████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░   66.9%  score=8.0
-  analyse                          █████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░    6.4%  score=7.12
-  namedtuple                       ████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░    4.9%  score=6.79
-  handler                          ██████████████████████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░   58.3%  score=6.63
-  slow_query                       ██████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░   35.6%  score=6.06
+  <module>                         ████████████████████████████████████████████████████░░░░░░░░░░░░░░░░░░░░   72.5%  score=12.85
+  _run_module_code                 ███████████████████████████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░░   65.9%  score=9.39
+  wrapper                          ██████████████████████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░   58.3%  score=8.63
+  <built-in method builtins.exec>  ████████████████████████████████████████████████████░░░░░░░░░░░░░░░░░░░░   72.6%  score=8.24
+  _run_code                        ███████████████████████████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░░   65.2%  score=7.82
+  analyse                          ████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░    6.0%  score=7.07
+  namedtuple                       ███░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░    4.5%  score=6.75
+  handler                          █████████████████████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░   57.3%  score=6.53
+  slow_query                       █████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░   35.1%  score=6.01
 ────────────────────────────────────────────────────────────────────────────────────────────

@@ -1,7 +1,7 @@
 flowchart LR
     subgraph demo
-        demo__slow_query["slow_query"]
         demo__handler["handler"]
+        demo__slow_query["slow_query"]
     end
     subgraph metrun__bottleneck
         metrun__bottleneck__BottleneckEngine__analyse["analyse"]
@@ -9,47 +9,45 @@ flowchart LR
     subgraph metrun__cli
         metrun__cli__inspect["inspect"]
         metrun__cli__flame["flame"]
-        metrun__cli___run_script["_run_script"]
-        metrun__cli__main["main"]
         metrun__cli__profile["profile"]
+        metrun__cli___run_script["_run_script"]
         metrun__cli__cli["cli"]
+        metrun__cli__main["main"]
     end
     subgraph metrun__critical_path
+        metrun__critical_path__print_critical_path["print_critical_path"]
         metrun__critical_path__format_critical_path["format_critical_path"]
         metrun__critical_path__find_critical_path["find_critical_path"]
-        metrun__critical_path__print_critical_path["print_critical_path"]
     end
     subgraph metrun__flamegraph
         metrun__flamegraph__render_svg["render_svg"]
-        metrun__flamegraph__render_ascii["render_ascii"]
         metrun__flamegraph__print_ascii["print_ascii"]
+        metrun__flamegraph__render_ascii["render_ascii"]
     end
     subgraph metrun__report
-        metrun__report___format_suggestions_section["_format_suggestions_section"]
-        metrun__report___format_bottleneck_entry["_format_bottleneck_entry"]
-        metrun__report___format_critical_path_section["_format_critical_path_section"]
         metrun__report__print_report["print_report"]
-        metrun__report___format_summary["_format_summary"]
         metrun__report__generate_report["generate_report"]
+        metrun__report___format_bottleneck_entry["_format_bottleneck_entry"]
+        metrun__report___format_suggestions_section["_format_suggestions_section"]
         metrun__report___severity_icon["_severity_icon"]
+        metrun__report___format_summary["_format_summary"]
+        metrun__report___format_critical_path_section["_format_critical_path_section"]
     end
     subgraph metrun__suggestions
-        metrun__suggestions__format_suggestions["format_suggestions"]
         metrun__suggestions__suggest["suggest"]
+        metrun__suggestions__format_suggestions["format_suggestions"]
         metrun__suggestions__print_suggestions["print_suggestions"]
     end
     subgraph project
-        project__print_report["print_report"]
         project__print["print"]
     end
     demo__handler --> demo__slow_query
     metrun__cli__profile --> metrun__cli___run_script
     metrun__cli__profile --> metrun__bottleneck__BottleneckEngine__analyse
-    metrun__cli__profile --> project__print_report
+    metrun__cli__profile --> metrun__report__print_report
     metrun__cli__inspect --> metrun__cli___run_script
     metrun__cli__inspect --> metrun__bottleneck__BottleneckEngine__analyse
-    metrun__cli__inspect --> project__print_report
-    metrun__cli__inspect --> metrun__critical_path__find_critical_path
+    metrun__cli__inspect --> metrun__report__print_report
     metrun__cli__flame --> metrun__flamegraph__render_svg
     metrun__cli__main --> metrun__cli__cli
     metrun__suggestions__print_suggestions --> project__print
@@ -63,7 +61,7 @@ flowchart LR
     metrun__report__generate_report --> metrun__report___format_bottleneck_entry
     metrun__report__print_report --> project__print
     metrun__report__print_report --> metrun__report__generate_report
-    metrun__flamegraph__print_ascii --> project__print
-    metrun__flamegraph__print_ascii --> metrun__flamegraph__render_ascii
     metrun__critical_path__print_critical_path --> project__print
     metrun__critical_path__print_critical_path --> metrun__critical_path__format_critical_path
+    metrun__flamegraph__print_ascii --> project__print
+    metrun__flamegraph__print_ascii --> metrun__flamegraph__render_ascii

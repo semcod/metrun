@@ -58,8 +58,11 @@ def test_profile_func_multiple_calls():
 def test_profile_block_records_section():
     bridge = CProfileBridge()
 
+    def _work():
+        return sum(range(1000))
+
     with bridge.profile_block():
-        time.sleep(0.01)
+        _work()
 
     records = bridge.to_records()
     assert records  # at least some functions recorded

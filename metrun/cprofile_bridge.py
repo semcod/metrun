@@ -37,11 +37,43 @@ from __future__ import annotations
 import cProfile
 import functools
 import io
+import os
 import pstats
+import sysconfig
 from contextlib import contextmanager
-from typing import Callable, Dict
+from typing import Callable, Dict, Optional
 
 from metrun.profiler import FunctionRecord
+
+# ---------------------------------------------------------------------------
+# Stdlib path detection (used for user-code filtering)
+# ---------------------------------------------------------------------------
+
+def _stdlib_prefixes() -> tuple:
+    """Return normalised filesystem prefixes for Python's stdlib and site-packages."""
+    paths = []
+    for key in ("stdlib", "platstdlib", "purelib", "platlib"):
+        p = sysconfig.get_path(key)
+        if p:
+            paths.append(os.path.normpath(p))
+    return tuple(dict.fromkeys(paths))  # deduplicate, preserve order
+
+
+_STDLIB_PREFIXES: Optional[tuple] = None
+_METRUN_PKG_DIR: str = os.path.normpath(os.path.dirname(__file__))
+
+
+def _is_user_code(filename: str) -> bool:
+    """Return True only for files that look like user / project code."""
+    if not filename or filename.startswith("<") or filename == "~":
+        return False
+    global _STDLIB_PREFIXES
+    if _STDLIB_PREFIXES is None:
+        _STDLIB_PREFIXES = _stdlib_prefixes()
+    norm = os.path.normpath(filename)
+    if norm.startswith(_METRUN_PKG_DIR):
+        return False
+    return not any(norm.startswith(prefix) for prefix in _STDLIB_PREFIXES)
 
 
 class CProfileBridge:
@@ -89,7 +121,11 @@ class CProfileBridge:
         stats = pstats.Stats(self._profile, stream=buf)
         return stats
 
-    def to_records(self) -> Dict[str, FunctionRecord]:
+    def to_records(
+        self,
+        *,
+        exclude_stdlib: bool = True,
+    ) -> Dict[str, FunctionRecord]:
         """
         Convert cProfile stats to a ``dict[name, FunctionRecord]``.
 
@@ -100,6 +136,13 @@ class CProfileBridge:
         * ``calls``       → number of primitive calls (``cc``)
         * ``children``    → functions *called from* this function (via callers map)
         * ``parents``     → functions that *called* this function
+
+        Parameters
+        ----------
+        exclude_stdlib:
+            When ``True`` (default) strip Python stdlib / C-builtin entries so
+            that the report focuses on user code.  Pass ``False`` to see the
+            full call tree including interpreter internals.
         """
         stats_obj = self.get_stats()
         # pstats.Stats stores data in .stats after sort
@@ -112,8 +155,16 @@ class CProfileBridge:
             filename, lineno, name = entry
             return name
 
-        # First pass: create records
+        def _include(entry) -> bool:
+            if not exclude_stdlib:
+                return True
+            filename = entry[0]
+            return _is_user_code(filename)
+
+        # First pass: create records for user-code entries only
         for entry, (cc, nc, tt, ct, callers) in raw.items():
+            if not _include(entry):
+                continue
             name = _key(entry)
             if name not in records:
                 records[name] = FunctionRecord(name=name)
@@ -121,11 +172,15 @@ class CProfileBridge:
             rec.total_time += ct
             rec.calls += cc
 
-        # Second pass: build parent → child links
+        # Second pass: build parent → child links (user-code only)
         for entry, (cc, nc, tt, ct, callers) in raw.items():
+            if not _include(entry):
+                continue
             child_name = _key(entry)
             child_rec = records[child_name]
             for caller_entry in callers:
+                if not _include(caller_entry):
+                    continue
                 parent_name = _key(caller_entry)
                 if parent_name not in records:
                     records[parent_name] = FunctionRecord(name=parent_name)
