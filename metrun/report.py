@@ -23,6 +23,83 @@ if TYPE_CHECKING:
     from metrun.profiler import FunctionRecord
 
 
+def _severity_icon(diagnosis: str) -> str:
+    """Return emoji icon based on diagnosis severity."""
+    if "loop hotspot" in diagnosis:
+        return "🔴"
+    if "dependency bottleneck" in diagnosis:
+        return "🟠"
+    if "slow execution" in diagnosis:
+        return "🟡"
+    return "🟢"
+
+
+def _format_bottleneck_entry(b: Bottleneck) -> List[str]:
+    """Format a single bottleneck entry for the report."""
+    lines: List[str] = []
+    icon = _severity_icon(b.diagnosis)
+    lines.append(f"{icon} {b.name}")
+    lines.append(f"   → time:      {b.total_time:.4f}s  ({b.time_pct:.1f}%)")
+    lines.append(f"   → calls:     {b.calls:,}")
+    lines.append(f"   → score:     {b.score}")
+    lines.append(f"   → diagnosis: {b.diagnosis}")
+    if b.parents:
+        lines.append(f"   → called by: {', '.join(b.parents)}")
+    lines.append("")
+    return lines
+
+
+def _format_dependency_graph(bottlenecks: List[Bottleneck]) -> List[str]:
+    """Format dependency graph section if there are nodes with children."""
+    lines: List[str] = []
+    nodes_with_children = [b for b in bottlenecks if b.children]
+    if nodes_with_children:
+        lines.append("── Dependency Graph ──────────────────────────")
+        for b in nodes_with_children:
+            for child in b.children:
+                lines.append(f"   {b.name}  →  {child}")
+        lines.append("")
+    return lines
+
+
+def _format_critical_path_section(
+    records: Optional[Dict[str, "FunctionRecord"]],
+) -> List[str]:
+    """Format critical path section if records are provided."""
+    lines: List[str] = []
+    if records is not None:
+        from metrun.critical_path import find_critical_path, format_critical_path
+        path = find_critical_path(records)
+        if path.length > 0:
+            lines.append("── Critical Path ─────────────────────────────")
+            lines.append(format_critical_path(path))
+            lines.append("")
+    return lines
+
+
+def _format_suggestions_section(bottlenecks: List[Bottleneck]) -> List[str]:
+    """Format fix suggestions section for all bottlenecks."""
+    lines: List[str] = []
+    lines.append("── Fix Suggestions ───────────────────────────")
+    from metrun.suggestions import suggest, format_suggestions
+    for b in bottlenecks:
+        tips = suggest(b)
+        if tips:
+            lines.append(format_suggestions(b.name, tips))
+    return lines
+
+
+def _format_summary(worst: Bottleneck) -> List[str]:
+    """Format summary footer section."""
+    return [
+        "── Summary ───────────────────────────────────",
+        f"   Top bottleneck : {worst.name}",
+        f"   Score          : {worst.score}",
+        f"   Diagnosis      : {worst.diagnosis}",
+        "",
+    ]
+
+
 def generate_report(
     bottlenecks: List[Bottleneck],
     *,
@@ -65,76 +142,25 @@ def generate_report(
     if top_n is not None:
         bottlenecks = bottlenecks[:top_n]
 
-    lines: List[str] = []
-
-    # Header
-    lines.append("")
-    lines.append(f"🔥 {title}")
-    lines.append("=" * (len(title) + 4))
-    lines.append("")
+    lines: List[str] = ["", f"🔥 {title}", "=" * (len(title) + 4), ""]
 
     if not bottlenecks:
-        lines.append("  ✅ No hotspots detected.")
-        lines.append("")
+        lines.extend(["  ✅ No hotspots detected.", ""])
         return "\n".join(lines)
 
-    # Severity label mapping
-    def _severity_icon(diagnosis: str) -> str:
-        if "loop hotspot" in diagnosis:
-            return "🔴"
-        if "dependency bottleneck" in diagnosis:
-            return "🟠"
-        if "slow execution" in diagnosis:
-            return "🟡"
-        return "🟢"
-
-    # Body — one block per function
     for b in bottlenecks:
-        icon = _severity_icon(b.diagnosis)
-        lines.append(f"{icon} {b.name}")
-        lines.append(f"   → time:      {b.total_time:.4f}s  ({b.time_pct:.1f}%)")
-        lines.append(f"   → calls:     {b.calls:,}")
-        lines.append(f"   → score:     {b.score}")
-        lines.append(f"   → diagnosis: {b.diagnosis}")
-        if b.parents:
-            lines.append(f"   → called by: {', '.join(b.parents)}")
-        lines.append("")
+        lines.extend(_format_bottleneck_entry(b))
 
-    # Dependency graph section
     if show_graph:
-        nodes_with_children = [b for b in bottlenecks if b.children]
-        if nodes_with_children:
-            lines.append("── Dependency Graph ──────────────────────────")
-            for b in nodes_with_children:
-                for child in b.children:
-                    lines.append(f"   {b.name}  →  {child}")
-            lines.append("")
+        lines.extend(_format_dependency_graph(bottlenecks))
 
-    # Critical path section
-    if show_critical_path and records is not None:
-        from metrun.critical_path import find_critical_path, format_critical_path
-        path = find_critical_path(records)
-        if path.length > 0:
-            lines.append("── Critical Path ─────────────────────────────")
-            lines.append(format_critical_path(path))
-            lines.append("")
+    if show_critical_path:
+        lines.extend(_format_critical_path_section(records))
 
-    # Fix suggestions section
     if show_suggestions:
-        from metrun.suggestions import suggest, format_suggestions
-        lines.append("── Fix Suggestions ───────────────────────────")
-        for b in bottlenecks:
-            tips = suggest(b)
-            if tips:
-                lines.append(format_suggestions(b.name, tips))
+        lines.extend(_format_suggestions_section(bottlenecks))
 
-    # Summary footer
-    worst = bottlenecks[0]
-    lines.append("── Summary ───────────────────────────────────")
-    lines.append(f"   Top bottleneck : {worst.name}")
-    lines.append(f"   Score          : {worst.score}")
-    lines.append(f"   Diagnosis      : {worst.diagnosis}")
-    lines.append("")
+    lines.extend(_format_summary(bottlenecks[0]))
 
     return "\n".join(lines)
 
