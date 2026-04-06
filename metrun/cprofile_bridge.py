@@ -62,9 +62,16 @@ def _stdlib_prefixes() -> tuple:
 _STDLIB_PREFIXES: Optional[tuple] = None
 _METRUN_PKG_DIR: str = os.path.normpath(os.path.dirname(__file__))
 
+# Anonymous / synthetic function names that are never useful to surface
+_ANON_FUNC_NAMES = frozenset(
+    {"<module>", "<genexpr>", "<listcomp>", "<setcomp>", "<dictcomp>", "<lambda>"}
+)
 
-def _is_user_code(filename: str) -> bool:
-    """Return True only for files that look like user / project code."""
+
+def _is_user_code(filename: str, funcname: str) -> bool:
+    """Return True only for named functions in user / project code."""
+    if funcname in _ANON_FUNC_NAMES:
+        return False
     if not filename or filename.startswith("<") or filename == "~":
         return False
     global _STDLIB_PREFIXES
@@ -118,7 +125,13 @@ class CProfileBridge:
     def get_stats(self) -> pstats.Stats:
         """Return a :class:`pstats.Stats` object for the accumulated profile."""
         buf = io.StringIO()
-        stats = pstats.Stats(self._profile, stream=buf)
+        # Use a temporary file to avoid consuming the original profile data
+        # pstats.Stats() can load from a file without modifying the original
+        import tempfile
+        with tempfile.NamedTemporaryFile(suffix='.prof', delete=False) as tmp:
+            self._profile.dump_stats(tmp.name)
+            stats = pstats.Stats(tmp.name, stream=buf)
+            os.unlink(tmp.name)  # Clean up temp file
         return stats
 
     def to_records(
@@ -158,8 +171,8 @@ class CProfileBridge:
         def _include(entry) -> bool:
             if not exclude_stdlib:
                 return True
-            filename = entry[0]
-            return _is_user_code(filename)
+            filename, _lineno, funcname = entry
+            return _is_user_code(filename, funcname)
 
         # First pass: create records for user-code entries only
         for entry, (cc, nc, tt, ct, callers) in raw.items():

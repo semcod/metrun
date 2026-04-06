@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "metrun"
-version = "0.1.4"
+version = "0.1.5"
 description = "Execution Intelligence Tool — Bottleneck Engine + Human Report Generator"
 readme = "README.md"
 license = "Apache-2.0"
