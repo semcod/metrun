@@ -106,3 +106,10 @@ echo "✓ Performance reports saved to project/metrun-*.txt"
 
 # Generate metrun.toon.yaml with the scan command
 $VENV/bin/metrun scan demo.py --output project/ 2>&1 || true
+
+echo ""
+echo "=== metrun example tests ==="
+$VENV/bin/python -m pytest examples/ -v --tb=short 2>&1 | tail -10 || true
+
+echo ""
+echo "✓ All tasks completed"

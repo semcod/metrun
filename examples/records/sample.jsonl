@@ -1,0 +1,2 @@
+{"name":"compute","total_time":1.5,"calls":10,"children":["helper"],"parents":[],"language":"python"}
+{"name":"helper","total_time":1.2,"calls":50,"children":[],"parents":["compute"],"language":"python"}

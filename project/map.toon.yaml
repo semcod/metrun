@@ -1,34 +1,42 @@
-# metrun | 12f 2699L | shell:1,python:11 | 2026-04-07
-# stats: 83 func | 0 cls | 12 mod | CC̄=3.1 | critical:0 | cycles:0
-# alerts[5]: fan-out CProfileBridge.to_records=18; fan-out inspect=18; fan-out find_critical_path=13; fan-out profile=13; fan-out BottleneckEngine.analyse=12
-# hotspots[5]: inspect fan=18; CProfileBridge.to_records fan=18; profile fan=13; find_critical_path fan=13; BottleneckEngine.analyse fan=12
-# evolution: CC̄ 3.2→3.1 (improved -0.1)
+# metrun | 13f 3047L | shell:1,python:12 | 2026-04-07
+# stats: 85 func | 0 cls | 13 mod | CC̄=3.7 | critical:1 | cycles:0
+# alerts[5]: CC generate_toon=38; fan-out generate_toon=22; fan-out CProfileBridge.to_records=18; fan-out inspect=18; fan-out scan=17
+# hotspots[5]: generate_toon fan=22; inspect fan=18; CProfileBridge.to_records fan=18; scan fan=17; profile fan=13
+# evolution: CC̄ 3.1→3.7 (regressed +0.6)
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
-M[12]:
+M[13]:
   demo.py,14
-  metrun/__init__.py,122
+  metrun/__init__.py,129
   metrun/bottleneck.py,155
-  metrun/cli.py,303
-  metrun/cprofile_bridge.py,251
+  metrun/cli.py,401
+  metrun/cprofile_bridge.py,267
   metrun/critical_path.py,211
   metrun/flamegraph.py,222
   metrun/profiler.py,181
   metrun/records_io.py,271
   metrun/report.py,202
   metrun/suggestions.py,628
-  project.sh,139
+  metrun/toon.py,251
+  project.sh,115
 D:
+  metrun/toon.py:
+    e: _severity_tag,_short_diagnosis,generate_toon,save_toon
+    _severity_tag(diagnosis)
+    _short_diagnosis(diagnosis)
+    generate_toon(bottlenecks;records)
+    save_toon(content;path)
   metrun/cprofile_bridge.py:
     e: CProfileBridge,_stdlib_prefixes,_is_user_code
     CProfileBridge: __init__(0),profile_func(1),profile_block(0),get_stats(0),to_records(0),save(1),reset(0),__enter__(0),__exit__(0)  # Thin wrapper around :class:`cProfile.Profile` that exposes p...
     _stdlib_prefixes()
     _is_user_code(filename;funcname)
   metrun/cli.py:
-    e: _run_script,cli,profile,inspect,flame,main
+    e: _run_script,cli,profile,inspect,scan,flame,main
     _run_script(script_path)
     cli()
     profile(script;top;flame;ascii_flame;include_stdlib;export_records)
     inspect(script;top;flame;records_file;ascii_flame;include_stdlib;export_records)
+    scan(script;records_file;output;top;include_stdlib;export_records)
     flame(prof_file;output;width)
     main()
   metrun/records_io.py:
@@ -105,13 +113,8 @@ Usage — decorator:
     slow_query(n)
     handler(items)
   project.sh:
-    e: reset,print,print_report,_benchmark,slow_query,handler,_benchmark,print
+    e: reset,print,print_report
     reset()
     print()
     print_report()
-    _benchmark()
-    slow_query()
-    handler()
-    _benchmark()
-    print()
   metrun/__init__.py:

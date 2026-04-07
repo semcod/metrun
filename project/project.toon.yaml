@@ -1,50 +1,58 @@
-# metrun | 83 func | 11f | 4126L | python | 2026-04-07
+# metrun | 85 func | 12f | 4664L | python | 2026-04-07
 
 HEALTH:
-  CC̄=3.1  critical=5 (limit:10)  dup=0  cycles=0
+  CC̄=3.7  critical=6 (limit:10)  dup=0  cycles=0
 
-ALERTS[7]:
+ALERTS[10]:
+  !!! cc_exceeded      generate_toon = 38 (limit:15)
+  !!! high_fan_out     generate_toon = 22 (limit:10)
   !!  high_fan_out     inspect = 18 (limit:10)
   !!  high_fan_out     CProfileBridge.to_records = 18 (limit:10)
+  !!  high_fan_out     scan = 17 (limit:10)
   !   high_fan_out     profile = 13 (limit:10)
   !   high_fan_out     find_critical_path = 13 (limit:10)
   !   high_fan_out     BottleneckEngine.analyse = 12 (limit:10)
   !   high_fan_out     _records_entries_from_mapping = 10 (limit:10)
   !   high_fan_out     generate_report = 10 (limit:10)
 
-MODULES[12] (top by size):
-  M[metrun/suggestions.py] 628L C:1 F:4 CC↑6 D:1 (python)
-  M[metrun/cli.py] 303L C:0 F:6 CC↑13 D:0 (python)
+MODULES[13] (top by size):
+  M[metrun/suggestions.py] 628L C:1 F:4 CC↑6 D:2 (python)
+  M[metrun/cli.py] 401L C:0 F:7 CC↑13 D:0 (python)
   M[metrun/records_io.py] 271L C:0 F:20 CC↑12 D:1 (python)
-  M[metrun/cprofile_bridge.py] 251L C:1 F:11 CC↑14 D:0 (python)
+  M[metrun/cprofile_bridge.py] 267L C:1 F:11 CC↑14 D:0 (python)
+  M[metrun/toon.py] 251L C:0 F:4 CC↑38 D:1 (python)
   M[metrun/flamegraph.py] 222L C:0 F:4 CC↑5 D:1 (python)
-  M[metrun/critical_path.py] 211L C:2 F:3 CC↑11 D:1 (python)
+  M[metrun/critical_path.py] 211L C:2 F:3 CC↑11 D:2 (python)
   M[metrun/report.py] 202L C:0 F:9 CC↑8 D:0 (python)
-  M[metrun/profiler.py] 181L C:2 F:12 CC↑4 D:0 (python)
-  M[metrun/bottleneck.py] 155L C:2 F:6 CC↑7 D:1 (python)
-  M[project.sh] 139L C:0 F:6 CC↑0 D:5 (shell)
-  M[metrun/__init__.py] 122L C:0 F:0 CC↑0 D:0 (python)
+  M[metrun/profiler.py] 181L C:2 F:12 CC↑4 D:1 (python)
+  M[metrun/bottleneck.py] 155L C:2 F:6 CC↑7 D:2 (python)
+  M[metrun/__init__.py] 129L C:0 F:0 CC↑0 D:0 (python)
+  M[project.sh] 115L C:0 F:3 CC↑0 D:6 (shell)
   M[demo.py] 14L C:0 F:2 CC↑2 D:0 (python)
-  LANGS: python:11/shell:1
+  LANGS: python:12/shell:1
 
-HOTSPOTS[7]:
+HOTSPOTS[9]:
+  ★ generate_toon fan=22  // Render a TOON-format metric tree from bottleneck analysis results.
+
+Parameters
+-
   ★ inspect fan=18  // Enhanced profile of SCRIPT or records file: bottlenecks + critical path + sugges
   ★ CProfileBridge.to_records fan=18  // Convert cProfile stats to a ``dict[name, FunctionRecord]``.
 
 The conversion maps
+  ★ scan fan=17  // Auto-profile SCRIPT and generate a metrun.toon.yaml metric tree.
+
+Profiles the g
   ★ profile fan=13  // Profile SCRIPT and display the bottleneck report.
 
 SCRIPT is the path to a Pytho
-  ★ find_critical_path fan=13  // Find the critical (hottest) execution path through the call graph.
 
-Parameters
--
-  ★ BottleneckEngine.analyse fan=12  // Return bottlenecks sorted by score descending.
-
-REFACTOR[3]:
-  [1] H/H Split god module metrun/suggestions.py (628L, 1 classes)
-  [2] M/M Reduce inspect fan-out (currently 18)
-  [3] M/M Reduce CProfileBridge.to_records fan-out (currently 18)
+REFACTOR[5]:
+  [1] H/L Split generate_toon (CC=38 → target CC<10)
+  [2] H/H Split god module metrun/suggestions.py (628L, 1 classes)
+  [3] M/M Reduce generate_toon fan-out (currently 22)
+  [4] M/M Reduce inspect fan-out (currently 18)
+  [5] M/M Reduce CProfileBridge.to_records fan-out (currently 18)
 
 EVOLUTION:
-  2026-04-07 CC̄=3.1 crit=5 4126L // Automated analysis
+  2026-04-07 CC̄=3.7 crit=6 4664L // Automated analysis

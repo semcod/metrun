@@ -1,9 +1,28 @@
-# metrun profile | 1b | 2026-04-07
+# metrun | 2b | top: handler 🐢 | python | 2026-04-07
 
 SUMMARY:
-  bottlenecks: 1
-  top_score: 10.3
-  top_name: _benchmark
-  top_time: 0.0003s
+  bottlenecks: 2
+  top_score: 10.8
+  top_name: handler
+  top_time: 0.0018s
   top_diagnosis: 🐢 slow execution
-  total_calls: 1
+  total_time: 0.0028s
+  total_calls: 101
+
+BOTTLENECKS[2]:
+  🐢 handler                        score=10.8    time=0.0018s (100.0%)  calls=1       slow execution
+  🐢 slow_query                     score=8.09    time=0.0011s ( 60.8%)  calls=100     slow execution
+
+CRITICAL-PATH (depth=2, leaf=0.0011s):
+  handler → slow_query ← 🔥
+
+SUGGESTIONS[2]:
+  handler: Profile deeper with cProfile + snakeviz [cProfile / snakeviz]
+  slow_query: Profile deeper with cProfile + snakeviz [cProfile / snakeviz]
+
+ENDPOINTS[1]:
+  handler  calls=1  time=0.0018s  children=1
+
+TREE:
+  🐢 handler  0.0018s  ×1
+  │ ├─ 🐢 slow_query  0.0011s  ×100

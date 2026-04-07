@@ -8,6 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.10] - 2026-04-07
 
 ### Fixed
+- Fix smart-return-type issues (ticket-70ec2665)
+- Fix unused-imports issues (ticket-cf1edc8f)
+- Fix smart-return-type issues (ticket-3a3386f5)
+- Fix magic-numbers issues (ticket-58a9dd03)
+- Fix ai-boilerplate issues (ticket-df39ae5f)
+- Fix smart-return-type issues (ticket-658082d2)
+- Fix string-concat issues (ticket-7d364ac8)
+- Fix unused-imports issues (ticket-5cdb9124)
+
+## [0.1.10] - 2026-04-07
+
+### Fixed
 - Fix unused-imports issues (ticket-5bf06f1a)
 
 ## [0.1.10] - 2026-04-06
@@ -50,6 +62,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Docs
 - Document language-neutral record export/import and re-export examples in the README and generated docs.
 - Document automatic project scanning, endpoint recognition, and TOON output in the README.
+
+## [0.1.10] - 2026-04-07
+
+### Docs
+- Update CHANGELOG.md
+- Update README.md
+- Update TODO.md
+- Update docs/README.md
+- Update examples/README.md
+- Update project/README.md
+- Update project/context.md
+
+### Other
+- Update examples/conftest.py
+- Update examples/profile/cprofile_bridge.py
+- Update examples/profile/json_export.py
+- Update examples/profile/minimal.py
+- Update examples/profile/sections.py
+- Update examples/profile/test_cprofile_bridge.py
+- Update examples/profile/test_json_export.py
+- Update examples/profile/test_minimal.py
+- Update examples/profile/test_sections.py
+- Update examples/profile/test_toon_output.py
+- ... and 30 more files
 
 ## [0.1.9] - 2026-04-07
 

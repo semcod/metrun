@@ -1,37 +1,40 @@
-# code2llm | 12f 2699L | python:11,shell:1 | 2026-04-07
-# CC̄=3.1 | critical:0/83 | dups:0 | cycles:0
+# code2llm | 13f 3047L | python:12,shell:1 | 2026-04-07
+# CC̄=3.7 | critical:1/88 | dups:0 | cycles:0
 
-HEALTH[0]: ok
+HEALTH[1]:
+  🟡 CC    generate_toon CC=38 (limit:15)
 
-REFACTOR[0]: none needed
+REFACTOR[1]:
+  1. split 1 high-CC methods  (CC>15)
 
-PIPELINES[32]:
+PIPELINES[34]:
   [1] Src [handler]: handler → slow_query
       PURITY: 100% pure
   [2] Src [profile]: profile → _run_script
       PURITY: 100% pure
   [3] Src [inspect]: inspect → analyse
       PURITY: 100% pure
-  [4] Src [flame]: flame → render_svg
+  [4] Src [scan]: scan → analyse
       PURITY: 100% pure
-  [5] Src [main]: main → cli
+  [5] Src [flame]: flame → render_svg
       PURITY: 100% pure
 
 LAYERS:
-  metrun/                         CC̄=3.4    ←in:0  →out:6
-  │ !! suggestions                628L  1C    4m  CC=6      ←1
-  │ cli                        303L  0C    6m  CC=13     ←0
+  metrun/                         CC̄=3.9    ←in:0  →out:6
+  │ !! suggestions                628L  1C    4m  CC=6      ←2
+  │ cli                        401L  0C    7m  CC=13     ←0
   │ records_io                 271L  0C   20m  CC=12     ←1
-  │ cprofile_bridge            251L  1C   11m  CC=14     ←0
+  │ cprofile_bridge            267L  1C   11m  CC=14     ←0
+  │ !! toon                       251L  0C    4m  CC=38     ←1
   │ flamegraph                 222L  0C    4m  CC=5      ←1
-  │ critical_path              211L  2C    3m  CC=11     ←1
+  │ critical_path              211L  2C    3m  CC=11     ←2
   │ report                     202L  0C    9m  CC=8      ←0
-  │ profiler                   181L  2C   12m  CC=4      ←0
-  │ bottleneck                 155L  2C    6m  CC=7      ←1
-  │ __init__                   122L  0C    0m  CC=0.0    ←0
+  │ profiler                   181L  2C   12m  CC=4      ←1
+  │ bottleneck                 155L  2C    6m  CC=7      ←2
+  │ __init__                   129L  0C    0m  CC=0.0    ←0
   │
-  ./                              CC̄=0.5    ←in:0  →out:0
-  │ project.sh                 139L  0C    6m  CC=0.0    ←5
+  ./                              CC̄=0.8    ←in:0  →out:0
+  │ project.sh                 115L  0C    3m  CC=0.0    ←6
   │ demo                        14L  0C    2m  CC=2      ←0
   │
 

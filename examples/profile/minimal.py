@@ -1,11 +1,4 @@
-from pathlib import Path
-import sys
-
-ROOT = Path(__file__).resolve().parents[2]
-root_str = str(ROOT)
-if root_str not in sys.path:
-    sys.path.insert(0, root_str)
-
+"""Minimal example: trace decorator + report."""
 from metrun import analyse, get_records, print_report, trace
 
 
@@ -19,7 +12,7 @@ def handler(items):
     return [slow_query(i) for i in items]
 
 
-def main() -> None:
+def main():
     handler(list(range(25)))
     print_report(analyse(get_records()))
 
