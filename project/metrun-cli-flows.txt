@@ -4,35 +4,35 @@
 =============================
 
 🟡 cli.flame
-   → time:      0.1120s  (89.6%)
+   → time:      0.1075s  (91.1%)
    → calls:     1
    → score:     10.3
    → diagnosis: 🐢 slow execution
 
 🟢 slow_query
-   → time:      0.0042s  (3.4%)
+   → time:      0.0037s  (3.1%)
    → calls:     300
-   → score:     2.86
+   → score:     2.82
    → diagnosis: ✅ nominal
    → called by: handler
 
 🟢 handler
-   → time:      0.0065s  (5.2%)
+   → time:      0.0057s  (4.8%)
    → calls:     3
-   → score:     1.68
+   → score:     1.63
    → diagnosis: ✅ nominal
    → called by: cli.profile, cli.inspect
 
 🟢 cli.profile
-   → time:      0.0079s  (6.3%)
+   → time:      0.0060s  (5.1%)
    → calls:     1
-   → score:     1.5
+   → score:     1.36
    → diagnosis: ✅ nominal
 
 🟢 cli.inspect
-   → time:      0.0051s  (4.1%)
+   → time:      0.0046s  (3.9%)
    → calls:     1
-   → score:     1.26
+   → score:     1.23
    → diagnosis: ✅ nominal
 
 ── Dependency Graph ──────────────────────────

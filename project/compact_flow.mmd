@@ -3,7 +3,7 @@ flowchart TD
     metrun__cli["metrun.cli<br/>6 funcs"]
     metrun__critical_path["metrun.critical_path<br/>3 funcs"]
     metrun__flamegraph["metrun.flamegraph<br/>4 funcs"]
-    metrun__records_io["metrun.records_io<br/>15 funcs"]
+    metrun__records_io["metrun.records_io<br/>20 funcs"]
     metrun__report["metrun.report<br/>9 funcs"]
     metrun__suggestions["metrun.suggestions<br/>4 funcs"]
     project["project<br/>6 funcs"]
@@ -15,5 +15,5 @@ flowchart TD
     metrun__report -->|2| metrun__suggestions
     metrun__suggestions -->|1| project
     metrun__report -->|1| project
-    metrun__critical_path -->|1| project
     metrun__flamegraph -->|1| project
+    metrun__critical_path -->|1| project

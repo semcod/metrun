@@ -1,9 +1,9 @@
-# redup/duplication | 0 groups | 10f 2423L | 2026-04-07
+# redup/duplication | 0 groups | 10f 2438L | 2026-04-07
 
 SUMMARY:
   files_scanned: 10
-  total_lines:   2423
+  total_lines:   2438
   dup_groups:    0
   dup_fragments: 0
   saved_lines:   0
-  scan_ms:       6765
+  scan_ms:       4366

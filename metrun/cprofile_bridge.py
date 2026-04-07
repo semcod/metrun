@@ -56,6 +56,14 @@ def _stdlib_prefixes() -> tuple:
         p = sysconfig.get_path(key)
         if p:
             paths.append(os.path.normpath(p))
+    # Include the *user* site-packages directory (e.g. ~/.local/lib/…)
+    try:
+        import site
+        user_sp = site.getusersitepackages()
+        if isinstance(user_sp, str) and user_sp:
+            paths.append(os.path.normpath(user_sp))
+    except Exception:  # pragma: no cover — site may be absent in embedded interpreters
+        pass
     return tuple(dict.fromkeys(paths))  # deduplicate, preserve order
 
 
@@ -67,10 +75,18 @@ _ANON_FUNC_NAMES = frozenset(
     {"<module>", "<genexpr>", "<listcomp>", "<setcomp>", "<dictcomp>", "<lambda>"}
 )
 
+# Import-machinery function names that are never useful to surface in reports
+_IMPORT_MACHINERY_NAMES = frozenset(
+    {"_path_hook", "find_spec", "find_module", "find_loader",
+     "_find_and_load", "_find_and_load_unlocked", "_load_unlocked",
+     "_call_with_frames_cleaned_up", "exec_module", "_load",
+     "module_from_spec", "create_module", "source_to_code"}
+)
+
 
 def _is_user_code(filename: str, funcname: str) -> bool:
     """Return True only for named functions in user / project code."""
-    if funcname in _ANON_FUNC_NAMES:
+    if funcname in _ANON_FUNC_NAMES or funcname in _IMPORT_MACHINERY_NAMES:
         return False
     if not filename or filename.startswith("<") or filename == "~":
         return False

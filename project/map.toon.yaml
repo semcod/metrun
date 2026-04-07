@@ -1,8 +1,8 @@
-# metrun | 12f 2684L | shell:1,python:11 | 2026-04-07
-# stats: 78 func | 0 cls | 12 mod | CC̄=3.2 | critical:1 | cycles:0
-# alerts[5]: CC load_records_json=19; fan-out CProfileBridge.to_records=18; fan-out inspect=18; fan-out load_records_json=15; fan-out find_critical_path=13
-# hotspots[5]: inspect fan=18; CProfileBridge.to_records fan=18; load_records_json fan=15; profile fan=13; find_critical_path fan=13
-# evolution: CC̄ 2.4→3.2 (regressed +0.8)
+# metrun | 12f 2699L | shell:1,python:11 | 2026-04-07
+# stats: 83 func | 0 cls | 12 mod | CC̄=3.1 | critical:0 | cycles:0
+# alerts[5]: fan-out CProfileBridge.to_records=18; fan-out inspect=18; fan-out find_critical_path=13; fan-out profile=13; fan-out BottleneckEngine.analyse=12
+# hotspots[5]: inspect fan=18; CProfileBridge.to_records fan=18; profile fan=13; find_critical_path fan=13; BottleneckEngine.analyse fan=12
+# evolution: CC̄ 3.2→3.1 (improved -0.1)
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
 M[12]:
   demo.py,14
@@ -13,28 +13,11 @@ M[12]:
   metrun/critical_path.py,211
   metrun/flamegraph.py,222
   metrun/profiler.py,181
-  metrun/records_io.py,256
+  metrun/records_io.py,271
   metrun/report.py,202
   metrun/suggestions.py,628
   project.sh,139
 D:
-  metrun/records_io.py:
-    e: _first_present,_string_list,_coerce_int,_coerce_float,_looks_like_single_record,_compose_name,_build_record,_merge_unique,_merge_records,record_to_payload,records_to_payload,dump_records_json,save_records_json,load_records_json,load_records_file
-    _first_present(mapping;keys)
-    _string_list(value)
-    _coerce_int(value;label)
-    _coerce_float(value;label)
-    _looks_like_single_record(payload)
-    _compose_name(entry;fallback_name)
-    _build_record(entry)
-    _merge_unique(existing;new_items)
-    _merge_records(existing;incoming)
-    record_to_payload(record)
-    records_to_payload(records)
-    dump_records_json(records)
-    save_records_json(records;path)
-    load_records_json(payload)
-    load_records_file(path)
   metrun/cprofile_bridge.py:
     e: CProfileBridge,_stdlib_prefixes,_is_user_code
     CProfileBridge: __init__(0),profile_func(1),profile_block(0),get_stats(0),to_records(0),save(1),reset(0),__enter__(0),__exit__(0)  # Thin wrapper around :class:`cProfile.Profile` that exposes p...
@@ -48,6 +31,28 @@ D:
     inspect(script;top;flame;records_file;ascii_flame;include_stdlib;export_records)
     flame(prof_file;output;width)
     main()
+  metrun/records_io.py:
+    e: _first_present,_string_list,_coerce_int,_coerce_float,_looks_like_single_record,_compose_name,_build_record,_merge_unique,_merge_records,record_to_payload,records_to_payload,dump_records_json,save_records_json,_decode_json_payload,_records_entries_from_collection,_records_entries_from_mapping,_records_entries_from_payload,_build_records,load_records_json,load_records_file
+    _first_present(mapping;keys)
+    _string_list(value)
+    _coerce_int(value;label)
+    _coerce_float(value;label)
+    _looks_like_single_record(payload)
+    _compose_name(entry;fallback_name)
+    _build_record(entry)
+    _merge_unique(existing;new_items)
+    _merge_records(existing;incoming)
+    record_to_payload(record)
+    records_to_payload(records)
+    dump_records_json(records)
+    save_records_json(records;path)
+    _decode_json_payload(payload)
+    _records_entries_from_collection(collection;key)
+    _records_entries_from_mapping(payload)
+    _records_entries_from_payload(payload)
+    _build_records(entries;default_language)
+    load_records_json(payload)
+    load_records_file(path)
   metrun/critical_path.py:
     e: CriticalPathNode,CriticalPath,find_critical_path,format_critical_path,print_critical_path
     CriticalPathNode:  # A single node in the critical path...

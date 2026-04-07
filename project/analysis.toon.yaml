@@ -1,11 +1,9 @@
-# code2llm | 12f 2684L | python:11,shell:1 | 2026-04-07
-# CC̄=3.2 | critical:1/78 | dups:0 | cycles:0
+# code2llm | 12f 2699L | python:11,shell:1 | 2026-04-07
+# CC̄=3.1 | critical:0/83 | dups:0 | cycles:0
 
-HEALTH[1]:
-  🟡 CC    load_records_json CC=19 (limit:15)
+HEALTH[0]: ok
 
-REFACTOR[1]:
-  1. split 1 high-CC methods  (CC>15)
+REFACTOR[0]: none needed
 
 PIPELINES[32]:
   [1] Src [handler]: handler → slow_query
@@ -20,10 +18,10 @@ PIPELINES[32]:
       PURITY: 100% pure
 
 LAYERS:
-  metrun/                         CC̄=3.6    ←in:0  →out:6
+  metrun/                         CC̄=3.4    ←in:0  →out:6
   │ !! suggestions                628L  1C    4m  CC=6      ←1
   │ cli                        303L  0C    6m  CC=13     ←0
-  │ !! records_io                 256L  0C   15m  CC=19     ←1
+  │ records_io                 271L  0C   20m  CC=12     ←1
   │ cprofile_bridge            251L  1C   11m  CC=14     ←0
   │ flamegraph                 222L  0C    4m  CC=5      ←1
   │ critical_path              211L  2C    3m  CC=11     ←1

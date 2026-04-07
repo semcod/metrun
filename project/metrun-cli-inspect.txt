@@ -10,9 +10,9 @@
    → diagnosis: 🐢 slow execution
 
 🟡 slow_query
-   → time:      0.0013s  (58.9%)
+   → time:      0.0014s  (62.1%)
    → calls:     100
-   → score:     7.9
+   → score:     8.22
    → diagnosis: 🐢 slow execution
    → called by: handler
 
@@ -20,10 +20,10 @@
    handler  →  slow_query
 
 ── Critical Path ─────────────────────────────
-🧨 Critical Path  (depth=2, hottest leaf: 0.0013s)
+🧨 Critical Path  (depth=2, hottest leaf: 0.0014s)
 
   handler  [0.0022s, 1 calls]
-    └─ slow_query  [0.0013s, 100 calls]   ← 🔥 hottest leaf (0.0013s)
+    └─ slow_query  [0.0014s, 100 calls]   ← 🔥 hottest leaf (0.0014s)
 
 ── Fix Suggestions ───────────────────────────
   💡 Fix suggestions for: handler
@@ -80,6 +80,19 @@
            
            @memory.cache
            def slow_pure_func(x): ...
+
+     4. Profile memory with Scalene [scalene]
+        Scalene provides CPU, GPU and memory profiling at line-level precision — it can reveal hidden allocation costs that slow execution.
+           # pip install scalene
+           # python -m scalene my_script.py
+
+     5. Visualise with VizTracer [viztracer]
+        VizTracer records a full execution trace with microsecond precision and renders an interactive HTML flamegraph — great for understanding nested call patterns.
+           from viztracer import VizTracer
+           
+           with VizTracer(output_file='trace.json'):
+               my_func()
+           # then: vizviewer trace.json
 
 ── Summary ───────────────────────────────────
    Top bottleneck : handler

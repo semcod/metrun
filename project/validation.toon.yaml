@@ -1,9 +1,9 @@
-# vallm batch | 46f | 27✓ 0⚠ 0✗ | 2026-04-07
+# vallm batch | 47f | 27✓ 0⚠ 0✗ | 2026-04-07
 
 SUMMARY:
-  scanned: 46  passed: 27 (58.7%)  warnings: 0  errors: 0  unsupported: 19
+  scanned: 47  passed: 27 (57.4%)  warnings: 0  errors: 0  unsupported: 20
 
 UNSUPPORTED[3]{bucket,count}:
   *.md,6
-  *.txt,6
+  *.txt,7
   other,7

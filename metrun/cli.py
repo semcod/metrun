@@ -18,6 +18,10 @@ Commands
     Profile a script and show the full enhanced report: bottlenecks +
     critical path + fix suggestions.
 
+``metrun scan``
+    Profile a script (or load records) and generate a ``metrun.toon.yaml``
+    metric tree describing project bottlenecks in TOON format.
+
 Usage examples::
 
     # Profile a script and print the bottleneck report
@@ -28,6 +32,12 @@ Usage examples::
 
     # Profile and show the full enhanced report
     metrun inspect my_script.py --top 10
+
+    # Auto-scan and generate metrun.toon.yaml
+    metrun scan my_script.py --output project/
+
+    # Scan from pre-collected records
+    metrun scan --records profile.json --output project/
 
     # Convert an existing .prof to SVG flamegraph
     metrun flame profile.prof -o flame.svg
@@ -53,6 +63,7 @@ from metrun.cprofile_bridge import CProfileBridge
 from metrun.flamegraph import print_ascii, render_svg
 from metrun.records_io import load_records_file, save_records_json
 from metrun.report import print_report
+from metrun.toon import generate_toon, save_toon
 
 
 # ---------------------------------------------------------------------------
@@ -263,6 +274,93 @@ def inspect(
         stats = bridge.get_stats()
         render_svg(stats, flame)
         click.echo(f"🔥 Flamegraph saved → {flame}")
+
+
+# ---------------------------------------------------------------------------
+# scan  (auto-profile + TOON metric tree)
+# ---------------------------------------------------------------------------
+
+@cli.command()
+@click.argument("script", required=False, type=click.Path(exists=True))
+@click.option(
+    "--records",
+    "records_file",
+    default=None,
+    metavar="FILE",
+    help="Load language-neutral JSON/JSONL records instead of profiling a script.",
+)
+@click.option(
+    "--output", "-o",
+    default=".",
+    show_default=True,
+    help="Output directory for metrun.toon.yaml.",
+)
+@click.option(
+    "--top", "-n",
+    default=10,
+    show_default=True,
+    help="Number of top bottlenecks to include.",
+)
+@click.option(
+    "--include-stdlib",
+    "include_stdlib",
+    is_flag=True,
+    default=False,
+    help="Include Python stdlib / C-builtin functions.",
+)
+@click.option(
+    "--export-records",
+    default=None,
+    metavar="FILE",
+    help="Also save the collected records as language-neutral JSON.",
+)
+def scan(
+    script: Optional[str],
+    records_file: Optional[str],
+    output: str,
+    top: int,
+    include_stdlib: bool,
+    export_records: Optional[str],
+) -> None:
+    """Auto-profile SCRIPT and generate a metrun.toon.yaml metric tree.
+
+    Profiles the given Python script (or loads --records) and writes a
+    compact TOON-format file describing bottlenecks, critical path,
+    endpoints, and the metric tree.  The output integrates with the
+    project-level TOON ecosystem (code2llm, redup, vallm).
+    """
+    if script and not records_file:
+        lowered = script.lower()
+        if lowered.endswith(".json") or lowered.endswith(".jsonl"):
+            records_file = script
+            script = None
+
+    if bool(script) == bool(records_file):
+        raise click.UsageError("Provide exactly one SCRIPT or --records FILE.")
+
+    if records_file:
+        click.echo(f"🔍 Scanning records: {records_file}")
+        records = load_records_file(records_file)
+    else:
+        click.echo(f"🔍 Scanning: {script}")
+        bridge = _run_script(script)
+        records = bridge.to_records(exclude_stdlib=not include_stdlib)
+
+    if not records:
+        click.echo("⚠️  No profiling data collected.")
+        return
+
+    if export_records:
+        save_records_json(records, export_records)
+        click.echo(f"🧾 Records saved → {export_records}")
+
+    bottlenecks = analyse(records)
+    toon_content = generate_toon(bottlenecks, records, top_n=top)
+
+    from pathlib import Path
+    out_dir = Path(output)
+    toon_path = save_toon(toon_content, out_dir / "metrun.toon.yaml")
+    click.echo(f"✅ {toon_path}")
 
 
 # ---------------------------------------------------------------------------

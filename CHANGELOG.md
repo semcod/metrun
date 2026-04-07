@@ -37,8 +37,45 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `metrun.toon` module — TOON-format metric tree generator (`generate_toon`, `save_toon`).
+- `metrun scan` CLI command — auto-profile a script and generate `metrun.toon.yaml` with bottlenecks, critical path, suggestions, endpoints, and call tree.
+- TOON output includes sections: `SUMMARY`, `BOTTLENECKS`, `CRITICAL-PATH`, `SUGGESTIONS`, `ENDPOINTS`, `TREE`.
+- 18 new tests for the toon module and scan CLI.
+
+### Fixed
+- `CProfileBridge` now filters user site-packages (`~/.local/lib/…`) alongside system site-packages.
+- Import-machinery functions (`find_spec`, `_path_hook`, `exec_module`, etc.) are excluded from reports.
+
 ### Docs
-- Document language-neutral record export/import in the README and generated docs.
+- Document language-neutral record export/import and re-export examples in the README and generated docs.
+- Document automatic project scanning, endpoint recognition, and TOON output in the README.
+
+## [0.1.7] - 2026-04-07
+
+### Docs
+- Update CHANGELOG.md
+- Update README.md
+- Update TODO.md
+- Update docs/README.md
+- Update project/README.md
+- Update project/context.md
+
+### Test
+- Update tests/test_toon.py
+
+### Other
+- Update .pyqual/pipeline.db
+- Update metrun/__init__.py
+- Update metrun/cli.py
+- Update metrun/cprofile_bridge.py
+- Update metrun/toon.py
+- Update project.sh
+- Update project/analysis.toon.yaml
+- Update project/calls.mmd
+- Update project/calls.png
+- Update project/compact_flow.mmd
+- ... and 15 more files
 
 ## [0.1.6] - 2026-04-07
 

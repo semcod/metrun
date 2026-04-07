@@ -6,7 +6,7 @@
 - **Primary Language**: python
 - **Languages**: python: 11, shell: 1
 - **Analysis Mode**: static
-- **Total Functions**: 78
+- **Total Functions**: 83
 - **Total Classes**: 8
 - **Modules**: 12
 - **Entry Points**: 39
@@ -14,7 +14,7 @@
 ## Architecture by Module
 
 ### metrun.records_io
-- **Functions**: 15
+- **Functions**: 20
 - **File**: `records_io.py`
 
 ### metrun.profiler
@@ -67,9 +67,9 @@
 Main execution flows into the system:
 
 ### metrun.cli.inspect
-> Enhanced profile of SCRIPT: bottlenecks + critical path + suggestions.
+> Enhanced profile of SCRIPT or records file: bottlenecks + critical path + suggestions.
 
-SCRIPT is the path to a Python file to profile.
+SCRIPT is the path to a Python file to profile unless --record
 - **Calls**: cli.command, click.argument, click.option, click.option, click.option, click.option, click.option, click.option
 
 ### metrun.cprofile_bridge.CProfileBridge.to_records
@@ -104,16 +104,16 @@ PROF_FILE is the path to a cProfile .prof dump
 > Return a :class:`pstats.Stats` object for the accumulated profile.
 - **Calls**: io.StringIO, tempfile.NamedTemporaryFile, self._profile.dump_stats, pstats.Stats, os.unlink
 
+### metrun.bottleneck.BottleneckEngine._total_wall_time
+> Sum of all top-level (root) function times, or max if no roots exist.
+- **Calls**: sum, max, self._records.values, self._records.values
+
 ### metrun.flamegraph.render_svg_string
 > Like :func:`render_svg` but return the SVG markup as a string instead of
 writing to a file.
 
 Useful for embedding flamegraphs in HTML reports or Jupyt
 - **Calls**: io.StringIO, flameprof.render, buf.getvalue, ImportError
-
-### metrun.bottleneck.BottleneckEngine._total_wall_time
-> Sum of all top-level (root) function times, or max if no roots exist.
-- **Calls**: sum, max, self._records.values, self._records.values
 
 ### metrun.profiler.ExecutionTracer.section
 > Context manager: trace a named code section.
@@ -130,16 +130,16 @@ Useful for embedding flamegraphs in HTML reports or Jupyt
 > Print the performance report to stdout.
 - **Calls**: project.print, metrun.report.generate_report
 
-### metrun.critical_path.print_critical_path
-> Print the critical path to stdout.
-- **Calls**: project.print, metrun.critical_path.format_critical_path
-
 ### metrun.bottleneck.BottleneckEngine._compute_score
 - **Calls**: math.log10, round
 
 ### metrun.bottleneck.analyse
 > Convenience function: run the engine and return ranked bottlenecks.
 - **Calls**: None.analyse, BottleneckEngine
+
+### metrun.critical_path.print_critical_path
+> Print the critical path to stdout.
+- **Calls**: project.print, metrun.critical_path.format_critical_path
 
 ### metrun.profiler.ExecutionTracer.__init__
 - **Calls**: threading.Lock, threading.local
@@ -239,14 +239,14 @@ trace [metrun.profiler.ExecutionTracer]
 get_stats [metrun.cprofile_bridge.CProfileBridge]
 ```
 
-### Flow 8: render_svg_string
-```
-render_svg_string [metrun.flamegraph]
-```
-
-### Flow 9: _total_wall_time
+### Flow 8: _total_wall_time
 ```
 _total_wall_time [metrun.bottleneck.BottleneckEngine]
+```
+
+### Flow 9: render_svg_string
+```
+render_svg_string [metrun.flamegraph]
 ```
 
 ### Flow 10: section
@@ -295,17 +295,20 @@ Example::
 > A single actionable fix suggestion.
 - **Methods**: 0
 
-### metrun.critical_path.CriticalPathNode
-> A single node in the critical path.
-- **Methods**: 0
-
 ### metrun.bottleneck.Bottleneck
 > A single bottleneck entry produced by the engine.
+- **Methods**: 0
+
+### metrun.critical_path.CriticalPathNode
+> A single node in the critical path.
 - **Methods**: 0
 
 ## Data Transformation Functions
 
 Key functions that process and transform data:
+
+### metrun.records_io._decode_json_payload
+- **Output to**: isinstance, isinstance, payload.decode, json.loads
 
 ### metrun.suggestions.format_suggestions
 > Render suggestions for a single function as a human-readable string.
@@ -360,13 +363,12 @@ Example output::
 Functions exposed as public API (no underscore prefix):
 
 - `metrun.cli.inspect` - 31 calls
-- `metrun.records_io.load_records_json` - 26 calls
 - `metrun.cprofile_bridge.CProfileBridge.to_records` - 26 calls
 - `metrun.cli.profile` - 20 calls
 - `metrun.report.generate_report` - 17 calls
 - `metrun.critical_path.find_critical_path` - 16 calls
-- `metrun.flamegraph.render_ascii` - 13 calls
 - `metrun.bottleneck.BottleneckEngine.analyse` - 13 calls
+- `metrun.flamegraph.render_ascii` - 13 calls
 - `metrun.records_io.load_records_file` - 10 calls
 - `metrun.cli.flame` - 8 calls
 - `metrun.suggestions.suggest` - 8 calls
@@ -378,21 +380,22 @@ Functions exposed as public API (no underscore prefix):
 - `metrun.records_io.save_records_json` - 4 calls
 - `metrun.flamegraph.render_svg_string` - 4 calls
 - `metrun.profiler.ExecutionTracer.section` - 4 calls
+- `metrun.records_io.load_records_json` - 3 calls
 - `metrun.flamegraph.render_svg` - 3 calls
 - `demo.slow_query` - 2 calls
-- `metrun.cli.cli` - 2 calls
 - `metrun.records_io.dump_records_json` - 2 calls
+- `metrun.cli.cli` - 2 calls
 - `metrun.suggestions.print_suggestions` - 2 calls
 - `metrun.report.print_report` - 2 calls
-- `metrun.critical_path.print_critical_path` - 2 calls
-- `metrun.flamegraph.print_ascii` - 2 calls
 - `metrun.bottleneck.analyse` - 2 calls
+- `metrun.flamegraph.print_ascii` - 2 calls
+- `metrun.critical_path.print_critical_path` - 2 calls
 - `metrun.profiler.trace` - 2 calls
 - `metrun.cprofile_bridge.CProfileBridge.profile_func` - 2 calls
 - `metrun.cprofile_bridge.CProfileBridge.profile_block` - 2 calls
 - `demo.handler` - 1 calls
-- `metrun.cli.main` - 1 calls
 - `metrun.records_io.record_to_payload` - 1 calls
+- `metrun.cli.main` - 1 calls
 - `metrun.profiler.ExecutionTracer.reset` - 1 calls
 - `metrun.profiler.section` - 1 calls
 - `metrun.profiler.reset` - 1 calls
@@ -433,9 +436,9 @@ graph TD
     get_stats --> dump_stats
     get_stats --> Stats
     get_stats --> unlink
-    render_svg_string --> StringIO
-    render_svg_string --> render
-    render_svg_string --> getvalue
+    _total_wall_time --> sum
+    _total_wall_time --> max
+    _total_wall_time --> values
 ```
 
 ## Reverse Engineering Guidelines

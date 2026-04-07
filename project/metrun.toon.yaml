@@ -4,6 +4,6 @@ SUMMARY:
   bottlenecks: 1
   top_score: 10.3
   top_name: _benchmark
-  top_time: 0.0002s
+  top_time: 0.0003s
   top_diagnosis: 🐢 slow execution
   total_calls: 1

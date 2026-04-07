@@ -1,23 +1,19 @@
-# code2llm/evolution | 78 func | 11f | 2026-04-07
+# code2llm/evolution | 83 func | 11f | 2026-04-07
 
-NEXT[2] (ranked by impact):
+NEXT[1] (ranked by impact):
   [1] !! SPLIT           metrun/suggestions.py
       WHY: 628L, 1 classes, max CC=6
       EFFORT: ~4h  IMPACT: 3768
-
-  [2] !  SPLIT-FUNC      load_records_json  CC=19  fan=15
-      WHY: CC=19 exceeds 15
-      EFFORT: ~1h  IMPACT: 285
 
 
 RISKS[1]:
   ⚠ Splitting metrun/suggestions.py may break 4 import paths
 
 METRICS-TARGET:
-  CC̄:          3.2 → ≤2.2
-  max-CC:      19 → ≤9
+  CC̄:          3.1 → ≤2.2
+  max-CC:      14 → ≤7
   god-modules: 1 → 0
-  high-CC(≥15): 1 → ≤0
+  high-CC(≥15): 0 → ≤0
   hub-types:   0 → ≤0
 
 PATTERNS (language parser shared logic):
@@ -45,4 +41,4 @@ PATTERNS (language parser shared logic):
     - Standardized FunctionInfo/ClassInfo models
 
 HISTORY:
-  prev CC̄=2.4 → now CC̄=3.2
+  prev CC̄=3.2 → now CC̄=3.1

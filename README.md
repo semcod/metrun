@@ -2,11 +2,11 @@
 
 ## AI Cost Tracking
 
-![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-0.1.6-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
-![AI Cost](https://img.shields.io/badge/AI%20Cost-$0.75-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-3.8h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
+![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-0.1.7-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![AI Cost](https://img.shields.io/badge/AI%20Cost-$0.90-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-4.8h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
 
-- 🤖 **LLM usage:** $0.7500 (5 commits)
-- 👤 **Human dev:** ~$376 (3.8h @ $100/h, 30min dedup)
+- 🤖 **LLM usage:** $0.9000 (6 commits)
+- 👤 **Human dev:** ~$476 (4.8h @ $100/h, 30min dedup)
 
 Generated on 2026-04-07 using [openrouter/qwen/qwen3-coder-next](https://openrouter.ai/qwen/qwen3-coder-next)
 
@@ -36,7 +36,8 @@ Generated on 2026-04-07 using [openrouter/qwen/qwen3-coder-next](https://openrou
 | 🔥 **ASCII Flamegraph** | Terminal-friendly proportional bar chart, zero extra dependencies |
 | 🖼️ **SVG Flamegraph** | Interactive SVG via [`flameprof`](https://pypi.org/project/flameprof/) |
 | 🔌 **cProfile Bridge** | Use stdlib `cProfile` as the profiling backend; feed results into the Bottleneck Engine |
-| ⌨️ **CLI** | `metrun profile`, `metrun inspect`, `metrun flame` commands |
+| 📋 **TOON Metric Tree** | `metrun scan` auto-profiles and generates `metrun.toon.yaml` — compact bottleneck map for the TOON ecosystem |
+| ⌨️ **CLI** | `metrun profile`, `metrun inspect`, `metrun scan`, `metrun flame` commands |
 
 ---
 
@@ -232,6 +233,8 @@ Compatible with these popular tools (no code changes needed):
   - saves the collected records as language-neutral JSON.
 - `metrun inspect --records profile.json`
   - loads a JSON or JSONL records file produced by `metrun` or another runtime.
+- `metrun inspect --records profile.json --export-records normalized.json`
+  - loads records, normalises them, and writes them back out as language-neutral JSON.
 
 The importer accepts top-level `records`, `functions`, `nodes`, or `items` collections, plus single-record objects and mapping-of-records payloads. The `language` field is preserved when present.
 
@@ -347,13 +350,98 @@ metrun profile my_script.py --export-records profile.json
 metrun inspect --records profile.json
 metrun inspect --records profile.jsonl
 
+# Load, normalise, and re-export language-neutral records
+metrun inspect --records profile.json --export-records normalized.json
+
 # Include Python stdlib / C-builtins in the report
 metrun profile my_script.py --include-stdlib
 metrun inspect my_script.py --include-stdlib
 
+# Auto-scan and generate metrun.toon.yaml metric tree
+metrun scan my_script.py --output project/
+
+# Scan from pre-collected records
+metrun scan --records profile.json --output project/
+
 # Convert existing .prof dump to SVG
 metrun flame profile.prof -o flame.svg
 ```
+
+---
+
+## Automatic project scanning & TOON output
+
+`metrun scan` profiles a Python script (or loads pre-collected records) and
+generates a `metrun.toon.yaml` file containing a compact metric tree that
+describes the project's performance bottlenecks.
+
+### How it works
+
+1. **Endpoint recognition** — metrun identifies *root* functions (entry points)
+   as any function with no recorded callers.  In decorator mode these are the
+   top-level `@trace`-d functions; in cProfile mode they are the call-tree
+   roots after stdlib filtering.
+2. **Profiling** — the script is executed under `cProfile` (via
+   `CProfileBridge`) and the resulting call tree is converted to
+   `FunctionRecord` entries.
+3. **Bottleneck analysis** — the `BottleneckEngine` scores every function and
+   assigns a diagnosis label.
+4. **Critical path** — a DFS walk finds the hottest root→leaf chain.
+5. **TOON rendering** — all results are formatted into a compact
+   `.toon.yaml` file with sections: `SUMMARY`, `BOTTLENECKS`, `CRITICAL-PATH`,
+   `SUGGESTIONS`, `ENDPOINTS`, and `TREE`.
+
+### Example output
+
+```yaml
+# metrun | 2b | top: handler 🌲 | python | 2026-04-07
+
+SUMMARY:
+  bottlenecks: 2
+  top_score: 11.3
+  top_name: handler
+  top_diagnosis: 🌲 dependency bottleneck
+  total_time: 1.5500s
+  total_calls: 101
+
+BOTTLENECKS[2]:
+  🌲 handler                        score=11.3   time=0.8000s (51.6%)  calls=1       dependency bottleneck
+  🐢 slow_query                     score=10.3   time=0.7500s (48.4%)  calls=100     slow execution
+
+CRITICAL-PATH (depth=2, leaf=0.7500s):
+  handler → slow_query ← 🔥
+
+SUGGESTIONS[2]:
+  handler: Run independent child calls concurrently [concurrent.futures]
+  slow_query: Profile deeper with cProfile + snakeviz [cProfile / snakeviz]
+
+ENDPOINTS[1]:
+  handler  calls=1  time=0.8000s  children=1
+
+TREE:
+  🌲 handler  0.8000s  ×1
+  │ ├─ 🐢 slow_query  0.7500s  ×100
+```
+
+### Python API
+
+```python
+from metrun import analyse, get_records, generate_toon, save_toon
+
+bottlenecks = analyse(get_records())
+toon = generate_toon(bottlenecks, get_records())
+save_toon(toon, "project/metrun.toon.yaml")
+```
+
+### Integration with project.sh
+
+```bash
+metrun scan demo.py --output project/
+```
+
+The generated `metrun.toon.yaml` sits alongside other TOON files
+(`analysis.toon.yaml`, `duplication.toon.yaml`, `validation.toon.yaml`, etc.)
+and gives a performance perspective on the project.
 
 ---
 
@@ -392,6 +480,7 @@ metrun/
 ├── suggestions.py     # Fix Suggestion Engine
 ├── flamegraph.py      # ASCII + SVG (flameprof) flamegraphs
 ├── cprofile_bridge.py # cProfile ↔ metrun bridge
+├── toon.py            # TOON metric-tree generator (metrun.toon.yaml)
 └── cli.py             # Click CLI entry-point
 ```
 

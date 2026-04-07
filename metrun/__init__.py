@@ -74,6 +74,10 @@ from metrun.suggestions import (
     format_suggestions,
     print_suggestions,
 )
+from metrun.toon import (
+    generate_toon,
+    save_toon,
+)
 
 __all__ = [
     # profiler
@@ -118,5 +122,8 @@ __all__ = [
     "suggest",
     "format_suggestions",
     "print_suggestions",
+    # toon
+    "generate_toon",
+    "save_toon",
 ]
 

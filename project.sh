@@ -104,36 +104,5 @@ PY
 
 echo "✓ Performance reports saved to project/metrun-*.txt"
 
-# Generate metrun.toon.yaml with benchmark data
-$VENV/bin/python -c "
-import sys
-from datetime import datetime
-sys.path.insert(0, '.')
-
-from metrun import trace, get_records, analyse
-
-@trace
-def _benchmark():
-    # Run demo workload
-    def slow_query(n):
-        return sum(i * i for i in range(n))
-    def handler(items):
-        return [slow_query(i) for i in items]
-    handler(list(range(100)))
-
-_benchmark()
-bottlenecks = analyse(get_records())
-
-top = bottlenecks[0] if bottlenecks else None
-with open('project/metrun.toon.yaml', 'w') as f:
-    f.write(f'# metrun profile | {len(bottlenecks)}b | {datetime.now().strftime(\"%Y-%m-%d\")}\n\n')
-    f.write('SUMMARY:\n')
-    f.write(f'  bottlenecks: {len(bottlenecks)}\n')
-    if top:
-        f.write(f'  top_score: {top.score}\n')
-        f.write(f'  top_name: {top.name}\n')
-        f.write(f'  top_time: {top.total_time:.4f}s\n')
-        f.write(f'  top_diagnosis: {top.diagnosis}\n')
-    f.write(f'  total_calls: {sum(b.calls for b in bottlenecks)}\n')
-print('✓ project/metrun.toon.yaml created')
-" 2>&1
+# Generate metrun.toon.yaml with the scan command
+$VENV/bin/metrun scan demo.py --output project/ 2>&1 || true

@@ -1,7 +1,7 @@
 <!-- code2docs:start --># metrun
 
-![version](https://img.shields.io/badge/version-0.1.0-blue) ![python](https://img.shields.io/badge/python-%3E%3D3.9-blue) ![coverage](https://img.shields.io/badge/coverage-unknown-lightgrey) ![functions](https://img.shields.io/badge/functions-78-green)
-> **78** functions | **8** classes | **12** files | CC̄ = 3.5
+![version](https://img.shields.io/badge/version-0.1.0-blue) ![python](https://img.shields.io/badge/python-%3E%3D3.9-blue) ![coverage](https://img.shields.io/badge/coverage-unknown-lightgrey) ![functions](https://img.shields.io/badge/functions-83-green)
+> **83** functions | **8** classes | **12** files | CC̄ = 3.3
 
 > Auto-generated project documentation from source code analysis.
 
@@ -147,17 +147,17 @@ Content outside the markers is preserved when regenerating. Enable this with `sy
 
 ```
 metrun/
-├── project    ├── cli├── metrun/├── demo    ├── records_io    ├── suggestions    ├── report    ├── bottleneck    ├── critical_path    ├── flamegraph    ├── profiler    ├── cprofile_bridge```
+├── project├── metrun/├── demo    ├── cli    ├── records_io    ├── suggestions    ├── report    ├── critical_path    ├── flamegraph    ├── bottleneck    ├── profiler    ├── cprofile_bridge```
 
 ## API Overview
 
 ### Classes
 
 - **`Suggestion`** — A single actionable fix suggestion.
-- **`Bottleneck`** — A single bottleneck entry produced by the engine.
-- **`BottleneckEngine`** — Analyse a dict of FunctionRecords and return a ranked list of Bottlenecks.
 - **`CriticalPathNode`** — A single node in the critical path.
 - **`CriticalPath`** — The result of a critical-path analysis.
+- **`Bottleneck`** — A single bottleneck entry produced by the engine.
+- **`BottleneckEngine`** — Analyse a dict of FunctionRecords and return a ranked list of Bottlenecks.
 - **`FunctionRecord`** — Aggregated stats for a single function (or call-site).
 - **`ExecutionTracer`** — Thread-local call-stack tracer.
 - **`CProfileBridge`** — Thin wrapper around :class:`cProfile.Profile` that exposes profiling
@@ -169,25 +169,25 @@ metrun/
 - `print_report()` — —
 - `slow_query()` — —
 - `handler()` — —
+- `slow_query(n)` — —
+- `handler(items)` — —
 - `cli()` — metrun — Execution Intelligence Tool.
 - `profile(script, top, flame, ascii_flame, include_stdlib, export_records)` — Profile SCRIPT and display the bottleneck report.
 - `inspect(script, top, flame, records_file, ascii_flame, include_stdlib, export_records)` — Enhanced profile of SCRIPT or records file: bottlenecks + critical path + suggestions.
+- `scan(script, records_file, output, top, include_stdlib, export_records)` — Auto-profile SCRIPT and generate a metrun.toon.yaml metric tree.
 - `flame(prof_file, output, width)` — Convert an existing .prof file to an SVG flamegraph.
 - `main()` — —
-- `slow_query(n)` — —
-- `handler(items)` — —
-- `record_to_payload(record)` — Convert a FunctionRecord to a JSON-serialisable payload.
-- `records_to_payload(records)` — Serialize records as language-neutral JSON payload data.
-- `dump_records_json(records)` — Render language-neutral profiling records as JSON.
-- `save_records_json(records, path)` — Write language-neutral profiling records to a JSON file.
-- `load_records_json(payload)` — Load profiling records from JSON or JSONL payloads.
-- `load_records_file(path)` — Load profiling records from a JSON or JSONL file.
+- `record_to_payload(record)` — —
+- `records_to_payload(records)` — —
+- `dump_records_json(records)` — —
+- `save_records_json(records, path)` — —
+- `load_records_json(payload)` — —
+- `load_records_file(path)` — —
 - `suggest(bottleneck)` — Return a list of :class:`Suggestion` objects for a single bottleneck.
 - `format_suggestions(name, suggestions)` — Render suggestions for a single function as a human-readable string.
 - `print_suggestions(name, suggestions)` — Print suggestions for a single function to stdout.
 - `generate_report(bottlenecks)` — Render a human-readable performance report.
 - `print_report(bottlenecks)` — Print the performance report to stdout.
-- `analyse(records)` — Convenience function: run the engine and return ranked bottlenecks.
 - `find_critical_path(records)` — Find the critical (hottest) execution path through the call graph.
 - `format_critical_path(path)` — Render a :class:`CriticalPath` as a human-readable string.
 - `print_critical_path(path)` — Print the critical path to stdout.
@@ -195,6 +195,9 @@ metrun/
 - `print_ascii(bottlenecks)` — Print the ASCII flamegraph to stdout.
 - `render_svg(stats, output_path)` — Generate an SVG flamegraph from a ``pstats.Stats`` object and write it to
 - `render_svg_string(stats)` — Like :func:`render_svg` but return the SVG markup as a string instead of
+- `generate_toon(bottlenecks, records)` — Render a TOON-format metric tree from bottleneck analysis results.
+- `save_toon(content, path)` — Write TOON content to a file.
+- `analyse(records)` — Convenience function: run the engine and return ranked bottlenecks.
 - `trace(func)` — Decorator using the default (or supplied) tracer.
 - `section(name)` — Context manager using the default (or supplied) tracer.
 - `get_records()` — Return all collected records from the default (or supplied) tracer.
@@ -211,9 +214,10 @@ metrun/
 📄 `metrun.critical_path` (3 functions, 2 classes)
 📄 `metrun.flamegraph` (4 functions)
 📄 `metrun.profiler` (12 functions, 2 classes)
-📄 `metrun.records_io` (15 functions)
+📄 `metrun.records_io` (20 functions)
 📄 `metrun.report` (9 functions)
 📄 `metrun.suggestions` (4 functions, 1 classes)
+📄 `metrun.toon` (4 functions)
 📄 `project` (8 functions)
 
 ## Requirements
