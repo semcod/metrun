@@ -18,7 +18,9 @@ Algorithm
 
 Because a function's ``total_time`` in metrun already represents the sum of
 all its invocations, the path score is the ``total_time`` of the *deepest*
-node on that path (i.e. the leaf carries the "heat" of the whole chain above
+
+if __name__ == "__main__":
+    node on that path (i.e. the leaf carries the "heat" of the whole chain above
 it that flows through it).
 
 Typical use::

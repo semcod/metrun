@@ -407,3 +407,510 @@ sprints:
     model_hints:
       planning: balanced
       implementation: balanced
+  - id: ticket-7ee42616
+    name: Fix smart-return-type issues
+    description: Resolve 2 smart-return-type issues in examples/profile/cprofile_bridge.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/profile/cprofile_bridge.py
+    rule_id: smart-return-type
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-476eed11
+    name: Fix ai-boilerplate issues
+    description: Resolve 2 ai-boilerplate issues in examples/profile/cprofile_bridge.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/profile/cprofile_bridge.py
+    rule_id: ai-boilerplate
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-331d4e73
+    name: Fix smart-return-type issues
+    description: Resolve 2 smart-return-type issues in examples/profile/json_export.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/profile/json_export.py
+    rule_id: smart-return-type
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-2fde4126
+    name: Fix magic-numbers issues
+    description: Resolve 1 magic-numbers issues in examples/profile/json_export.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/profile/json_export.py
+    rule_id: magic-numbers
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-20525854
+    name: Fix ai-boilerplate issues
+    description: Resolve 2 ai-boilerplate issues in examples/profile/json_export.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/profile/json_export.py
+    rule_id: ai-boilerplate
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-b8e2cf95
+    name: Fix smart-return-type issues
+    description: Resolve 3 smart-return-type issues in examples/profile/minimal.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/profile/minimal.py
+    rule_id: smart-return-type
+    count: 3
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-1822d1e1
+    name: Fix magic-numbers issues
+    description: Resolve 1 magic-numbers issues in examples/profile/minimal.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/profile/minimal.py
+    rule_id: magic-numbers
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-9f9446b3
+    name: Fix ai-boilerplate issues
+    description: Resolve 2 ai-boilerplate issues in examples/profile/minimal.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/profile/minimal.py
+    rule_id: ai-boilerplate
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-58b4e2bc
+    name: Fix smart-return-type issues
+    description: Resolve 1 smart-return-type issues in examples/profile/sections.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/profile/sections.py
+    rule_id: smart-return-type
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-96eaa68c
+    name: Fix ai-boilerplate issues
+    description: Resolve 2 ai-boilerplate issues in examples/profile/sections.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/profile/sections.py
+    rule_id: ai-boilerplate
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-c0df2694
+    name: Fix smart-return-type issues
+    description: Resolve 1 smart-return-type issues in examples/profile/test_cprofile_bridge.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/profile/test_cprofile_bridge.py
+    rule_id: smart-return-type
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-7bc11aee
+    name: Fix smart-return-type issues
+    description: Resolve 1 smart-return-type issues in examples/profile/test_minimal.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/profile/test_minimal.py
+    rule_id: smart-return-type
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-29c7f097
+    name: Fix smart-return-type issues
+    description: Resolve 1 smart-return-type issues in examples/profile/test_json_export.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/profile/test_json_export.py
+    rule_id: smart-return-type
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-83a4a7c1
+    name: Fix smart-return-type issues
+    description: Resolve 1 smart-return-type issues in examples/profile/test_sections.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/profile/test_sections.py
+    rule_id: smart-return-type
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-0bd53da8
+    name: Fix smart-return-type issues
+    description: Resolve 1 smart-return-type issues in examples/profile/test_toon_stdout.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/profile/test_toon_stdout.py
+    rule_id: smart-return-type
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-70b30e31
+    name: Fix smart-return-type issues
+    description: Resolve 1 smart-return-type issues in examples/profile/test_toon_output.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/profile/test_toon_output.py
+    rule_id: smart-return-type
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-c487762e
+    name: Fix smart-return-type issues
+    description: Resolve 3 smart-return-type issues in examples/profile/toon_output.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/profile/toon_output.py
+    rule_id: smart-return-type
+    count: 3
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-ee2da1e5
+    name: Fix string-concat issues
+    description: Resolve 1 string-concat issues in examples/profile/toon_output.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/profile/toon_output.py
+    rule_id: string-concat
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-0713c8f9
+    name: Fix magic-numbers issues
+    description: Resolve 2 magic-numbers issues in examples/profile/toon_output.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/profile/toon_output.py
+    rule_id: magic-numbers
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-9e9c9cc8
+    name: Fix ai-boilerplate issues
+    description: Resolve 2 ai-boilerplate issues in examples/profile/toon_output.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/profile/toon_output.py
+    rule_id: ai-boilerplate
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-dafbb9e6
+    name: Fix smart-return-type issues
+    description: Resolve 3 smart-return-type issues in examples/standalone.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/standalone.py
+    rule_id: smart-return-type
+    count: 3
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-8759ad69
+    name: Fix ai-boilerplate issues
+    description: Resolve 2 ai-boilerplate issues in examples/standalone.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/standalone.py
+    rule_id: ai-boilerplate
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-b5a2e568
+    name: Fix smart-return-type issues
+    description: Resolve 3 smart-return-type issues in examples/profile/toon_stdout.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/profile/toon_stdout.py
+    rule_id: smart-return-type
+    count: 3
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-b51902aa
+    name: Fix magic-numbers issues
+    description: Resolve 1 magic-numbers issues in examples/profile/toon_stdout.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/profile/toon_stdout.py
+    rule_id: magic-numbers
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-20048d5c
+    name: Fix ai-boilerplate issues
+    description: Resolve 2 ai-boilerplate issues in examples/profile/toon_stdout.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/profile/toon_stdout.py
+    rule_id: ai-boilerplate
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-95f578be
+    name: Fix smart-return-type issues
+    description: Resolve 1 smart-return-type issues in examples/records/test_sample.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/records/test_sample.py
+    rule_id: smart-return-type
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-eca5e668
+    name: Fix smart-return-type issues
+    description: Resolve 1 smart-return-type issues in examples/test_standalone.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/test_standalone.py
+    rule_id: smart-return-type
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-98c743d0
+    name: Fix ai-boilerplate issues
+    description: Resolve 1 ai-boilerplate issues in examples/test_standalone.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/test_standalone.py
+    rule_id: ai-boilerplate
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-e6b88b53
+    name: Fix ai-boilerplate issues
+    description: Resolve 1 ai-boilerplate issues in metrun/__init__.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - metrun/__init__.py
+    rule_id: ai-boilerplate
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-69aab226
+    name: Fix ai-boilerplate issues
+    description: Resolve 1 ai-boilerplate issues in metrun/__main__.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - metrun/__main__.py
+    rule_id: ai-boilerplate
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-31b2bd0c
+    name: Fix ai-boilerplate issues
+    description: Resolve 1 ai-boilerplate issues in metrun/bottleneck.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - metrun/bottleneck.py
+    rule_id: ai-boilerplate
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-01e44970
+    name: Fix ai-boilerplate issues
+    description: Resolve 1 ai-boilerplate issues in metrun/cprofile_bridge.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - metrun/cprofile_bridge.py
+    rule_id: ai-boilerplate
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-892d2135
+    name: Fix ai-boilerplate issues
+    description: Resolve 1 ai-boilerplate issues in metrun/critical_path.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - metrun/critical_path.py
+    rule_id: ai-boilerplate
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-5d5d2db6
+    name: Fix ai-boilerplate issues
+    description: Resolve 1 ai-boilerplate issues in metrun/profiler.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - metrun/profiler.py
+    rule_id: ai-boilerplate
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-3a67c24e
+    name: Fix ai-boilerplate issues
+    description: Resolve 1 ai-boilerplate issues in metrun/flamegraph.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - metrun/flamegraph.py
+    rule_id: ai-boilerplate
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-322fa245
+    name: Fix ai-boilerplate issues
+    description: Resolve 1 ai-boilerplate issues in metrun/records_io.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - metrun/records_io.py
+    rule_id: ai-boilerplate
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-0149b1fb
+    name: Fix ai-boilerplate issues
+    description: Resolve 1 ai-boilerplate issues in metrun/suggestions.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - metrun/suggestions.py
+    rule_id: ai-boilerplate
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-b6f9e18f
+    name: Fix ai-boilerplate issues
+    description: Resolve 1 ai-boilerplate issues in metrun/toon.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - metrun/toon.py
+    rule_id: ai-boilerplate
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-5bffe6eb
+    name: Fix outdated-dependency issues
+    description: Resolve 1 outdated-dependency issues in pyproject.toml
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - pyproject.toml
+    rule_id: outdated-dependency
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced

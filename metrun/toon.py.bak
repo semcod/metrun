@@ -1,0 +1,170 @@
+from datetime import datetime
+from typing import Dict, List, Optional, Set
+
+
+def _build_toon_header(bottlenecks: List['Bottleneck'], date: str) -> List[str]:
+    total_calls = sum((b.calls for b in bottlenecks))
+    total_time = sum((b.total_time for b in bottlenecks))
+    top = bottlenecks[0] if bottlenecks else None
+
+    languages = {b.language.strip().lower() for b in bottlenecks if b.language.strip()}
+    lang_tag = ''
+    if languages:
+        lang_tag = f" | {','.join(sorted(languages))}"
+
+    top_tag = ''
+    if top:
+        top_tag = f' | top: {top.name} {_severity_tag(top.diagnosis)}'
+
+    lines: List[str] = []
+    lines.append(f'# metrun | {len(bottlenecks)}b{top_tag}{lang_tag} | {date}')
+    lines.append('')
+    lines.append('SUMMARY:')
+    lines.append(f'  bottlenecks: {len(bottlenecks)}')
+    if top:
+        lines.append(f'  top_score: {top.score}')
+        lines.append(f'  top_name: {top.name}')
+        lines.append(f'  top_time: {top.total_time:.4f}s')
+        lines.append(f'  top_diagnosis: {top.diagnosis}')
+    lines.append(f'  total_time: {total_time:.4f}s')
+    lines.append(f'  total_calls: {total_calls}')
+    lines.append('')
+    return lines
+
+
+def _render_bottleneck_details(bottlenecks: List['Bottleneck']) -> List[str]:
+    shown = bottlenecks[:10]
+    non_nominal = [b for b in shown if 'nominal' not in b.diagnosis.lower()]
+    nominal = [b for b in shown if 'nominal' in b.diagnosis.lower()]
+
+    lines: List[str] = []
+    lines.append(f'BOTTLENECKS[{len(non_nominal)}]:')
+    if not non_nominal:
+        lines.append('  (all nominal)')
+    for b in non_nominal:
+        tag = _severity_tag(b.diagnosis)
+        diag = _short_diagnosis(b.diagnosis)
+        lines.append(f'  {tag} {b.name:<30s} score={b.score:<6}  time={b.total_time:.4f}s ({b.time_pct:>5.1f}%)  calls={b.calls:<6}  {diag}')
+    if nominal:
+        lines.append(f'  + {len(nominal)} nominal entries')
+    lines.append('')
+    return lines
+
+
+def _render_critical_path(records: Dict[str, 'FunctionRecord']) -> List[str]:
+    from metrun.critical_path import find_critical_path
+
+    lines: List[str] = []
+    path = find_critical_path(records)
+    if path.length > 0:
+        chain = ' → '.join((n.name for n in path.nodes))
+        if path.length > 1:
+            chain = f'{chain} ← 🔥'
+        lines.append(f'CRITICAL-PATH (depth={path.length}, leaf={path.total_time:.4f}s):')
+        lines.append(f'  {chain}')
+        lines.append('')
+    return lines
+
+
+def _render_suggestions(bottlenecks: List['Bottleneck']) -> List[str]:
+    from metrun.suggestions import suggest
+
+    shown = bottlenecks[:10]
+    suggestion_lines: List[str] = []
+    for b in shown:
+        tips = suggest(b)
+        if tips:
+            top_tip = tips[0]
+            lib_tag = f' [{top_tip.library}]' if top_tip.library else ''
+            suggestion_lines.append(f'  {b.name}: {top_tip.title}{lib_tag}')
+    if suggestion_lines:
+        return [f'SUGGESTIONS[{len(suggestion_lines)}]:', *suggestion_lines, '']
+    return []
+
+
+def _find_endpoint_names(records: Dict[str, 'FunctionRecord']) -> List[str]:
+    return [name for name, rec in records.items() if not any((p in records for p in rec.parents))]
+
+
+def _render_endpoints(records: Dict[str, 'FunctionRecord']) -> List[str]:
+    lines: List[str] = []
+    endpoints = _find_endpoint_names(records)
+    if endpoints:
+        lines.append(f'ENDPOINTS[{len(endpoints)}]:')
+        for ep in endpoints:
+            rec = records[ep]
+            lines.append(f'  {ep}  calls={rec.calls}  time={rec.total_time:.4f}s  children={len(rec.children)}')
+        lines.append('')
+    return lines
+
+
+def _render_tree_lines(bottlenecks: List['Bottleneck'], records: Dict[str, 'FunctionRecord']) -> List[str]:
+    lines: List[str] = []
+    roots = _find_endpoint_names(records)
+    if roots:
+        lines.append('TREE:')
+        visited: Set[str] = set()
+
+        def _render_tree(name: str, depth: int) -> None:
+            if name in visited or name not in records:
+                return
+            visited.add(name)
+            rec = records[name]
+            prefix = f"  {'│ ' * depth}"
+            connector = '├─ ' if depth > 0 else ''
+            b_info = next((b for b in bottlenecks if b.name == name), None)
+            tag = _severity_tag(b_info.diagnosis) if b_info else '·'
+            lines.append(f'{prefix}{connector}{tag} {name}  {rec.total_time:.4f}s  ×{rec.calls}')
+            children_in_graph = [c for c in rec.children if c in records]
+            for child in children_in_graph:
+                _render_tree(child, depth + 1)
+
+        for root in roots:
+            _render_tree(root, 0)
+        lines.append('')
+    return lines
+
+
+def generate_toon(bottlenecks: List['Bottleneck'], records: Optional[Dict[str, 'FunctionRecord']]=None, *, top_n: int=10, date: Optional[str]=None) -> str:
+    """
+    Render a TOON-format metric tree from bottleneck analysis results.
+
+    Parameters
+    ----------
+    bottlenecks:
+        Ranked list returned by :func:`metrun.bottleneck.analyse`.
+    records:
+        Original :class:`~metrun.profiler.FunctionRecord` dict.
+        When provided, the critical path section is included.
+    top_n:
+        Maximum number of bottlenecks to include in the detail section.
+    date:
+        ISO date string for the header.  Defaults to today.
+
+    Returns
+    -------
+    str
+        Complete TOON-format string ready to write to a ``.toon.yaml`` file.
+    """
+    date = date or datetime.now().strftime('%Y-%m-%d')
+    shown = bottlenecks[:top_n]
+    lines: List[str] = []
+    lines.extend(_build_toon_header(bottlenecks, date))
+
+    if not bottlenecks:
+        lines.append('BOTTLENECKS[0]: none detected')
+        lines.append('')
+        return '\n'.join(lines)
+
+    lines.extend(_render_bottleneck_details(bottlenecks))
+
+    if records is not None:
+        lines.extend(_render_critical_path(records))
+
+    lines.extend(_render_suggestions(shown))
+
+    if records is not None:
+        lines.extend(_render_endpoints(records))
+        lines.extend(_render_tree_lines(bottlenecks, records))
+
+    return '\n'.join(lines)

@@ -1,6 +1,8 @@
 """
 metrun — Execution Intelligence Tool
-=====================================
+
+if __name__ == "__main__":
+    =====================================
 
 Quick start::
 
@@ -126,4 +128,3 @@ __all__ = [
     "generate_toon",
     "save_toon",
 ]
-

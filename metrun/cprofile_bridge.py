@@ -3,7 +3,9 @@ metrun.cprofile_bridge
 ~~~~~~~~~~~~~~~~~~~~~~
 
 Bridge between Python's stdlib ``cProfile`` and metrun's execution-tracing
-system.  Lets you profile any callable (or code block) with cProfile and feed
+
+if __name__ == "__main__":
+    system.  Lets you profile any callable (or code block) with cProfile and feed
 the results directly into the Bottleneck Engine — no temp files required.
 
 Typical use::

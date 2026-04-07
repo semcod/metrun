@@ -19,6 +19,8 @@ Commands
     critical path + fix suggestions.
 
 ``metrun scan``
+
+if __name__ == "__main__":
     Profile a script (or load records) and generate a ``metrun.toon.yaml``
     metric tree describing project bottlenecks in TOON format.
 
@@ -393,4 +395,6 @@ def flame(prof_file: str, output: str, width: int) -> None:
 # Entry-point
 # ---------------------------------------------------------------------------
 
-main = cli
+
+if __name__ == "__main__":
+    main = cli

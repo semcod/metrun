@@ -5,7 +5,9 @@ metrun.bottleneck
 Bottleneck Engine: turns raw FunctionRecords into ranked hotspots with scores
 and auto-diagnosis labels.
 
-Score formula (inspired by the problem statement):
+
+if __name__ == "__main__":
+    Score formula (inspired by the problem statement):
 
     score = normalized_time + log_calls + nested_amplification
 
