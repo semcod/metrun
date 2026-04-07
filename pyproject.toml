@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "metrun"
-version = "0.1.7"
+version = "0.1.8"
 description = "Execution Intelligence Tool — Bottleneck Engine + Human Report Generator"
 readme = "README.md"
 license = "Apache-2.0"
@@ -39,7 +39,7 @@ where = ["."]
 include = ["metrun*"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tests", "examples"]
 
 [tool.pfix]
 # Self-healing Python configuration

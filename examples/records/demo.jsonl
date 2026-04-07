@@ -1,0 +1,2 @@
+{"name":"handler","total_time":0.8,"calls":1,"children":["slow_query"],"parents":[],"language":"python"}
+{"name":"slow_query","total_time":0.75,"calls":100,"children":[],"parents":["handler"],"language":"python"}
