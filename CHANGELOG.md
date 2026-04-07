@@ -51,6 +51,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Document language-neutral record export/import and re-export examples in the README and generated docs.
 - Document automatic project scanning, endpoint recognition, and TOON output in the README.
 
+## [0.1.9] - 2026-04-07
+
+### Docs
+- Update README.md
+
 ## [0.1.8] - 2026-04-07
 
 ### Docs
