@@ -81,7 +81,9 @@ from metrun.toon import (
     save_toon,
 )
 
-__all__ = [
+
+if __name__ == "__main__":
+    __all__ = [
     # profiler
     "ExecutionTracer",
     "FunctionRecord",

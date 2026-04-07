@@ -1,3 +1,12 @@
+
+CONSTANT_5 = 5.0
+CONSTANT_9 = 9.87
+CONSTANT_20 = 20
+CONSTANT_50 = 50.0
+CONSTANT_75 = 75.0
+CONSTANT_80 = 80
+CONSTANT_500 = 500
+
 """Tests for metrun.flamegraph — ASCII + SVG flamegraph generators."""
 
 import io
