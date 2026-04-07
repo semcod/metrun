@@ -6,6 +6,7 @@ Minimal, copy-pasteable examples that work with `pip install metrun`.
 
 ```bash
 pip install metrun
+pip install -e .
 python examples/profile/minimal.py
 ```
 
@@ -43,6 +44,12 @@ BOTTLENECKS[2]:
 | `toon_stdout.py` | **TOON/YAML** | TOON format to stdout |
 | `toon_output.py` | TOON file | Saving TOON to file |
 | `json_export.py` | JSON | Exporting/importing records |
+
+## Standalone Example
+
+| Example | Output Format | What it shows |
+|---------|---------------|---------------|
+| `standalone.py` | **TOON/YAML** | Copy-pasteable script that prints TOON to stdout |
 
 ## Records Examples (`examples/records/`)
 

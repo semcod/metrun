@@ -6,14 +6,12 @@ Lightweight execution tracer that records per-function timing, call counts,
 and parent→child relationships for the Bottleneck Engine.
 """
 
-from __future__ import annotations
-
 import time
 import functools
 import threading
 from contextlib import contextmanager
 from dataclasses import dataclass, field
-from typing import Callable, Dict, List, Optional
+from typing import Any, Callable, Dict, Iterator, List, Optional
 
 
 @dataclass
@@ -105,7 +103,7 @@ class ExecutionTracer:
         with self._lock:
             self._records.clear()
 
-    def trace(self, func: Callable) -> Callable:
+    def trace(self, func: Callable[..., Any]) -> Callable[..., Any]:
         """Decorator: trace every call to *func*."""
 
         @functools.wraps(func)
@@ -121,7 +119,7 @@ class ExecutionTracer:
         return wrapper
 
     @contextmanager
-    def section(self, name: str):
+    def section(self, name: str) -> Iterator[None]:
         """Context manager: trace a named code section."""
         self._enter(name)
         t0 = time.perf_counter()
@@ -139,7 +137,7 @@ class ExecutionTracer:
 _default_tracer = ExecutionTracer()
 
 
-def trace(func: Optional[Callable] = None, *, tracer: Optional[ExecutionTracer] = None):
+def trace(func: Optional[Callable[..., Any]] = None, *, tracer: Optional[ExecutionTracer] = None) -> Any:
     """
     Decorator using the default (or supplied) tracer.
 
@@ -157,13 +155,13 @@ def trace(func: Optional[Callable] = None, *, tracer: Optional[ExecutionTracer] 
         return _tracer.trace(func)
 
     # Used as @trace(...) with keyword arguments
-    def decorator(f: Callable) -> Callable:
+    def decorator(f: Callable[..., Any]) -> Callable[..., Any]:
         return _tracer.trace(f)
 
     return decorator
 
 
-def section(name: str, *, tracer: Optional[ExecutionTracer] = None):
+def section(name: str, *, tracer: Optional[ExecutionTracer] = None) -> Any:
     """Context manager using the default (or supplied) tracer."""
     _tracer = tracer or _default_tracer
     return _tracer.section(name)

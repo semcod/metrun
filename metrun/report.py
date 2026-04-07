@@ -13,8 +13,6 @@ The report can optionally include:
   Engine)
 """
 
-from __future__ import annotations
-
 from typing import TYPE_CHECKING, Dict, List, Optional
 
 from metrun.bottleneck import Bottleneck

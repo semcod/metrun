@@ -15,4 +15,6 @@ def test_standalone_example_runs():
     )
     assert result.returncode == 0, result.stderr
     assert "Processed 1000 items" in result.stdout
-    assert "METRUN PERFORMANCE REPORT" in result.stdout
+    assert "# metrun" in result.stdout
+    assert "SUMMARY:" in result.stdout
+    assert "BOTTLENECKS[" in result.stdout

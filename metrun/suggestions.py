@@ -20,8 +20,6 @@ Typical use::
         print(format_suggestions(b.name, tips))
 """
 
-from __future__ import annotations
-
 from dataclasses import dataclass
 from typing import List, TYPE_CHECKING
 

@@ -32,8 +32,6 @@ Typical use::
     bridge.save("profile.prof")
 """
 
-from __future__ import annotations
-
 import cProfile
 import functools
 import io
@@ -41,7 +39,7 @@ import os
 import pstats
 import sysconfig
 from contextlib import contextmanager
-from typing import Callable, Dict, Optional
+from typing import Any, Callable, Dict, Iterator, Optional
 
 from metrun.profiler import FunctionRecord
 
@@ -116,17 +114,17 @@ class CProfileBridge:
     # Profiling entry-points
     # ------------------------------------------------------------------ #
 
-    def profile_func(self, func: Callable) -> Callable:
+    def profile_func(self, func: Callable[..., Any]) -> Callable[..., Any]:
         """Decorator: profile every call to *func* with cProfile."""
 
         @functools.wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
             return self._profile.runcall(func, *args, **kwargs)
 
         return wrapper
 
     @contextmanager
-    def profile_block(self):
+    def profile_block(self) -> Iterator[None]:
         """Context manager: profile the enclosed code block."""
         self._profile.enable()
         try:

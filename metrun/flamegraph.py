@@ -37,10 +37,8 @@ Typical use::
     render_svg(bridge.get_stats(), "flame.svg")
 """
 
-from __future__ import annotations
-
 import io
-from typing import TYPE_CHECKING, List, Optional
+from typing import TYPE_CHECKING, Any, List, Optional
 
 if TYPE_CHECKING:
     import pstats
@@ -50,14 +48,31 @@ if TYPE_CHECKING:
 # ASCII flamegraph
 # ---------------------------------------------------------------------------
 
+DEFAULT_ASCII_WIDTH = 72
+MAX_LABEL_WIDTH = 32
+DEFAULT_SVG_WIDTH = 1200
+DEFAULT_SVG_ROW_HEIGHT = 24
+DEFAULT_SVG_THRESHOLD = 0.001
+
 _BAR_CHARS = "█"
 _EMPTY_CHAR = "░"
+
+
+def _require_flameprof() -> Any:
+    try:
+        import flameprof
+    except ImportError as exc:
+        raise ImportError(
+            "flameprof is required for SVG flamegraphs.\n"
+            "Install it with:  pip install flameprof"
+        ) from exc
+    return flameprof
 
 
 def render_ascii(
     bottlenecks: "List[Bottleneck]",
     *,
-    width: int = 72,
+    width: int = DEFAULT_ASCII_WIDTH,
     top_n: Optional[int] = None,
     title: str = "Flamegraph",
 ) -> str:
@@ -95,12 +110,12 @@ def render_ascii(
         return "\n".join(lines)
 
     label_width = max(len(b.name) for b in bottlenecks)
-    label_width = min(label_width, 32)  # cap to keep layout sane
+    label_width = min(label_width, MAX_LABEL_WIDTH)  # cap to keep layout sane
 
     for b in bottlenecks:
         filled = int(round(b.time_pct / 100.0 * width))
         empty = width - filled
-        bar = _BAR_CHARS * filled + _EMPTY_CHAR * empty
+        bar = f"{_BAR_CHARS * filled}{_EMPTY_CHAR * empty}"
         label = b.name[:label_width].ljust(label_width)
         pct = f"{b.time_pct:5.1f}%"
         lines.append(f"  {label}  {bar}  {pct}  score={b.score}")
@@ -128,9 +143,9 @@ def render_svg(
     stats: "pstats.Stats",
     output_path: str,
     *,
-    width: int = 1200,
-    row_height: int = 24,
-    threshold: float = 0.001,
+    width: int = DEFAULT_SVG_WIDTH,
+    row_height: int = DEFAULT_SVG_ROW_HEIGHT,
+    threshold: float = DEFAULT_SVG_THRESHOLD,
 ) -> None:
     """
     Generate an SVG flamegraph from a ``pstats.Stats`` object and write it to
@@ -168,13 +183,7 @@ def render_svg(
 
     Then open ``flame.svg`` in a browser for the interactive flamegraph.
     """
-    try:
-        import flameprof
-    except ImportError as exc:
-        raise ImportError(
-            "flameprof is required for SVG flamegraphs.\n"
-            "Install it with:  pip install flameprof"
-        ) from exc
+    flameprof = _require_flameprof()
 
     with open(output_path, "w", encoding="utf-8") as fout:
         flameprof.render(
@@ -190,9 +199,9 @@ def render_svg(
 def render_svg_string(
     stats: "pstats.Stats",
     *,
-    width: int = 1200,
-    row_height: int = 24,
-    threshold: float = 0.001,
+    width: int = DEFAULT_SVG_WIDTH,
+    row_height: int = DEFAULT_SVG_ROW_HEIGHT,
+    threshold: float = DEFAULT_SVG_THRESHOLD,
 ) -> str:
     """
     Like :func:`render_svg` but return the SVG markup as a string instead of
@@ -202,13 +211,7 @@ def render_svg_string(
 
     Requires ``flameprof`` (``pip install flameprof``).
     """
-    try:
-        import flameprof
-    except ImportError as exc:
-        raise ImportError(
-            "flameprof is required for SVG flamegraphs.\n"
-            "Install it with:  pip install flameprof"
-        ) from exc
+    flameprof = _require_flameprof()
 
     buf = io.StringIO()
     flameprof.render(

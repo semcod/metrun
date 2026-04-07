@@ -63,6 +63,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Document language-neutral record export/import and re-export examples in the README and generated docs.
 - Document automatic project scanning, endpoint recognition, and TOON output in the README.
 
+## [0.1.11] - 2026-04-07
+
+### Docs
+- Update README.md
+- Update TODO.md
+- Update examples/README.md
+
+### Other
+- Update examples/standalone.py
+- Update examples/test_standalone.py
+- Update metrun/__main__.py
+- Update metrun/bottleneck.py
+- Update metrun/cli.py
+- Update metrun/cprofile_bridge.py
+- Update metrun/critical_path.py
+- Update metrun/flamegraph.py
+- Update metrun/profiler.py
+- Update metrun/records_io.py
+- ... and 3 more files
+
 ## [0.1.10] - 2026-04-07
 
 ### Docs

@@ -22,8 +22,6 @@ Diagnosis thresholds
     🐢 slow execution        normalized_time ≥ SLOW_THRESHOLD (no dominant call pattern)
 """
 
-from __future__ import annotations
-
 import math
 from dataclasses import dataclass, field
 from typing import Dict, List
@@ -58,14 +56,7 @@ class Bottleneck:
 
 
 class BottleneckEngine:
-    """
-    Analyse a dict of FunctionRecords and return a ranked list of Bottlenecks.
-
-    Example::
-
-        engine = BottleneckEngine(records)
-        bottlenecks = engine.analyse()
-    """
+    """Analyse FunctionRecord mappings and rank bottlenecks by score."""
 
     def __init__(self, records: Dict[str, FunctionRecord]) -> None:
         self._records = records

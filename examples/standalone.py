@@ -2,7 +2,8 @@
 """Standalone metrun example — copy this into your project."""
 # Requirements: pip install metrun
 
-from metrun import analyse, get_records, print_report, trace
+from metrun import analyse, get_records, reset, trace
+from metrun.toon import generate_toon
 
 
 @trace
@@ -16,13 +17,16 @@ def load_data(n):
 
 
 def main():
+    reset()
     data = load_data(1000)
     result = process_data(data)
     print(f"Processed {len(result)} items")
 
-    # Generate performance report
-    bottlenecks = analyse(get_records())
-    print_report(bottlenecks)
+    # Generate TOON/YAML report
+    records = get_records()
+    bottlenecks = analyse(records)
+    toon_yaml = generate_toon(bottlenecks, records, top_n=5)
+    print(toon_yaml)
 
 
 if __name__ == "__main__":

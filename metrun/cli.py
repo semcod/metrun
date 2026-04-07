@@ -49,8 +49,6 @@ Install CLI entry-point::
     metrun --help
 """
 
-from __future__ import annotations
-
 import io
 import runpy
 from contextlib import redirect_stdout
@@ -64,6 +62,8 @@ from metrun.flamegraph import print_ascii, render_svg
 from metrun.records_io import load_records_file, save_records_json
 from metrun.report import print_report
 from metrun.toon import generate_toon, save_toon
+
+DEFAULT_SVG_WIDTH = 1200
 
 
 # ---------------------------------------------------------------------------
@@ -84,7 +84,7 @@ def _run_script(script_path: str) -> CProfileBridge:
 
 @click.group()
 @click.version_option(package_name="metrun")
-def cli():
+def cli() -> None:
     """metrun — Execution Intelligence Tool.
 
     Profiles Python scripts and surfaces bottlenecks with human-readable
@@ -375,8 +375,8 @@ def scan(
     show_default=True,
     help="Output SVG file path.",
 )
-@click.option("--width", default=1200, show_default=True, help="SVG canvas width (px).")
-def flame(prof_file: str, output: str, width: int):
+@click.option("--width", default=DEFAULT_SVG_WIDTH, show_default=True, help="SVG canvas width (px).")
+def flame(prof_file: str, output: str, width: int) -> None:
     """Convert an existing .prof file to an SVG flamegraph.
 
     PROF_FILE is the path to a cProfile .prof dump
@@ -393,9 +393,4 @@ def flame(prof_file: str, output: str, width: int):
 # Entry-point
 # ---------------------------------------------------------------------------
 
-def main():
-    cli()
-
-
-if __name__ == "__main__":
-    main()
+main = cli

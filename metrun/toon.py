@@ -24,8 +24,6 @@ CLI::
     metrun scan --records profile.json --output project/
 """
 
-from __future__ import annotations
-
 from datetime import datetime
 from pathlib import Path
 from typing import TYPE_CHECKING, Dict, List, Optional
@@ -150,7 +148,7 @@ def generate_toon(
         if path.length > 0:
             chain = " → ".join(n.name for n in path.nodes)
             if path.length > 1:
-                chain += " ← 🔥"
+                chain = f"{chain} ← 🔥"
             lines.append(
                 f"CRITICAL-PATH (depth={path.length}, leaf={path.total_time:.4f}s):"
             )
@@ -206,7 +204,7 @@ def generate_toon(
                     return
                 visited.add(name)
                 rec = records[name]
-                prefix = "  " + "│ " * depth
+                prefix = f"  {'│ ' * depth}"
                 connector = "├─ " if depth > 0 else ""
                 # Find bottleneck info for this node
                 b_info = next((b for b in bottlenecks if b.name == name), None)
