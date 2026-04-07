@@ -100,6 +100,14 @@ def _format_summary(worst: Bottleneck) -> List[str]:
     ]
 
 
+def _shared_language(bottlenecks: List[Bottleneck]) -> Optional[str]:
+    languages = {b.language.strip().lower() for b in bottlenecks if b.language.strip()}
+    if len(languages) == 1:
+        language = next(iter(languages))
+        return None if language == "python" else language
+    return None
+
+
 def generate_report(
     bottlenecks: List[Bottleneck],
     *,
@@ -142,7 +150,11 @@ def generate_report(
     if top_n is not None:
         bottlenecks = bottlenecks[:top_n]
 
-    lines: List[str] = ["", f"🔥 {title}", "=" * (len(title) + 4), ""]
+    language = _shared_language(bottlenecks)
+    lines: List[str] = ["", f"🔥 {title}"]
+    if language:
+        lines.append(f"   language: {language}")
+    lines.extend(["=" * (len(title) + 4), ""])
 
     if not bottlenecks:
         lines.extend(["  ✅ No hotspots detected.", ""])

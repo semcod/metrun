@@ -4,14 +4,18 @@
 
 - **Project**: /home/tom/github/semcod/metrun
 - **Primary Language**: python
-- **Languages**: python: 10, shell: 1
+- **Languages**: python: 11, shell: 1
 - **Analysis Mode**: static
-- **Total Functions**: 58
+- **Total Functions**: 78
 - **Total Classes**: 8
-- **Modules**: 11
-- **Entry Points**: 38
+- **Modules**: 12
+- **Entry Points**: 39
 
 ## Architecture by Module
+
+### metrun.records_io
+- **Functions**: 15
+- **File**: `records_io.py`
 
 ### metrun.profiler
 - **Functions**: 12
@@ -19,17 +23,17 @@
 - **File**: `profiler.py`
 
 ### metrun.cprofile_bridge
-- **Functions**: 9
+- **Functions**: 11
 - **Classes**: 1
 - **File**: `cprofile_bridge.py`
+
+### metrun.report
+- **Functions**: 9
+- **File**: `report.py`
 
 ### project
 - **Functions**: 8
 - **File**: `project.sh`
-
-### metrun.report
-- **Functions**: 8
-- **File**: `report.py`
 
 ### metrun.cli
 - **Functions**: 6
@@ -40,14 +44,14 @@
 - **Classes**: 2
 - **File**: `bottleneck.py`
 
+### metrun.suggestions
+- **Functions**: 4
+- **Classes**: 1
+- **File**: `suggestions.py`
+
 ### metrun.flamegraph
 - **Functions**: 4
 - **File**: `flamegraph.py`
-
-### metrun.suggestions
-- **Functions**: 3
-- **Classes**: 1
-- **File**: `suggestions.py`
 
 ### metrun.critical_path
 - **Functions**: 3
@@ -62,17 +66,11 @@
 
 Main execution flows into the system:
 
-### metrun.cli.profile
-> Profile SCRIPT and display the bottleneck report.
-
-SCRIPT is the path to a Python file to profile.
-- **Calls**: cli.command, click.argument, click.option, click.option, click.option, click.echo, metrun.cli._run_script, bridge.to_records
-
 ### metrun.cli.inspect
 > Enhanced profile of SCRIPT: bottlenecks + critical path + suggestions.
 
 SCRIPT is the path to a Python file to profile.
-- **Calls**: cli.command, click.argument, click.option, click.option, click.echo, metrun.cli._run_script, bridge.to_records, metrun.bottleneck.BottleneckEngine.analyse
+- **Calls**: cli.command, click.argument, click.option, click.option, click.option, click.option, click.option, click.option
 
 ### metrun.cprofile_bridge.CProfileBridge.to_records
 > Convert cProfile stats to a ``dict[name, FunctionRecord]``.
@@ -80,7 +78,13 @@ SCRIPT is the path to a Python file to profile.
 The conversion maps ``pstats`` entries as follows:
 
 * ``name``        → ``"filename:linen
-- **Calls**: self.get_stats, stats_obj.sort_stats, raw.items, raw.items, _key, _key, FunctionRecord, _key
+- **Calls**: self.get_stats, stats_obj.sort_stats, raw.items, raw.items, list, metrun.cprofile_bridge._is_user_code, _key, _key
+
+### metrun.cli.profile
+> Profile SCRIPT and display the bottleneck report.
+
+SCRIPT is the path to a Python file to profile.
+- **Calls**: cli.command, click.argument, click.option, click.option, click.option, click.option, click.option, click.echo
 
 ### metrun.cli.flame
 > Convert an existing .prof file to an SVG flamegraph.
@@ -95,6 +99,10 @@ PROF_FILE is the path to a cProfile .prof dump
 ### metrun.profiler.ExecutionTracer.trace
 > Decorator: trace every call to *func*.
 - **Calls**: functools.wraps, self._enter, time.perf_counter, func, self._exit, time.perf_counter
+
+### metrun.cprofile_bridge.CProfileBridge.get_stats
+> Return a :class:`pstats.Stats` object for the accumulated profile.
+- **Calls**: io.StringIO, tempfile.NamedTemporaryFile, self._profile.dump_stats, pstats.Stats, os.unlink
 
 ### metrun.flamegraph.render_svg_string
 > Like :func:`render_svg` but return the SVG markup as a string instead of
@@ -117,6 +125,10 @@ Useful for embedding flamegraphs in HTML reports or Jupyt
 ### metrun.suggestions.print_suggestions
 > Print suggestions for a single function to stdout.
 - **Calls**: project.print, metrun.suggestions.format_suggestions
+
+### metrun.report.print_report
+> Print the performance report to stdout.
+- **Calls**: project.print, metrun.report.generate_report
 
 ### metrun.critical_path.print_critical_path
 > Print the critical path to stdout.
@@ -149,10 +161,6 @@ Can be used with or without parentheses:
 ### metrun.cprofile_bridge.CProfileBridge.profile_block
 > Context manager: profile the enclosed code block.
 - **Calls**: self._profile.enable, self._profile.disable
-
-### metrun.cprofile_bridge.CProfileBridge.get_stats
-> Return a :class:`pstats.Stats` object for the accumulated profile.
-- **Calls**: io.StringIO, pstats.Stats
 
 ### demo.handler
 - **Calls**: demo.slow_query
@@ -192,26 +200,23 @@ The resulting file can be opened with:
 > Discard all accumulated profiling data.
 - **Calls**: cProfile.Profile
 
-### metrun.cprofile_bridge.CProfileBridge.__enter__
-- **Calls**: self._profile.enable
-
 ## Process Flows
 
 Key execution flows identified:
 
-### Flow 1: profile
-```
-profile [metrun.cli]
-```
-
-### Flow 2: inspect
+### Flow 1: inspect
 ```
 inspect [metrun.cli]
 ```
 
-### Flow 3: to_records
+### Flow 2: to_records
 ```
 to_records [metrun.cprofile_bridge.CProfileBridge]
+```
+
+### Flow 3: profile
+```
+profile [metrun.cli]
 ```
 
 ### Flow 4: flame
@@ -229,24 +234,24 @@ _enter [metrun.profiler.ExecutionTracer]
 trace [metrun.profiler.ExecutionTracer]
 ```
 
-### Flow 7: render_svg_string
+### Flow 7: get_stats
+```
+get_stats [metrun.cprofile_bridge.CProfileBridge]
+```
+
+### Flow 8: render_svg_string
 ```
 render_svg_string [metrun.flamegraph]
 ```
 
-### Flow 8: _total_wall_time
+### Flow 9: _total_wall_time
 ```
 _total_wall_time [metrun.bottleneck.BottleneckEngine]
 ```
 
-### Flow 9: section
+### Flow 10: section
 ```
 section [metrun.profiler.ExecutionTracer]
-```
-
-### Flow 10: _exit
-```
-_exit [metrun.profiler.ExecutionTracer]
 ```
 
 ## Key Classes
@@ -354,23 +359,29 @@ Example output::
 
 Functions exposed as public API (no underscore prefix):
 
-- `metrun.cli.profile` - 16 calls
+- `metrun.cli.inspect` - 31 calls
+- `metrun.records_io.load_records_json` - 26 calls
+- `metrun.cprofile_bridge.CProfileBridge.to_records` - 26 calls
+- `metrun.cli.profile` - 20 calls
+- `metrun.report.generate_report` - 17 calls
 - `metrun.critical_path.find_critical_path` - 16 calls
-- `metrun.cli.inspect` - 14 calls
-- `metrun.report.generate_report` - 14 calls
 - `metrun.flamegraph.render_ascii` - 13 calls
 - `metrun.bottleneck.BottleneckEngine.analyse` - 13 calls
-- `metrun.cprofile_bridge.CProfileBridge.to_records` - 11 calls
+- `metrun.records_io.load_records_file` - 10 calls
 - `metrun.cli.flame` - 8 calls
+- `metrun.suggestions.suggest` - 8 calls
 - `metrun.suggestions.format_suggestions` - 7 calls
 - `metrun.critical_path.format_critical_path` - 7 calls
+- `metrun.records_io.records_to_payload` - 6 calls
 - `metrun.profiler.ExecutionTracer.trace` - 6 calls
-- `metrun.suggestions.suggest` - 4 calls
+- `metrun.cprofile_bridge.CProfileBridge.get_stats` - 5 calls
+- `metrun.records_io.save_records_json` - 4 calls
 - `metrun.flamegraph.render_svg_string` - 4 calls
 - `metrun.profiler.ExecutionTracer.section` - 4 calls
 - `metrun.flamegraph.render_svg` - 3 calls
 - `demo.slow_query` - 2 calls
 - `metrun.cli.cli` - 2 calls
+- `metrun.records_io.dump_records_json` - 2 calls
 - `metrun.suggestions.print_suggestions` - 2 calls
 - `metrun.report.print_report` - 2 calls
 - `metrun.critical_path.print_critical_path` - 2 calls
@@ -379,19 +390,15 @@ Functions exposed as public API (no underscore prefix):
 - `metrun.profiler.trace` - 2 calls
 - `metrun.cprofile_bridge.CProfileBridge.profile_func` - 2 calls
 - `metrun.cprofile_bridge.CProfileBridge.profile_block` - 2 calls
-- `metrun.cprofile_bridge.CProfileBridge.get_stats` - 2 calls
 - `demo.handler` - 1 calls
 - `metrun.cli.main` - 1 calls
+- `metrun.records_io.record_to_payload` - 1 calls
 - `metrun.profiler.ExecutionTracer.reset` - 1 calls
 - `metrun.profiler.section` - 1 calls
 - `metrun.profiler.reset` - 1 calls
 - `metrun.cprofile_bridge.CProfileBridge.save` - 1 calls
 - `metrun.cprofile_bridge.CProfileBridge.reset` - 1 calls
-- `project.write_cli_report` - 0 calls
-- `project.slow_query` - 0 calls
-- `project.handler` - 0 calls
-- `project.print` - 0 calls
-- `metrun.profiler.get_records` - 0 calls
+- `project.reset` - 0 calls
 
 ## System Interactions
 
@@ -399,17 +406,16 @@ How components interact:
 
 ```mermaid
 graph TD
-    profile --> command
-    profile --> argument
-    profile --> option
     inspect --> command
     inspect --> argument
     inspect --> option
-    inspect --> echo
     to_records --> get_stats
     to_records --> sort_stats
     to_records --> items
-    to_records --> _key
+    to_records --> list
+    profile --> command
+    profile --> argument
+    profile --> option
     flame --> command
     flame --> argument
     flame --> option
@@ -422,13 +428,14 @@ graph TD
     trace --> perf_counter
     trace --> func
     trace --> _exit
+    get_stats --> StringIO
+    get_stats --> NamedTemporaryFile
+    get_stats --> dump_stats
+    get_stats --> Stats
+    get_stats --> unlink
     render_svg_string --> StringIO
     render_svg_string --> render
     render_svg_string --> getvalue
-    render_svg_string --> ImportError
-    _total_wall_time --> sum
-    _total_wall_time --> max
-    _total_wall_time --> values
 ```
 
 ## Reverse Engineering Guidelines

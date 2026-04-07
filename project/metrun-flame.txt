@@ -4,15 +4,15 @@
 =============================
 
 🟡 handler
-   → time:      0.0017s  (100.0%)
+   → time:      0.0018s  (100.0%)
    → calls:     1
    → score:     10.8
    → diagnosis: 🐢 slow execution
 
 🟡 slow_query
-   → time:      0.0011s  (64.8%)
+   → time:      0.0011s  (60.3%)
    → calls:     100
-   → score:     8.48
+   → score:     8.03
    → diagnosis: 🐢 slow execution
    → called by: handler
 
@@ -24,152 +24,8 @@
    Score          : 10.8
    Diagnosis      : 🐢 slow execution
 
-
-🔥 METRUN PERFORMANCE REPORT
-=============================
-
-🟠 run_path
-   → time:      0.0029s  (100.0%)
-   → calls:     1
-   → score:     13.8
-   → diagnosis: 🌲 dependency bottleneck
-
-🟠 <module>
-   → time:      0.0022s  (74.8%)
-   → calls:     3
-   → score:     13.08
-   → diagnosis: 🌲 dependency bottleneck
-   → called by: <built-in method builtins.exec>, <built-in method builtins.eval>
-
-🟠 _run_module_code
-   → time:      0.0020s  (67.7%)
-   → calls:     1
-   → score:     9.57
-   → diagnosis: 🌲 dependency bottleneck
-   → called by: run_path
-
-🟠 wrapper
-   → time:      0.0017s  (59.6%)
-   → calls:     1
-   → score:     8.76
-   → diagnosis: 🌲 dependency bottleneck
-   → called by: handler, <module>
-
-🟡 <built-in method builtins.exec>
-   → time:      0.0022s  (74.9%)
-   → calls:     2
-   → score:     8.47
-   → diagnosis: 🐢 slow execution
-   → called by: _run_code, _call_with_frames_removed
-
-🟡 _run_code
-   → time:      0.0019s  (66.9%)
-   → calls:     1
-   → score:     8.0
-   → diagnosis: 🐢 slow execution
-   → called by: _run_module_code
-
-🟠 analyse
-   → time:      0.0002s  (6.4%)
-   → calls:     2
-   → score:     7.12
-   → diagnosis: 🌲 dependency bottleneck
-   → called by: analyse, <module>
-
-🟠 namedtuple
-   → time:      0.0001s  (4.9%)
-   → calls:     1
-   → score:     6.79
-   → diagnosis: 🌲 dependency bottleneck
-   → called by: <module>
-
-🟡 handler
-   → time:      0.0017s  (58.3%)
-   → calls:     1
-   → score:     6.63
-   → diagnosis: 🐢 slow execution
-   → called by: wrapper
-
-🟡 slow_query
-   → time:      0.0010s  (35.6%)
-   → calls:     100
-   → score:     6.06
-   → diagnosis: 🐢 slow execution
-   → called by: wrapper
-
-── Dependency Graph ──────────────────────────
-   run_path  →  <method 'rpartition' of 'str' objects>
-   run_path  →  <built-in method builtins.isinstance>
-   run_path  →  _find_and_load
-   run_path  →  _run_module_code
-   run_path  →  _get_code_from_file
-   run_path  →  get_importer
-   run_path  →  fsdecode
-   <module>  →  _handle_fromlist
-   <module>  →  wrapper
-   <module>  →  register
-   <module>  →  singledispatch
-   <module>  →  namedtuple
-   <module>  →  analyse
-   <module>  →  print_report
-   <module>  →  get_records
-   <module>  →  __getattr__
-   <module>  →  trace
-   _run_module_code  →  <method 'copy' of 'dict' objects>
-   _run_module_code  →  __exit__
-   _run_module_code  →  __init__
-   _run_module_code  →  __enter__
-   _run_module_code  →  _run_code
-   wrapper  →  <built-in method time.perf_counter>
-   wrapper  →  _enter
-   wrapper  →  slow_query
-   wrapper  →  handler
-   wrapper  →  _exit
-   <built-in method builtins.exec>  →  <module>
-   _run_code  →  <method 'update' of 'dict' objects>
-   _run_code  →  <built-in method builtins.exec>
-   analyse  →  <method 'items' of 'dict' objects>
-   analyse  →  <method 'values' of 'dict' objects>
-   analyse  →  <method 'append' of 'list' objects>
-   analyse  →  <method 'sort' of 'list' objects>
-   analyse  →  <built-in method builtins.len>
-   analyse  →  <built-in method builtins.max>
-   analyse  →  <built-in method builtins.round>
-   analyse  →  analyse
-   analyse  →  _total_wall_time
-   analyse  →  __init__
-   analyse  →  _diagnose
-   analyse  →  _compute_score
-   namedtuple  →  <method '__contains__' of 'frozenset' objects>
-   namedtuple  →  <method 'add' of 'set' objects>
-   namedtuple  →  <method 'replace' of 'str' objects>
-   namedtuple  →  <method 'split' of 'str' objects>
-   namedtuple  →  <method 'join' of 'str' objects>
-   namedtuple  →  <method 'startswith' of 'str' objects>
-   namedtuple  →  <method 'isidentifier' of 'str' objects>
-   namedtuple  →  <built-in method sys._getframemodulename>
-   namedtuple  →  <built-in method sys.intern>
-   namedtuple  →  <built-in method builtins.eval>
-   namedtuple  →  <built-in method builtins.isinstance>
-   namedtuple  →  <built-in method builtins.len>
-   handler  →  wrapper
-   slow_query  →  <built-in method builtins.sum>
-
-── Summary ───────────────────────────────────
-   Top bottleneck : run_path
-   Score          : 13.8
-   Diagnosis      : 🌲 dependency bottleneck
-
 🔥 Flamegraph
 ────────────────────────────────────────────────────────────────────────────────────────────
-  run_path                         ████████████████████████████████████████████████████████████████████████  100.0%  score=13.8
-  <module>                         ██████████████████████████████████████████████████████░░░░░░░░░░░░░░░░░░   74.8%  score=13.08
-  _run_module_code                 █████████████████████████████████████████████████░░░░░░░░░░░░░░░░░░░░░░░   67.7%  score=9.57
-  wrapper                          ███████████████████████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░   59.6%  score=8.76
-  <built-in method builtins.exec>  ██████████████████████████████████████████████████████░░░░░░░░░░░░░░░░░░   74.9%  score=8.47
-  _run_code                        ████████████████████████████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░   66.9%  score=8.0
-  analyse                          █████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░    6.4%  score=7.12
-  namedtuple                       ████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░    4.9%  score=6.79
-  handler                          ██████████████████████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░   58.3%  score=6.63
-  slow_query                       ██████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░   35.6%  score=6.06
+  handler     ████████████████████████████████████████████████████████████████████████  100.0%  score=10.8
+  slow_query  ███████████████████████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░   60.3%  score=8.03
 ────────────────────────────────────────────────────────────────────────────────────────────

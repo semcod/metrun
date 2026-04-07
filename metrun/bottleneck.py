@@ -54,6 +54,7 @@ class Bottleneck:
     diagnosis: str
     children: List[str] = field(default_factory=list)
     parents: List[str] = field(default_factory=list)
+    language: str = "python"
 
 
 class BottleneckEngine:
@@ -141,6 +142,7 @@ class BottleneckEngine:
                     diagnosis=diagnosis,
                     children=list(record.children),
                     parents=list(record.parents),
+                    language=record.language,
                 )
             )
 

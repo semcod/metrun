@@ -27,6 +27,7 @@ class FunctionRecord:
     children: List[str] = field(default_factory=list)
     # Names of functions that called *this* function (parents)
     parents: List[str] = field(default_factory=list)
+    language: str = "python"
 
     @property
     def avg_time(self) -> float:

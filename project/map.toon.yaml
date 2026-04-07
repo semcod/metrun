@@ -1,22 +1,53 @@
-# metrun | 11f 1841L | shell:1,python:10 | 2026-04-06
-# stats: 58 func | 0 cls | 11 mod | CC̄=2.4 | critical:0 | cycles:0
-# alerts[4]: fan-out find_critical_path=13; fan-out BottleneckEngine.analyse=12; fan-out profile=12; fan-out inspect=11
-# hotspots[5]: find_critical_path fan=13; profile fan=12; BottleneckEngine.analyse fan=12; inspect fan=11; generate_report fan=8
-# evolution: CC̄ 2.4→2.4 (flat 0.0)
+# metrun | 12f 2684L | shell:1,python:11 | 2026-04-07
+# stats: 78 func | 0 cls | 12 mod | CC̄=3.2 | critical:1 | cycles:0
+# alerts[5]: CC load_records_json=19; fan-out CProfileBridge.to_records=18; fan-out inspect=18; fan-out load_records_json=15; fan-out find_critical_path=13
+# hotspots[5]: inspect fan=18; CProfileBridge.to_records fan=18; load_records_json fan=15; profile fan=13; find_critical_path fan=13
+# evolution: CC̄ 2.4→3.2 (regressed +0.8)
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
-M[11]:
+M[12]:
   demo.py,14
-  metrun/__init__.py,107
-  metrun/bottleneck.py,154
-  metrun/cli.py,215
-  metrun/cprofile_bridge.py,165
+  metrun/__init__.py,122
+  metrun/bottleneck.py,155
+  metrun/cli.py,303
+  metrun/cprofile_bridge.py,251
   metrun/critical_path.py,211
   metrun/flamegraph.py,222
-  metrun/profiler.py,180
-  metrun/report.py,190
-  metrun/suggestions.py,253
-  project.sh,130
+  metrun/profiler.py,181
+  metrun/records_io.py,256
+  metrun/report.py,202
+  metrun/suggestions.py,628
+  project.sh,139
 D:
+  metrun/records_io.py:
+    e: _first_present,_string_list,_coerce_int,_coerce_float,_looks_like_single_record,_compose_name,_build_record,_merge_unique,_merge_records,record_to_payload,records_to_payload,dump_records_json,save_records_json,load_records_json,load_records_file
+    _first_present(mapping;keys)
+    _string_list(value)
+    _coerce_int(value;label)
+    _coerce_float(value;label)
+    _looks_like_single_record(payload)
+    _compose_name(entry;fallback_name)
+    _build_record(entry)
+    _merge_unique(existing;new_items)
+    _merge_records(existing;incoming)
+    record_to_payload(record)
+    records_to_payload(records)
+    dump_records_json(records)
+    save_records_json(records;path)
+    load_records_json(payload)
+    load_records_file(path)
+  metrun/cprofile_bridge.py:
+    e: CProfileBridge,_stdlib_prefixes,_is_user_code
+    CProfileBridge: __init__(0),profile_func(1),profile_block(0),get_stats(0),to_records(0),save(1),reset(0),__enter__(0),__exit__(0)  # Thin wrapper around :class:`cProfile.Profile` that exposes p...
+    _stdlib_prefixes()
+    _is_user_code(filename;funcname)
+  metrun/cli.py:
+    e: _run_script,cli,profile,inspect,flame,main
+    _run_script(script_path)
+    cli()
+    profile(script;top;flame;ascii_flame;include_stdlib;export_records)
+    inspect(script;top;flame;records_file;ascii_flame;include_stdlib;export_records)
+    flame(prof_file;output;width)
+    main()
   metrun/critical_path.py:
     e: CriticalPathNode,CriticalPath,find_critical_path,format_critical_path,print_critical_path
     CriticalPathNode:  # A single node in the critical path...
@@ -24,17 +55,15 @@ D:
     find_critical_path(records)
     format_critical_path(path)
     print_critical_path(path)
-  metrun/cprofile_bridge.py:
-    e: CProfileBridge
-    CProfileBridge: __init__(0),profile_func(1),profile_block(0),get_stats(0),to_records(0),save(1),reset(0),__enter__(0),__exit__(0)  # Thin wrapper around :class:`cProfile.Profile` that exposes p...
   metrun/report.py:
-    e: _severity_icon,_format_bottleneck_entry,_format_dependency_graph,_format_critical_path_section,_format_suggestions_section,_format_summary,generate_report,print_report
+    e: _severity_icon,_format_bottleneck_entry,_format_dependency_graph,_format_critical_path_section,_format_suggestions_section,_format_summary,_shared_language,generate_report,print_report
     _severity_icon(diagnosis)
     _format_bottleneck_entry(b)
     _format_dependency_graph(bottlenecks)
     _format_critical_path_section(records)
     _format_suggestions_section(bottlenecks)
     _format_summary(worst)
+    _shared_language(bottlenecks)
     generate_report(bottlenecks)
     print_report(bottlenecks)
   metrun/bottleneck.py:
@@ -43,8 +72,9 @@ D:
     BottleneckEngine: __init__(1),_total_wall_time(0),_compute_score(3),_diagnose(2),analyse(0)  # Analyse a dict of FunctionRecords and return a ranked list o...
     analyse(records)
   metrun/suggestions.py:
-    e: Suggestion,suggest,format_suggestions,print_suggestions
+    e: Suggestion,_normalise_language,suggest,format_suggestions,print_suggestions
     Suggestion:  # A single actionable fix suggestion...
+    _normalise_language(language)
     suggest(bottleneck)
     format_suggestions(name;suggestions)
     print_suggestions(name;suggestions)
@@ -54,14 +84,6 @@ D:
     print_ascii(bottlenecks)
     render_svg(stats;output_path)
     render_svg_string(stats)
-  metrun/cli.py:
-    e: _run_script,cli,profile,inspect,flame,main
-    _run_script(script_path)
-    cli()
-    profile(script;top;flame;ascii_flame)
-    inspect(script;top;flame)
-    flame(prof_file;output;width)
-    main()
   metrun/profiler.py:
     e: FunctionRecord,ExecutionTracer,trace,section,get_records,reset
     FunctionRecord:  # Aggregated stats for a single function (or call-site)...
@@ -78,10 +100,10 @@ Usage — decorator:
     slow_query(n)
     handler(items)
   project.sh:
-    e: write_cli_report,write_cli_report,write_cli_report,_benchmark,slow_query,handler,_benchmark,print
-    write_cli_report()
-    write_cli_report()
-    write_cli_report()
+    e: reset,print,print_report,_benchmark,slow_query,handler,_benchmark,print
+    reset()
+    print()
+    print_report()
     _benchmark()
     slow_query()
     handler()

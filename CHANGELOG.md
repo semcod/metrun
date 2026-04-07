@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.10] - 2026-04-07
+
+### Fixed
+- Fix unused-imports issues (ticket-5bf06f1a)
+
 ## [0.1.10] - 2026-04-06
 
 ### Fixed
@@ -31,6 +36,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix unused-imports issues (ticket-c579906e)
 
 ## [Unreleased]
+
+### Docs
+- Document language-neutral record export/import in the README and generated docs.
+
+## [0.1.6] - 2026-04-07
+
+### Docs
+- Update CHANGELOG.md
+- Update README.md
+- Update TODO.md
+- Update docs/README.md
+- Update project/README.md
+- Update project/context.md
+
+### Test
+- Update tests/test_records_io.py
+- Update tests/test_suggestions.py
+
+### Other
+- Update metrun/__init__.py
+- Update metrun/bottleneck.py
+- Update metrun/cli.py
+- Update metrun/cprofile_bridge.py
+- Update metrun/profiler.py
+- Update metrun/records_io.py
+- Update metrun/report.py
+- Update metrun/suggestions.py
+- Update planfile.yaml
+- Update project/analysis.toon.yaml
+- ... and 18 more files
 
 ## [0.1.5] - 2026-04-06
 

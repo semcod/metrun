@@ -16,6 +16,7 @@ def _make_bottleneck(
     name: str = "func",
     score: float = 5.0,
     diagnosis: str = "🐢 slow execution",
+    language: str = "python",
 ) -> Bottleneck:
     return Bottleneck(
         name=name,
@@ -24,6 +25,7 @@ def _make_bottleneck(
         score=score,
         time_pct=50.0,
         diagnosis=diagnosis,
+        language=language,
     )
 
 
@@ -91,6 +93,19 @@ class TestSuggest:
             assert isinstance(tip, Suggestion)
             assert tip.title
             assert tip.detail
+
+    def test_javascript_catalogue_is_language_aware(self):
+        b = _make_bottleneck(diagnosis="🌲 dependency bottleneck", language="javascript")
+        tips = suggest(b)
+        libraries = {tip.library for tip in tips}
+        assert any("Promise.all" in lib or "worker_threads" in lib for lib in libraries)
+        assert not any("functools" in lib or "numpy" in lib or "numba" in lib for lib in libraries)
+
+    def test_rust_catalogue_is_language_aware(self):
+        b = _make_bottleneck(diagnosis="🐢 slow execution", score=_HIGH_SCORE_THRESHOLD + 1.0, language="rust")
+        tips = suggest(b)
+        libraries = {tip.library for tip in tips}
+        assert any("cargo-flamegraph" in lib or "criterion" in lib for lib in libraries)
 
 
 # ---------------------------------------------------------------------------

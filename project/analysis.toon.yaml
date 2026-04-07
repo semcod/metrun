@@ -1,16 +1,18 @@
-# code2llm | 11f 1841L | python:10,shell:1 | 2026-04-06
-# CC̄=2.4 | critical:0/58 | dups:0 | cycles:0
+# code2llm | 12f 2684L | python:11,shell:1 | 2026-04-07
+# CC̄=3.2 | critical:1/78 | dups:0 | cycles:0
 
-HEALTH[0]: ok
+HEALTH[1]:
+  🟡 CC    load_records_json CC=19 (limit:15)
 
-REFACTOR[0]: none needed
+REFACTOR[1]:
+  1. split 1 high-CC methods  (CC>15)
 
-PIPELINES[31]:
+PIPELINES[32]:
   [1] Src [handler]: handler → slow_query
       PURITY: 100% pure
   [2] Src [profile]: profile → _run_script
       PURITY: 100% pure
-  [3] Src [inspect]: inspect → _run_script
+  [3] Src [inspect]: inspect → analyse
       PURITY: 100% pure
   [4] Src [flame]: flame → render_svg
       PURITY: 100% pure
@@ -18,27 +20,29 @@ PIPELINES[31]:
       PURITY: 100% pure
 
 LAYERS:
-  metrun/                         CC̄=2.7    ←in:0  →out:4
-  │ suggestions                253L  1C    3m  CC=6      ←1
+  metrun/                         CC̄=3.6    ←in:0  →out:6
+  │ !! suggestions                628L  1C    4m  CC=6      ←1
+  │ cli                        303L  0C    6m  CC=13     ←0
+  │ !! records_io                 256L  0C   15m  CC=19     ←1
+  │ cprofile_bridge            251L  1C   11m  CC=14     ←0
   │ flamegraph                 222L  0C    4m  CC=5      ←1
-  │ cli                        215L  0C    6m  CC=4      ←0
   │ critical_path              211L  2C    3m  CC=11     ←1
-  │ report                     190L  0C    8m  CC=7      ←1
-  │ profiler                   180L  2C   12m  CC=4      ←0
-  │ cprofile_bridge            165L  1C    9m  CC=8      ←0
-  │ bottleneck                 154L  2C    6m  CC=7      ←1
-  │ __init__                   107L  0C    0m  CC=0.0    ←0
+  │ report                     202L  0C    9m  CC=8      ←0
+  │ profiler                   181L  2C   12m  CC=4      ←0
+  │ bottleneck                 155L  2C    6m  CC=7      ←1
+  │ __init__                   122L  0C    0m  CC=0.0    ←0
   │
-  ./                              CC̄=0.6    ←in:0  →out:0
-  │ project.sh                 130L  0C    5m  CC=0.0    ←4
+  ./                              CC̄=0.5    ←in:0  →out:0
+  │ project.sh                 139L  0C    6m  CC=0.0    ←5
   │ demo                        14L  0C    2m  CC=2      ←0
   │
 
 COUPLING:
             metrun  project
-   metrun       ──        4
-  project       ←4       ──
+   metrun       ──        6
+  project       ←6       ──  hub
   CYCLES: none
+  HUB: project/ (fan-in=6)
 
 EXTERNAL:
   validation: run `vallm batch .` → validation.toon

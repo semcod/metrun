@@ -290,3 +290,16 @@ sprints:
     model_hints:
       planning: balanced
       implementation: balanced
+  - id: ticket-5bf06f1a
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in metrun/records_io.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - metrun/records_io.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced

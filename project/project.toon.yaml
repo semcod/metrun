@@ -1,40 +1,55 @@
-# metrun | 58 func | 10f | 3186L | python | 2026-04-06
+# metrun | 78 func | 11f | 4111L | python | 2026-04-07
 
 HEALTH:
-  CC̄=2.4  critical=1 (limit:10)  dup=0  cycles=0
+  CC̄=3.2  critical=6 (limit:10)  dup=0  cycles=0
 
-ALERTS[4]:
+ALERTS[8]:
+  !!  high_fan_out     inspect = 18 (limit:10)
+  !!  high_fan_out     CProfileBridge.to_records = 18 (limit:10)
+  !!  high_fan_out     load_records_json = 15 (limit:10)
+  !   cc_exceeded      load_records_json = 19 (limit:15)
+  !   high_fan_out     profile = 13 (limit:10)
   !   high_fan_out     find_critical_path = 13 (limit:10)
-  !   high_fan_out     profile = 12 (limit:10)
   !   high_fan_out     BottleneckEngine.analyse = 12 (limit:10)
-  !   high_fan_out     inspect = 11 (limit:10)
+  !   high_fan_out     generate_report = 10 (limit:10)
 
-MODULES[11] (top by size):
-  M[metrun/suggestions.py] 253L C:1 F:3 CC↑6 D:1 (python)
+MODULES[12] (top by size):
+  M[metrun/suggestions.py] 628L C:1 F:4 CC↑6 D:1 (python)
+  M[metrun/cli.py] 303L C:0 F:6 CC↑13 D:0 (python)
+  M[metrun/records_io.py] 256L C:0 F:15 CC↑19 D:1 (python)
+  M[metrun/cprofile_bridge.py] 251L C:1 F:11 CC↑14 D:0 (python)
   M[metrun/flamegraph.py] 222L C:0 F:4 CC↑5 D:1 (python)
-  M[metrun/cli.py] 215L C:0 F:6 CC↑4 D:0 (python)
   M[metrun/critical_path.py] 211L C:2 F:3 CC↑11 D:1 (python)
-  M[metrun/report.py] 190L C:0 F:8 CC↑7 D:1 (python)
-  M[metrun/profiler.py] 180L C:2 F:12 CC↑4 D:0 (python)
-  M[metrun/cprofile_bridge.py] 165L C:1 F:9 CC↑8 D:0 (python)
-  M[metrun/bottleneck.py] 154L C:2 F:6 CC↑7 D:1 (python)
-  M[project.sh] 130L C:0 F:5 CC↑0 D:4 (shell)
-  M[metrun/__init__.py] 107L C:0 F:0 CC↑0 D:0 (python)
+  M[metrun/report.py] 202L C:0 F:9 CC↑8 D:0 (python)
+  M[metrun/profiler.py] 181L C:2 F:12 CC↑4 D:0 (python)
+  M[metrun/bottleneck.py] 155L C:2 F:6 CC↑7 D:1 (python)
+  M[project.sh] 139L C:0 F:6 CC↑0 D:5 (shell)
+  M[metrun/__init__.py] 122L C:0 F:0 CC↑0 D:0 (python)
   M[demo.py] 14L C:0 F:2 CC↑2 D:0 (python)
-  LANGS: python:10/shell:1
+  LANGS: python:11/shell:1
 
-HOTSPOTS[4]:
+HOTSPOTS[7]:
+  ★ inspect fan=18  // Enhanced profile of SCRIPT: bottlenecks + critical path + suggestions.
+
+SCRIPT i
+  ★ CProfileBridge.to_records fan=18  // Convert cProfile stats to a ``dict[name, FunctionRecord]``.
+
+The conversion maps
+  ★ load_records_json fan=15  // Orchestrates 15 calls
+  ★ profile fan=13  // Profile SCRIPT and display the bottleneck report.
+
+SCRIPT is the path to a Pytho
   ★ find_critical_path fan=13  // Find the critical (hottest) execution path through the call graph.
 
 Parameters
 -
-  ★ profile fan=12  // Profile SCRIPT and display the bottleneck report.
 
-SCRIPT is the path to a Pytho
-  ★ BottleneckEngine.analyse fan=12  // Return bottlenecks sorted by score descending.
-  ★ inspect fan=11  // Enhanced profile of SCRIPT: bottlenecks + critical path + suggestions.
-
-SCRIPT i
+REFACTOR[5]:
+  [1] H/H Split god module metrun/suggestions.py (628L, 1 classes)
+  [2] M/L Split load_records_json (CC=19 → target CC<10)
+  [3] M/M Reduce inspect fan-out (currently 18)
+  [4] M/M Reduce CProfileBridge.to_records fan-out (currently 18)
+  [5] M/M Reduce load_records_json fan-out (currently 15)
 
 EVOLUTION:
-  2026-04-06 CC̄=2.4 crit=1 3186L // Automated analysis
+  2026-04-07 CC̄=3.2 crit=6 4111L // Automated analysis

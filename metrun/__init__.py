@@ -53,6 +53,14 @@ from metrun.flamegraph import (
     render_svg,
     render_svg_string,
 )
+from metrun.records_io import (
+    record_to_payload,
+    records_to_payload,
+    dump_records_json,
+    load_records_json,
+    load_records_file,
+    save_records_json,
+)
 from metrun.critical_path import (
     CriticalPath,
     CriticalPathNode,
@@ -92,6 +100,13 @@ __all__ = [
     "print_ascii",
     "render_svg",
     "render_svg_string",
+    # records I/O
+    "record_to_payload",
+    "records_to_payload",
+    "dump_records_json",
+    "load_records_json",
+    "load_records_file",
+    "save_records_json",
     # critical path
     "CriticalPath",
     "CriticalPathNode",

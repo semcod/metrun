@@ -2,13 +2,13 @@
 
 ## AI Cost Tracking
 
-![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-0.1.5-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
-![AI Cost](https://img.shields.io/badge/AI%20Cost-$0.60-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-3.7h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
+![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-0.1.6-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![AI Cost](https://img.shields.io/badge/AI%20Cost-$0.75-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-3.8h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
 
-- 🤖 **LLM usage:** $0.6000 (4 commits)
-- 👤 **Human dev:** ~$375 (3.7h @ $100/h, 30min dedup)
+- 🤖 **LLM usage:** $0.7500 (5 commits)
+- 👤 **Human dev:** ~$376 (3.8h @ $100/h, 30min dedup)
 
-Generated on 2026-04-06 using [openrouter/qwen/qwen3-coder-next](https://openrouter.ai/qwen/qwen3-coder-next)
+Generated on 2026-04-07 using [openrouter/qwen/qwen3-coder-next](https://openrouter.ai/qwen/qwen3-coder-next)
 
 ---
 
@@ -224,6 +224,53 @@ Compatible with these popular tools (no code changes needed):
 
 ---
 
+## Language-neutral records interchange
+
+`metrun` can export and import normalised profiling data as JSON.
+
+- `metrun profile my_script.py --export-records profile.json`
+  - saves the collected records as language-neutral JSON.
+- `metrun inspect --records profile.json`
+  - loads a JSON or JSONL records file produced by `metrun` or another runtime.
+
+The importer accepts top-level `records`, `functions`, `nodes`, or `items` collections, plus single-record objects and mapping-of-records payloads. The `language` field is preserved when present.
+
+Example payload:
+
+```json
+{
+  "schema_version": 1,
+  "language": "javascript",
+  "records": [
+    {
+      "name": "root",
+      "total_time": 1.0,
+      "calls": 1,
+      "children": ["child"],
+      "parents": [],
+      "language": "javascript"
+    },
+    {
+      "name": "child",
+      "total_time": 0.25,
+      "calls": 4,
+      "children": [],
+      "parents": ["root"],
+      "language": "javascript"
+    }
+  ]
+}
+```
+
+For JSONL, write one record per line:
+
+```jsonl
+{"name":"root","total_time":1.0,"calls":1,"children":["child"],"language":"javascript"}
+{"name":"child","total_time":0.25,"calls":4,"parents":["root"],"language":"javascript"}
+```
+
+---
+
 ## VizTracer integration
 
 ```python
@@ -281,7 +328,7 @@ Suggestion catalogue per diagnosis:
 ## CLI
 
 ```bash
-# Profile a script — bottleneck report
+# Profile a script — bottleneck report (user code only, stdlib filtered)
 metrun profile my_script.py
 
 # Profile + ASCII flamegraph in terminal
@@ -292,6 +339,17 @@ metrun profile my_script.py --flame flame.svg
 
 # Full enhanced report: bottlenecks + critical path + suggestions
 metrun inspect my_script.py
+
+# Export normalised records for another runtime or later analysis
+metrun profile my_script.py --export-records profile.json
+
+# Analyse language-neutral JSON or JSONL records
+metrun inspect --records profile.json
+metrun inspect --records profile.jsonl
+
+# Include Python stdlib / C-builtins in the report
+metrun profile my_script.py --include-stdlib
+metrun inspect my_script.py --include-stdlib
 
 # Convert existing .prof dump to SVG
 metrun flame profile.prof -o flame.svg
@@ -345,6 +403,15 @@ metrun/
 | **Decorator tracing is opt-in** | Only functions decorated with `@trace` or wrapped in `section()` appear in `get_records()` — not the full call tree |
 | **Thread-local call stack** | Each thread has an independent call stack; cross-thread parent→child links are not recorded |
 | **No async support** | `asyncio` coroutines are not automatically traced by the decorator backend |
+
+## cProfile filtering
+
+By default `CProfileBridge.to_records()` and the CLI commands strip Python stdlib, C-builtins, anonymous entries (`<module>`, `<genexpr>`, etc.) and metrun's own internals — so the report focuses on **user code only**.  Call graph connectivity is maintained through bridging: filtered intermediate nodes (e.g. decorator wrappers) are transparently traversed when rebuilding parent→child links.
+
+```python
+records = bridge.to_records()                    # user code only (default)
+records = bridge.to_records(exclude_stdlib=False) # full call tree
+```
 
 ## License
 

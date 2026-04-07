@@ -1,14 +1,23 @@
-# code2llm/evolution | 58 func | 10f | 2026-04-06
+# code2llm/evolution | 78 func | 11f | 2026-04-07
 
-NEXT[0]: no refactoring needed
+NEXT[2] (ranked by impact):
+  [1] !! SPLIT           metrun/suggestions.py
+      WHY: 628L, 1 classes, max CC=6
+      EFFORT: ~4h  IMPACT: 3768
 
-RISKS[0]: none
+  [2] !  SPLIT-FUNC      load_records_json  CC=19  fan=15
+      WHY: CC=19 exceeds 15
+      EFFORT: ~1h  IMPACT: 285
+
+
+RISKS[1]:
+  ⚠ Splitting metrun/suggestions.py may break 4 import paths
 
 METRICS-TARGET:
-  CC̄:          2.4 → ≤1.7
-  max-CC:      11 → ≤5
-  god-modules: 0 → 0
-  high-CC(≥15): 0 → ≤0
+  CC̄:          3.2 → ≤2.2
+  max-CC:      19 → ≤9
+  god-modules: 1 → 0
+  high-CC(≥15): 1 → ≤0
   hub-types:   0 → ≤0
 
 PATTERNS (language parser shared logic):
@@ -36,4 +45,4 @@ PATTERNS (language parser shared logic):
     - Standardized FunctionInfo/ClassInfo models
 
 HISTORY:
-  prev CC̄=2.4 → now CC̄=2.4
+  prev CC̄=2.4 → now CC̄=3.2

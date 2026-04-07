@@ -13,22 +13,22 @@ flowchart TD
     end
 
     subgraph Core
-        project__write_cli_report["write_cli_report"]
+        project__reset["reset"]
         project___benchmark["_benchmark"]
         project__slow_query["slow_query"]
         project__handler["handler"]
         demo__handler["handler"]
+        metrun__records_io___first_present["_first_present"]
+        metrun__records_io___compose_name("_compose_name CC=12")
+        metrun__records_io___build_record["_build_record"]
+        metrun__records_io__load_records_json{{load_records_json CC=19}}
+        metrun__records_io__load_records_file["load_records_file"]
         metrun__suggestions__print_suggestions["print_suggestions"]
-        metrun__report___severity_icon["_severity_icon"]
-        metrun__report___format_bottleneck_entry["_format_bottleneck_entry"]
-        metrun__report__generate_report["generate_report"]
         metrun__report__print_report["print_report"]
         metrun__critical_path__print_critical_path["print_critical_path"]
         metrun__flamegraph__render_svg_string["render_svg_string"]
         metrun__bottleneck__BottleneckEngine___total_wall_time["_total_wall_time"]
-        metrun__bottleneck__BottleneckEngine___compute_score["_compute_score"]
-        metrun__bottleneck__BottleneckEngine___diagnose["_diagnose"]
-        ...["+20 more"]
+        ...["+22 more"]
     end
 
-    class project__write_cli_report,project___benchmark,project__slow_query,project__handler,demo__handler,metrun__cli___run_script,metrun__cli__cli,metrun__cli__profile,metrun__cli__inspect,metrun__cli__flame entry
+    class project__reset,project___benchmark,project__slow_query,project__handler,demo__handler,metrun__cli___run_script,metrun__cli__cli,metrun__cli__profile,metrun__cli__inspect,metrun__cli__flame entry

@@ -1,0 +1,47 @@
+=== metrun CLI endpoint flows ===
+
+🔥 METRUN PERFORMANCE REPORT
+=============================
+
+🟡 cli.flame
+   → time:      0.1120s  (89.6%)
+   → calls:     1
+   → score:     10.3
+   → diagnosis: 🐢 slow execution
+
+🟢 slow_query
+   → time:      0.0042s  (3.4%)
+   → calls:     300
+   → score:     2.86
+   → diagnosis: ✅ nominal
+   → called by: handler
+
+🟢 handler
+   → time:      0.0065s  (5.2%)
+   → calls:     3
+   → score:     1.68
+   → diagnosis: ✅ nominal
+   → called by: cli.profile, cli.inspect
+
+🟢 cli.profile
+   → time:      0.0079s  (6.3%)
+   → calls:     1
+   → score:     1.5
+   → diagnosis: ✅ nominal
+
+🟢 cli.inspect
+   → time:      0.0051s  (4.1%)
+   → calls:     1
+   → score:     1.26
+   → diagnosis: ✅ nominal
+
+── Dependency Graph ──────────────────────────
+   handler  →  slow_query
+   cli.profile  →  handler
+   cli.inspect  →  handler
+
+── Summary ───────────────────────────────────
+   Top bottleneck : cli.flame
+   Score          : 10.3
+   Diagnosis      : 🐢 slow execution
+

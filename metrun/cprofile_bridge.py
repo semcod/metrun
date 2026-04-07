@@ -174,7 +174,31 @@ class CProfileBridge:
             filename, _lineno, funcname = entry
             return _is_user_code(filename, funcname)
 
-        # First pass: create records for user-code entries only
+        # Pre-build callers map (name → set of parent names) for bridging
+        callers_map: dict = {}  # child_name → set of parent_names
+        for entry, (cc, nc, tt, ct, callers) in raw.items():
+            child_name = _key(entry)
+            if child_name not in callers_map:
+                callers_map[child_name] = set()
+            for caller_entry in callers:
+                callers_map[child_name].add(_key(caller_entry))
+
+        user_names: set = {_key(e) for e in raw if _include(e)}
+
+        def _user_ancestors(name: str, seen: set) -> set:
+            """Nearest user-code ancestors, bridging through filtered nodes."""
+            result: set = set()
+            for parent in callers_map.get(name, set()):
+                if parent in seen:
+                    continue
+                if parent in user_names:
+                    result.add(parent)
+                else:
+                    seen.add(parent)
+                    result.update(_user_ancestors(parent, seen))
+            return result
+
+        # First pass: create records for user-code entries
         for entry, (cc, nc, tt, ct, callers) in raw.items():
             if not _include(entry):
                 continue
@@ -185,23 +209,17 @@ class CProfileBridge:
             rec.total_time += ct
             rec.calls += cc
 
-        # Second pass: build parent → child links (user-code only)
-        for entry, (cc, nc, tt, ct, callers) in raw.items():
-            if not _include(entry):
-                continue
-            child_name = _key(entry)
-            child_rec = records[child_name]
-            for caller_entry in callers:
-                if not _include(caller_entry):
-                    continue
-                parent_name = _key(caller_entry)
+        # Second pass: build bridged parent → child links
+        for name in list(records.keys()):
+            rec = records[name]
+            for parent_name in _user_ancestors(name, {name}):
                 if parent_name not in records:
-                    records[parent_name] = FunctionRecord(name=parent_name)
+                    continue
                 parent_rec = records[parent_name]
-                if child_name not in parent_rec.children:
-                    parent_rec.children.append(child_name)
-                if parent_name not in child_rec.parents:
-                    child_rec.parents.append(parent_name)
+                if name not in parent_rec.children:
+                    parent_rec.children.append(name)
+                if parent_name not in rec.parents:
+                    rec.parents.append(parent_name)
 
         return records
 

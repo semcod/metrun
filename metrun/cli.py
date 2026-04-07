@@ -51,6 +51,7 @@ import click
 from metrun.bottleneck import analyse
 from metrun.cprofile_bridge import CProfileBridge
 from metrun.flamegraph import print_ascii, render_svg
+from metrun.records_io import load_records_file, save_records_json
 from metrun.report import print_report
 
 
@@ -112,7 +113,20 @@ def cli():
     default=False,
     help="Include Python stdlib / C-builtin functions in the report.",
 )
-def profile(script: str, top: int, flame: Optional[str], ascii_flame: bool, include_stdlib: bool):
+@click.option(
+    "--export-records",
+    default=None,
+    metavar="FILE",
+    help="Save the collected records as language-neutral JSON.",
+)
+def profile(
+    script: str,
+    top: int,
+    flame: Optional[str],
+    ascii_flame: bool,
+    include_stdlib: bool,
+    export_records: Optional[str],
+) -> None:
     """Profile SCRIPT and display the bottleneck report.
 
     SCRIPT is the path to a Python file to profile.
@@ -124,6 +138,10 @@ def profile(script: str, top: int, flame: Optional[str], ascii_flame: bool, incl
     if not records:
         click.echo("⚠️  No profiling data collected.")
         return
+
+    if export_records:
+        save_records_json(records, export_records)
+        click.echo(f"🧾 Records saved → {export_records}")
 
     bottlenecks = analyse(records)
     print_report(bottlenecks, top_n=top)
@@ -142,7 +160,7 @@ def profile(script: str, top: int, flame: Optional[str], ascii_flame: bool, incl
 # ---------------------------------------------------------------------------
 
 @cli.command()
-@click.argument("script", type=click.Path(exists=True))
+@click.argument("script", required=False, type=click.Path(exists=True))
 @click.option(
     "--top", "-n",
     default=10,
@@ -156,20 +174,69 @@ def profile(script: str, top: int, flame: Optional[str], ascii_flame: bool, incl
     help="Also generate an SVG flamegraph and save to FILE.",
 )
 @click.option(
+    "--records",
+    "records_file",
+    default=None,
+    metavar="FILE",
+    help="Load language-neutral JSON records produced by another runtime.",
+)
+@click.option(
+    "--ascii-flame",
+    "ascii_flame",
+    is_flag=True,
+    default=False,
+    help="Print an ASCII flamegraph to the terminal.",
+)
+@click.option(
     "--include-stdlib",
     "include_stdlib",
     is_flag=True,
     default=False,
     help="Include Python stdlib / C-builtin functions in the report.",
 )
-def inspect(script: str, top: int, flame: Optional[str], include_stdlib: bool):
-    """Enhanced profile of SCRIPT: bottlenecks + critical path + suggestions.
+@click.option(
+    "--export-records",
+    default=None,
+    metavar="FILE",
+    help="Save the normalised records as language-neutral JSON.",
+)
+def inspect(
+    script: Optional[str],
+    top: int,
+    flame: Optional[str],
+    records_file: Optional[str],
+    ascii_flame: bool,
+    include_stdlib: bool,
+    export_records: Optional[str],
+) -> None:
+    """Enhanced profile of SCRIPT or records file: bottlenecks + critical path + suggestions.
 
-    SCRIPT is the path to a Python file to profile.
+    SCRIPT is the path to a Python file to profile unless --records is provided.
     """
-    click.echo(f"🔍 Inspecting: {script}")
-    bridge = _run_script(script)
-    records = bridge.to_records(exclude_stdlib=not include_stdlib)
+    if script and not records_file:
+        lowered = script.lower()
+        if lowered.endswith(".json") or lowered.endswith(".jsonl"):
+            records_file = script
+            script = None
+
+    if bool(script) == bool(records_file):
+        raise click.UsageError("Provide exactly one SCRIPT or --records FILE.")
+
+    bridge: Optional[CProfileBridge] = None
+    if records_file:
+        click.echo(f"🔍 Inspecting records: {records_file}")
+        records = load_records_file(records_file)
+        if flame:
+            click.echo("⚠️  SVG flamegraphs require a cProfile .prof source; skipping --flame.")
+            flame = None
+    else:
+        click.echo(f"🔍 Inspecting: {script}")
+        bridge = _run_script(script)
+        records = bridge.to_records(exclude_stdlib=not include_stdlib)
+
+    if export_records:
+        save_records_json(records, export_records)
+        click.echo(f"🧾 Records saved → {export_records}")
 
     if not records:
         click.echo("⚠️  No profiling data collected.")
@@ -187,7 +254,12 @@ def inspect(script: str, top: int, flame: Optional[str], include_stdlib: bool):
         show_suggestions=True,
     )
 
+    if ascii_flame:
+        print_ascii(bottlenecks, top_n=top)
+
     if flame:
+        if bridge is None:
+            raise click.UsageError("SVG flamegraphs require a Python script profile.")
         stats = bridge.get_stats()
         render_svg(stats, flame)
         click.echo(f"🔥 Flamegraph saved → {flame}")
