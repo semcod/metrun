@@ -914,3 +914,19 @@ sprints:
     model_hints:
       planning: balanced
       implementation: balanced
+tasks:
+- id: refactor-2026-04-20-001
+  title: 'extract_functions: toon.py'
+  status: todo
+  action: extract_functions
+  file: metrun/toon.py
+  priority: 3
+  score: 1.9
+  created_at: '2026-04-20T09:27:35.230757+00:00'
+  source: redsl:dry_run
+  description: Funkcja o CC > 30 — krytycznie złożona, rozbij natychmiast
+  rule: split_extreme_cc
+stats:
+  total: 1
+  done: 0
+  todo: 1

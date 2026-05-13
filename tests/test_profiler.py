@@ -12,6 +12,7 @@ from metrun.profiler import ExecutionTracer, FunctionRecord
 # Basic tracing
 # ---------------------------------------------------------------------------
 
+
 def test_trace_decorator_records_call():
     tracer = ExecutionTracer()
 
@@ -93,6 +94,7 @@ def test_section_records_exception():
 # Parent → child relationships
 # ---------------------------------------------------------------------------
 
+
 def test_parent_child_relationship():
     tracer = ExecutionTracer()
 
@@ -141,6 +143,7 @@ def test_deep_nesting():
 # Reset
 # ---------------------------------------------------------------------------
 
+
 def test_reset_clears_records():
     tracer = ExecutionTracer()
 
@@ -158,6 +161,7 @@ def test_reset_clears_records():
 # ---------------------------------------------------------------------------
 # Thread safety
 # ---------------------------------------------------------------------------
+
 
 def test_thread_safety():
     tracer = ExecutionTracer()
@@ -179,6 +183,7 @@ def test_thread_safety():
 # Module-level helpers
 # ---------------------------------------------------------------------------
 
+
 def test_module_level_trace_and_get_records():
     import metrun
 
@@ -192,8 +197,11 @@ def test_module_level_trace_and_get_records():
     sample()
 
     records = metrun.get_records()
-    assert "test_profiler.test_module_level_trace_and_get_records.<locals>.sample" in records or \
-           any("sample" in k for k in records)
+    assert (
+        "test_profiler.test_module_level_trace_and_get_records.<locals>.sample"
+        in records
+        or any("sample" in k for k in records)
+    )
 
 
 def test_module_level_section():

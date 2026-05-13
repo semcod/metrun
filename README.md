@@ -1,14 +1,12 @@
-# metrun — Execution Intelligence Tool
-
 ## AI Cost Tracking
 
-![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-0.1.13-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
-![AI Cost](https://img.shields.io/badge/AI%20Cost-$1.80-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-8.5h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
+![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-0.1.31-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![AI Cost](https://img.shields.io/badge/AI%20Cost-$1.97-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-8.7h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
 
-- 🤖 **LLM usage:** $1.8000 (12 commits)
-- 👤 **Human dev:** ~$847 (8.5h @ $100/h, 30min dedup)
+- 🤖 **LLM usage:** $1.9731 (18 commits)
+- 👤 **Human dev:** ~$871 (8.7h @ $100/h, 30min dedup)
 
-Generated on 2026-04-07 using [openrouter/qwen/qwen3-coder-next](https://openrouter.ai/qwen/qwen3-coder-next)
+Generated on 2026-04-20 using [openrouter/qwen/qwen3-coder-next](https://openrouter.ai/qwen/qwen3-coder-next)
 
 ---
 
@@ -49,8 +47,6 @@ pip install metrun[flamegraph] # + SVG flamegraph support (flameprof)
 ```
 
 ---
-
-## Quick Start
 
 ### Decorator tracing
 
@@ -184,11 +180,6 @@ with bridge.profile_block():
     my_function()
 
 render_svg(bridge.get_stats(), "flame.svg")
-# Open flame.svg in a browser for the interactive flamegraph
-```
-
----
-
 ## cProfile Bridge
 
 Integrate with stdlib `cProfile` or any existing `.prof` dump:
@@ -274,19 +265,11 @@ For JSONL, write one record per line:
 
 ---
 
-## VizTracer integration
-
-```python
 # pip install viztracer
 from viztracer import VizTracer
 
 with VizTracer(output_file="trace.json"):
     my_function()
-
-# vizviewer trace.json  →  opens interactive HTML flamegraph
-```
-
----
 
 ## Critical Path
 
@@ -328,9 +311,6 @@ Suggestion catalogue per diagnosis:
 
 ---
 
-## CLI
-
-```bash
 # Profile a script — bottleneck report (user code only, stdlib filtered)
 metrun profile my_script.py
 
@@ -391,9 +371,6 @@ describes the project's performance bottlenecks.
    `.toon.yaml` file with sections: `SUMMARY`, `BOTTLENECKS`, `CRITICAL-PATH`,
    `SUGGESTIONS`, `ENDPOINTS`, and `TREE`.
 
-### Example output
-
-```yaml
 # metrun | 2b | top: handler 🌲 | python | 2026-04-07
 
 SUMMARY:
@@ -505,3 +482,20 @@ records = bridge.to_records(exclude_stdlib=False) # full call tree
 ## License
 
 Licensed under Apache-2.0.
+
+<!-- taskill:status:start -->
+
+## Status
+
+_Last updated by [taskill](https://github.com/oqlos/taskill) at 2026-04-25 13:40 UTC_
+
+| Metric | Value |
+|---|---|
+| HEAD | `f5ac1b7` |
+| Coverage | — |
+| Failing tests | — |
+| Commits in last cycle | 18 |
+
+> Added documentation and examples for a configuration management system, expanded the code analysis engine and code quality metrics, and introduced profiling utilities (flamegraph, critical path, cProfile bridge) plus CLI improvements. Several docs/examples/tests were refactored and a bottleneck engine/report was merged.
+
+<!-- taskill:status:end -->

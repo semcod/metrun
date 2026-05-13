@@ -58,8 +58,6 @@ BOTTLENECKS[2]:
 | `sample.jsonl` | Sample profiling data in JSONL format |
 | `test_sample.py` | Testing CLI with `--records` flag |
 
-## Usage Patterns
-
 ### 1. Human Report (terminal)
 ```python
 from metrun import trace, analyse, get_records, print_report

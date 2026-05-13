@@ -1,7 +1,15 @@
 """Example: export and re-import profiling records as JSON."""
+
 from pathlib import Path
 
-from metrun import analyse, get_records, reset, trace, save_records_json, load_records_file
+from metrun import (
+    analyse,
+    get_records,
+    reset,
+    trace,
+    save_records_json,
+    load_records_file,
+)
 
 
 @trace

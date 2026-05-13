@@ -9,8 +9,6 @@
 **License:** Apache-2.0[(LICENSE)](./LICENSE)  
 **Repository:** [https://github.com/semcod/metrun](https://github.com/semcod/metrun)
 
-## Installation
-
 ### From PyPI
 
 ```bash
@@ -31,14 +29,6 @@ pip install -e .
 pip install metrun[flamegraph]    # flamegraph features
 pip install metrun[dev]    # development tools
 ```
-
-## Quick Start
-
-### CLI Usage
-
-```bash
-# Generate full documentation for your project
-metrun ./my-project
 
 # Only regenerate README
 metrun ./my-project --readme-only
@@ -149,8 +139,6 @@ Content outside the markers is preserved when regenerating. Enable this with `sy
 metrun/
 ├── project├── demo    ├── cli├── metrun/    ├── toon    ├── records_io    ├── suggestions        ├── basic_app    ├── report    ├── critical_path    ├── profiler    ├── flamegraph    ├── bottleneck    ├── cprofile_bridge```
 
-## API Overview
-
 ### Classes
 
 - **`Suggestion`** — A single actionable fix suggestion.
@@ -234,21 +222,14 @@ metrun/
 - copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>
 - Tom Sapletta <tom-sapletta-com@users.noreply.github.com>
 
-We welcome contributions! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
+We welcome contributions! Please see [CONTRIBUTING.md](https://github.com/wronai/metrun/blob/main/CONTRIBUTING.md) for guidelines.
 
-### Development Setup
-
-```bash
 # Clone the repository
 git clone https://github.com/semcod/metrun
 cd metrun
 
 # Install in development mode
 pip install -e ".[dev]"
-
-# Run tests
-pytest
-```
 
 ## Documentation
 
@@ -263,15 +244,15 @@ pytest
 | Output | Description | Link |
 |--------|-------------|------|
 | `README.md` | Project overview (this file) | — |
-| `docs/api.md` | Consolidated API reference | [View](./docs/api.md) |
-| `docs/modules.md` | Module reference with metrics | [View](./docs/modules.md) |
-| `docs/architecture.md` | Architecture with diagrams | [View](./docs/architecture.md) |
-| `docs/dependency-graph.md` | Dependency graphs | [View](./docs/dependency-graph.md) |
-| `docs/coverage.md` | Docstring coverage report | [View](./docs/coverage.md) |
-| `docs/getting-started.md` | Getting started guide | [View](./docs/getting-started.md) |
-| `docs/configuration.md` | Configuration reference | [View](./docs/configuration.md) |
-| `docs/api-changelog.md` | API change tracking | [View](./docs/api-changelog.md) |
-| `CONTRIBUTING.md` | Contribution guidelines | [View](./CONTRIBUTING.md) |
+| `docs/api.md` | Consolidated API reference | [View](https://github.com/wronai/metrun/blob/main/docs/api.md) |
+| `docs/modules.md` | Module reference with metrics | [View](https://github.com/wronai/metrun/blob/main/docs/modules.md) |
+| `docs/architecture.md` | Architecture with diagrams | [View](https://github.com/wronai/metrun/blob/main/docs/architecture.md) |
+| `docs/dependency-graph.md` | Dependency graphs | [View](https://github.com/wronai/metrun/blob/main/docs/dependency-graph.md) |
+| `docs/coverage.md` | Docstring coverage report | [View](https://github.com/wronai/metrun/blob/main/docs/coverage.md) |
+| `docs/getting-started.md` | Getting started guide | [View](https://github.com/wronai/metrun/blob/main/docs/getting-started.md) |
+| `docs/configuration.md` | Configuration reference | [View](https://github.com/wronai/metrun/blob/main/docs/configuration.md) |
+| `docs/api-changelog.md` | API change tracking | [View](https://github.com/wronai/metrun/blob/main/docs/api-changelog.md) |
+| `CONTRIBUTING.md` | Contribution guidelines | [View](https://github.com/wronai/metrun/blob/main/CONTRIBUTING.md) |
 | `examples/` | Usage examples | [Browse](./examples) |
 | `mkdocs.yml` | MkDocs configuration | — |
 

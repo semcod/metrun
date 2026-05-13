@@ -25,8 +25,8 @@ def _rec(name, total_time=1.0, calls=1, children=None, parents=None):
 # find_critical_path
 # ---------------------------------------------------------------------------
 
-class TestFindCriticalPath:
 
+class TestFindCriticalPath:
     def test_empty_records(self):
         path = find_critical_path({})
         assert path.length == 0
@@ -107,8 +107,8 @@ class TestFindCriticalPath:
 # format_critical_path
 # ---------------------------------------------------------------------------
 
-class TestFormatCriticalPath:
 
+class TestFormatCriticalPath:
     def test_returns_string(self):
         records = {"f": _rec("f", total_time=1.0)}
         path = find_critical_path(records)

@@ -1,4 +1,5 @@
 """Example: cProfile bridge for profiling any callable."""
+
 from metrun import analyse, print_report
 from metrun.cprofile_bridge import CProfileBridge
 

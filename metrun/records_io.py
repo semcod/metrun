@@ -58,7 +58,9 @@ def _string_list(value: Any) -> list[str]:
     for item in iterator:
         if isinstance(item, Mapping):
             nested_name = _first_present(item, _NAME_KEYS)
-            result.append(str(nested_name) if nested_name is not None else str(dict(item)))
+            result.append(
+                str(nested_name) if nested_name is not None else str(dict(item))
+            )
         else:
             result.append(str(item))
     return result
@@ -91,7 +93,9 @@ def _compose_name(entry: Mapping[str, Any], fallback_name: str | None) -> str:
         return str(qualified)
 
     name = _first_present(entry, _NAME_KEYS)
-    label = str(name if name is not None else fallback_name if fallback_name is not None else "")
+    label = str(
+        name if name is not None else fallback_name if fallback_name is not None else ""
+    )
 
     file_name = _first_present(entry, _FILE_KEYS)
     line_no = _first_present(entry, _LINE_KEYS)
@@ -116,15 +120,21 @@ def _build_record(
 ) -> FunctionRecord:
     name = _compose_name(entry, fallback_name)
     total_time = _coerce_float(
-        _first_present(entry, _TOTAL_TIME_KEYS) if _first_present(entry, _TOTAL_TIME_KEYS) is not None else 0.0,
+        _first_present(entry, _TOTAL_TIME_KEYS)
+        if _first_present(entry, _TOTAL_TIME_KEYS) is not None
+        else 0.0,
         f"total_time for {name}",
     )
     calls = _coerce_int(
-        _first_present(entry, _CALLS_KEYS) if _first_present(entry, _CALLS_KEYS) is not None else 0,
+        _first_present(entry, _CALLS_KEYS)
+        if _first_present(entry, _CALLS_KEYS) is not None
+        else 0,
         f"calls for {name}",
     )
     language_value = _first_present(entry, _LANGUAGE_KEYS)
-    language = str(language_value if language_value is not None else default_language or "generic")
+    language = str(
+        language_value if language_value is not None else default_language or "generic"
+    )
 
     return FunctionRecord(
         name=name,
@@ -146,12 +156,17 @@ def _merge_unique(existing: list[str], new_items: list[str]) -> list[str]:
     return merged
 
 
-def _merge_records(existing: FunctionRecord, incoming: FunctionRecord) -> FunctionRecord:
+def _merge_records(
+    existing: FunctionRecord, incoming: FunctionRecord
+) -> FunctionRecord:
     existing.total_time += incoming.total_time
     existing.calls += incoming.calls
     existing.children = _merge_unique(existing.children, incoming.children)
     existing.parents = _merge_unique(existing.parents, incoming.parents)
-    if existing.language in {"", "generic"} and incoming.language not in {"", "generic"}:
+    if existing.language in {"", "generic"} and incoming.language not in {
+        "",
+        "generic",
+    }:
         existing.language = incoming.language
     return existing
 
@@ -179,7 +194,9 @@ def dump_records_json(records: Mapping[str, FunctionRecord], *, indent: int = 2)
     return json.dumps(records_to_payload(records), indent=indent, ensure_ascii=False)
 
 
-def save_records_json(records: Mapping[str, FunctionRecord], path: str | Path, *, indent: int = 2) -> None:
+def save_records_json(
+    records: Mapping[str, FunctionRecord], path: str | Path, *, indent: int = 2
+) -> None:
     output_path = Path(path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(dump_records_json(records, indent=indent), encoding="utf-8")
@@ -193,7 +210,9 @@ def _decode_json_payload(payload: Any) -> Any:
     return payload
 
 
-def _records_entries_from_collection(collection: Any, key: str) -> list[tuple[str | None, Any]]:
+def _records_entries_from_collection(
+    collection: Any, key: str
+) -> list[tuple[str | None, Any]]:
     if isinstance(collection, Mapping):
         return list(collection.items())
     if isinstance(collection, list):
@@ -201,7 +220,9 @@ def _records_entries_from_collection(collection: Any, key: str) -> list[tuple[st
     raise ValueError(f"Unsupported records collection in field '{key}'")
 
 
-def _records_entries_from_mapping(payload: Mapping[str, Any]) -> tuple[str, list[tuple[str | None, Any]]]:
+def _records_entries_from_mapping(
+    payload: Mapping[str, Any],
+) -> tuple[str, list[tuple[str | None, Any]]]:
     default_language = str(_first_present(payload, _LANGUAGE_KEYS) or "generic")
 
     for key in _RECORD_COLLECTION_KEYS:
@@ -217,7 +238,9 @@ def _records_entries_from_mapping(payload: Mapping[str, Any]) -> tuple[str, list
     raise ValueError("Unsupported records payload structure")
 
 
-def _records_entries_from_payload(payload: Any) -> tuple[str, list[tuple[str | None, Any]]]:
+def _records_entries_from_payload(
+    payload: Any,
+) -> tuple[str, list[tuple[str | None, Any]]]:
     if isinstance(payload, Mapping):
         return _records_entries_from_mapping(payload)
     if isinstance(payload, list):
@@ -225,11 +248,15 @@ def _records_entries_from_payload(payload: Any) -> tuple[str, list[tuple[str | N
     raise ValueError("Unsupported records payload type")
 
 
-def _build_records(entries: list[tuple[str | None, Any]], default_language: str) -> dict[str, FunctionRecord]:
+def _build_records(
+    entries: list[tuple[str | None, Any]], default_language: str
+) -> dict[str, FunctionRecord]:
     records: dict[str, FunctionRecord] = {}
     for fallback_name, entry in entries:
         if not isinstance(entry, Mapping):
-            raise ValueError(f"Each record entry must be a mapping, got {type(entry)!r}")
+            raise ValueError(
+                f"Each record entry must be a mapping, got {type(entry)!r}"
+            )
 
         record = _build_record(
             entry,

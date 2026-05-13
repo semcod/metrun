@@ -183,8 +183,7 @@ def format_critical_path(path: CriticalPath, *, indent: int = 2) -> str:
     """
     lines: List[str] = []
     lines.append(
-        f"🧨 Critical Path  "
-        f"(depth={path.length}, hottest leaf: {path.total_time:.4f}s)"
+        f"🧨 Critical Path  (depth={path.length}, hottest leaf: {path.total_time:.4f}s)"
     )
     lines.append("")
 

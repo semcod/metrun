@@ -1,4 +1,5 @@
 """Example: section context manager for code blocks."""
+
 from metrun import analyse, get_records, print_report, section
 
 

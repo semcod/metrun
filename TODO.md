@@ -8,18 +8,6 @@
 
 ## ✅ Completed Tasks
 
-- [x] examples/test_standalone.py:8 - module execution block
-- [x] examples/test_standalone.py:12 - Function 'test_standalone_example_runs' missing return type (suggested: -> None)
-- [x] metrun/flamegraph.py:2 - Magic number: 20 - use named constant
-- [x] metrun/flamegraph.py:5 - Magic number: 72 - use named constant
-- [x] metrun/flamegraph.py:6 - Magic number: 1200 - use named constant
-- [x] metrun/flamegraph.py:17 - module execution block
-- [x] metrun/profiler.py:23 - module execution block
-- [x] metrun/profiler.py:112 - Function 'wrapper' missing return type (suggested: -> Any)
-- [x] metrun/records_io.py:9 - module execution block
-- [x] metrun/toon.py:8 - module execution block
-- [x] pyproject.toml:20 - Outdated dependency: click 8.3.1 → 8.3.2 (wheel)
-- [x] pyproject.toml:22 - Outdated dependency: costs 0.1.23 → 0.1.48 (wheel)
 
 ## 📋 Current Issues
 
@@ -99,3 +87,26 @@
 ---
 
 *To execute all tasks, run: `prefact -a --execute-todos`*
+
+## Discovered
+
+- Add/check integration tests for the configuration management system (docs/examples mention it in multiple commits)
+- Add tests/docs for the code quality metrics and its 5 supporting modules
+- Verify and cover flamegraph, critical path, fix-suggestions and cProfile bridge functionality in examples/tests
+- Document and add examples/tests for the bottleneck engine and report introduced by merge
+
+
+## Done (moved to CHANGELOG)
+
+- [x] examples/test_standalone.py:8 - module execution block
+- [x] examples/test_standalone.py:12 - Function 'test_standalone_example_runs' missing return type (suggested: -> None)
+- [x] metrun/flamegraph.py:2 - Magic number: 20 - use named constant
+- [x] metrun/flamegraph.py:5 - Magic number: 72 - use named constant
+- [x] metrun/flamegraph.py:6 - Magic number: 1200 - use named constant
+- [x] metrun/flamegraph.py:17 - module execution block
+- [x] metrun/profiler.py:23 - module execution block
+- [x] metrun/profiler.py:112 - Function 'wrapper' missing return type (suggested: -> Any)
+- [x] metrun/records_io.py:9 - module execution block
+- [x] metrun/toon.py:8 - module execution block
+- [x] pyproject.toml:20 - Outdated dependency: click 8.3.1 → 8.3.2 (wheel)
+- [x] pyproject.toml:22 - Outdated dependency: costs 0.1.23 → 0.1.48 (wheel)

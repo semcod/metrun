@@ -1,4 +1,3 @@
-
 CONSTANT_5 = 5.0
 CONSTANT_9 = 9.87
 CONSTANT_20 = 20
@@ -63,8 +62,8 @@ def _make_stats() -> pstats.Stats:
 # ASCII flamegraph
 # ---------------------------------------------------------------------------
 
-class TestAsciiFlameGraph:
 
+class TestAsciiFlameGraph:
     def test_returns_string(self):
         b = _make_bottleneck()
         result = render_ascii([b])
@@ -129,8 +128,8 @@ class TestAsciiFlameGraph:
 # SVG flamegraph (requires flameprof)
 # ---------------------------------------------------------------------------
 
-class TestSvgFlamegraph:
 
+class TestSvgFlamegraph:
     def test_render_svg_creates_file(self, tmp_path):
         stats = _make_stats()
         out = str(tmp_path / "flame.svg")
@@ -154,6 +153,7 @@ class TestSvgFlamegraph:
 
     def test_render_svg_without_flameprof_raises(self, monkeypatch):
         import sys
+
         # Temporarily hide flameprof
         monkeypatch.setitem(sys.modules, "flameprof", None)
         stats = _make_stats()
@@ -162,6 +162,7 @@ class TestSvgFlamegraph:
 
     def test_render_svg_string_without_flameprof_raises(self, monkeypatch):
         import sys
+
         monkeypatch.setitem(sys.modules, "flameprof", None)
         stats = _make_stats()
         with pytest.raises(ImportError, match="flameprof"):

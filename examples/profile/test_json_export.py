@@ -1,4 +1,5 @@
 """Test JSON export example."""
+
 import subprocess
 import sys
 from pathlib import Path

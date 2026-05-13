@@ -10,6 +10,7 @@ from metrun.profiler import FunctionRecord
 # profile_func decorator
 # ---------------------------------------------------------------------------
 
+
 def test_profile_func_records_call():
     bridge = CProfileBridge()
 
@@ -55,6 +56,7 @@ def test_profile_func_multiple_calls():
 # profile_block context manager
 # ---------------------------------------------------------------------------
 
+
 def test_profile_block_records_section():
     bridge = CProfileBridge()
 
@@ -82,6 +84,7 @@ def test_profile_block_exception_still_disables():
 # Context-manager protocol  (``with CProfileBridge() as b:``)
 # ---------------------------------------------------------------------------
 
+
 def test_context_manager_protocol():
     with CProfileBridge() as bridge:
         x = sum(range(1000))
@@ -93,6 +96,7 @@ def test_context_manager_protocol():
 # ---------------------------------------------------------------------------
 # to_records structure
 # ---------------------------------------------------------------------------
+
 
 def test_to_records_returns_function_records():
     bridge = CProfileBridge()
@@ -141,8 +145,10 @@ def test_to_records_builds_parent_child():
 # get_stats
 # ---------------------------------------------------------------------------
 
+
 def test_get_stats_returns_pstats():
     import pstats
+
     bridge = CProfileBridge()
 
     @bridge.profile_func
@@ -158,6 +164,7 @@ def test_get_stats_returns_pstats():
 # save
 # ---------------------------------------------------------------------------
 
+
 def test_save_creates_prof_file(tmp_path):
     bridge = CProfileBridge()
 
@@ -170,6 +177,7 @@ def test_save_creates_prof_file(tmp_path):
     bridge.save(out)
 
     import os
+
     assert os.path.exists(out)
     assert os.path.getsize(out) > 0
 
@@ -177,6 +185,7 @@ def test_save_creates_prof_file(tmp_path):
 # ---------------------------------------------------------------------------
 # reset
 # ---------------------------------------------------------------------------
+
 
 def test_reset_discards_data():
     bridge = CProfileBridge()

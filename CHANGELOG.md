@@ -1,11 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## [0.1.10] - 2026-04-07
 
 ### Fixed
 - Fix smart-return-type issues (ticket-70ec2665)
@@ -17,12 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix string-concat issues (ticket-7d364ac8)
 - Fix unused-imports issues (ticket-5cdb9124)
 
-## [0.1.10] - 2026-04-07
-
 ### Fixed
 - Fix unused-imports issues (ticket-5bf06f1a)
-
-## [0.1.10] - 2026-04-06
 
 ### Fixed
 - Fix string-concat issues (ticket-669afa97)
@@ -47,8 +43,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix unused-imports issues (ticket-cf926a5c)
 - Fix unused-imports issues (ticket-c579906e)
 
-## [Unreleased]
-
 ### Added
 - `metrun.toon` module — TOON-format metric tree generator (`generate_toon`, `save_toon`).
 - `metrun scan` CLI command — auto-profile a script and generate `metrun.toon.yaml` with bottlenecks, critical path, suggestions, endpoints, and call tree.
@@ -63,8 +57,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Document language-neutral record export/import and re-export examples in the README and generated docs.
 - Document automatic project scanning, endpoint recognition, and TOON output in the README.
 
-## [0.1.13] - 2026-04-07
-
 ### Docs
 - Update README.md
 - Update TODO.md
@@ -76,8 +68,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update metrun/__init__.py
 - Update metrun/flamegraph.py
 - Update metrun/profiler.py
-
-## [0.1.12] - 2026-04-07
 
 ### Docs
 - Update README.md
@@ -103,8 +93,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update metrun/toon.py.bak
 - ... and 1 more files
 
-## [0.1.11] - 2026-04-07
-
 ### Docs
 - Update README.md
 - Update TODO.md
@@ -122,8 +110,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update metrun/profiler.py
 - Update metrun/records_io.py
 - ... and 3 more files
-
-## [0.1.10] - 2026-04-07
 
 ### Docs
 - Update CHANGELOG.md
@@ -147,24 +133,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update examples/profile/test_toon_output.py
 - ... and 30 more files
 
-## [0.1.9] - 2026-04-07
-
-### Docs
-- Update README.md
-
-## [0.1.8] - 2026-04-07
-
-### Docs
-- Update README.md
-
 ### Other
 - Update examples/conftest.py
 - Update examples/profile/basic_app.py
 - Update examples/profile/test_basic_app.py
 - Update examples/records/demo.jsonl
 - Update examples/records/test_demo_records.py
-
-## [0.1.7] - 2026-04-07
 
 ### Docs
 - Update CHANGELOG.md
@@ -189,8 +163,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update project/calls.png
 - Update project/compact_flow.mmd
 - ... and 15 more files
-
-## [0.1.6] - 2026-04-07
 
 ### Docs
 - Update CHANGELOG.md
@@ -217,15 +189,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update project/analysis.toon.yaml
 - ... and 18 more files
 
-## [0.1.5] - 2026-04-06
-
-### Docs
-- Update README.md
-
 ### Other
 - Update metrun/cprofile_bridge.py
-
-## [0.1.4] - 2026-04-06
 
 ### Docs
 - Update CHANGELOG.md
@@ -251,8 +216,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update project/calls.mmd
 - ... and 18 more files
 
-## [0.1.3] - 2026-04-06
-
 ### Docs
 - Update README.md
 - Update docs/README.md
@@ -272,16 +235,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update project/flow.mmd
 - ... and 8 more files
 
-## [0.1.2] - 2026-04-06
-
-### Docs
-- Update README.md
-
 ### Other
 - Update metrun/report.py
 - Update project/validation.toon.yaml
-
-## [0.1.1] - 2026-04-06
 
 ### Docs
 - Update README.md
@@ -301,4 +257,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update metrun/suggestions.py
 - Update project.sh
 - ... and 14 more files
+
+- feat(docs): configuration management system
+- feat(examples): configuration management system
+- feat(docs): code analysis engine and supporting documentation
+- feat(docs): code quality metrics with 5 supporting modules
+- feat: add flamegraph, critical path, fix suggestions, cProfile bridge and CLI
+- feat: add bottleneck engine and report (merge)
+- refactor(tests): CLI interface improvements
+- refactor(docs): CLI/interface and examples cleanup
+- fix(docs): code analysis engine
 

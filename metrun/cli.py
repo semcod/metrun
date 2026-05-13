@@ -72,6 +72,7 @@ DEFAULT_SVG_WIDTH = 1200
 # Helpers
 # ---------------------------------------------------------------------------
 
+
 def _run_script(script_path: str) -> CProfileBridge:
     """Run *script_path* under a CProfileBridge and return the bridge."""
     bridge = CProfileBridge()
@@ -83,6 +84,7 @@ def _run_script(script_path: str) -> CProfileBridge:
 # ---------------------------------------------------------------------------
 # CLI group
 # ---------------------------------------------------------------------------
+
 
 @click.group()
 @click.version_option(package_name="metrun")
@@ -98,10 +100,12 @@ def cli() -> None:
 # profile
 # ---------------------------------------------------------------------------
 
+
 @cli.command()
 @click.argument("script", type=click.Path(exists=True))
 @click.option(
-    "--top", "-n",
+    "--top",
+    "-n",
     default=10,
     show_default=True,
     help="Number of top bottlenecks to display.",
@@ -172,10 +176,12 @@ def profile(
 # inspect  (enhanced report: bottlenecks + critical path + suggestions)
 # ---------------------------------------------------------------------------
 
+
 @cli.command()
 @click.argument("script", required=False, type=click.Path(exists=True))
 @click.option(
-    "--top", "-n",
+    "--top",
+    "-n",
     default=10,
     show_default=True,
     help="Number of top bottlenecks to display.",
@@ -240,7 +246,9 @@ def inspect(
         click.echo(f"🔍 Inspecting records: {records_file}")
         records = load_records_file(records_file)
         if flame:
-            click.echo("⚠️  SVG flamegraphs require a cProfile .prof source; skipping --flame.")
+            click.echo(
+                "⚠️  SVG flamegraphs require a cProfile .prof source; skipping --flame."
+            )
             flame = None
     else:
         click.echo(f"🔍 Inspecting: {script}")
@@ -282,6 +290,7 @@ def inspect(
 # scan  (auto-profile + TOON metric tree)
 # ---------------------------------------------------------------------------
 
+
 @cli.command()
 @click.argument("script", required=False, type=click.Path(exists=True))
 @click.option(
@@ -292,13 +301,15 @@ def inspect(
     help="Load language-neutral JSON/JSONL records instead of profiling a script.",
 )
 @click.option(
-    "--output", "-o",
+    "--output",
+    "-o",
     default=".",
     show_default=True,
     help="Output directory for metrun.toon.yaml.",
 )
 @click.option(
-    "--top", "-n",
+    "--top",
+    "-n",
     default=10,
     show_default=True,
     help="Number of top bottlenecks to include.",
@@ -360,6 +371,7 @@ def scan(
     toon_content = generate_toon(bottlenecks, records, top_n=top)
 
     from pathlib import Path
+
     out_dir = Path(output)
     toon_path = save_toon(toon_content, out_dir / "metrun.toon.yaml")
     click.echo(f"✅ {toon_path}")
@@ -369,15 +381,22 @@ def scan(
 # flame  (convert existing .prof to SVG)
 # ---------------------------------------------------------------------------
 
+
 @cli.command()
 @click.argument("prof_file", type=click.Path(exists=True))
 @click.option(
-    "--output", "-o",
+    "--output",
+    "-o",
     default="flame.svg",
     show_default=True,
     help="Output SVG file path.",
 )
-@click.option("--width", default=DEFAULT_SVG_WIDTH, show_default=True, help="SVG canvas width (px).")
+@click.option(
+    "--width",
+    default=DEFAULT_SVG_WIDTH,
+    show_default=True,
+    help="SVG canvas width (px).",
+)
 def flame(prof_file: str, output: str, width: int) -> None:
     """Convert an existing .prof file to an SVG flamegraph.
 

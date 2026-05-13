@@ -138,7 +138,11 @@ class ExecutionTracer:
 _default_tracer = ExecutionTracer()
 
 
-def trace(func: Optional[Callable[..., Any]] = None, *, tracer: Optional[ExecutionTracer] = None) -> Any:
+def trace(
+    func: Optional[Callable[..., Any]] = None,
+    *,
+    tracer: Optional[ExecutionTracer] = None,
+) -> Any:
     """
     Decorator using the default (or supplied) tracer.
 
@@ -168,7 +172,9 @@ def section(name: str, *, tracer: Optional[ExecutionTracer] = None) -> Any:
     return _tracer.section(name)
 
 
-def get_records(*, tracer: Optional[ExecutionTracer] = None) -> Dict[str, FunctionRecord]:
+def get_records(
+    *, tracer: Optional[ExecutionTracer] = None
+) -> Dict[str, FunctionRecord]:
     """Return all collected records from the default (or supplied) tracer."""
     _tracer = tracer or _default_tracer
     return _tracer.records

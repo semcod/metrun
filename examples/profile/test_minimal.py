@@ -1,4 +1,5 @@
 """Test minimal example works with installed metrun."""
+
 import subprocess
 import sys
 from pathlib import Path

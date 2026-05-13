@@ -1,4 +1,5 @@
 """Test TOON output example."""
+
 import subprocess
 import sys
 from pathlib import Path

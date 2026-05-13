@@ -1,4 +1,5 @@
 """Example: TOON/YAML format output to stdout."""
+
 from metrun import analyse, get_records, reset, trace
 from metrun.toon import generate_toon
 

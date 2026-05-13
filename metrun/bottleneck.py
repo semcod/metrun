@@ -33,9 +33,9 @@ from metrun.profiler import FunctionRecord
 # -----------------------------------------------------------------------
 # Tunable thresholds
 # -----------------------------------------------------------------------
-LOOP_THRESHOLD: int = 1_000      # calls that suggest a hot loop
-DEP_THRESHOLD: int = 3           # children that suggest a fan-out bottleneck
-SLOW_THRESHOLD: float = 0.3      # fraction of total wall-time to flag as slow
+LOOP_THRESHOLD: int = 1_000  # calls that suggest a hot loop
+DEP_THRESHOLD: int = 3  # children that suggest a fan-out bottleneck
+SLOW_THRESHOLD: float = 0.3  # fraction of total wall-time to flag as slow
 
 # Score weights
 W_TIME: float = 10.0
@@ -50,7 +50,7 @@ class Bottleneck:
     total_time: float
     calls: int
     score: float
-    time_pct: float          # percentage of total traced wall-time
+    time_pct: float  # percentage of total traced wall-time
     diagnosis: str
     children: List[str] = field(default_factory=list)
     parents: List[str] = field(default_factory=list)

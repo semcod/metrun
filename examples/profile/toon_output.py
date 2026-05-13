@@ -1,4 +1,5 @@
 """Example: generate TOON metric tree from profiling."""
+
 from pathlib import Path
 
 from metrun import analyse, get_records, reset, trace

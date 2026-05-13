@@ -49,6 +49,7 @@ from metrun.profiler import FunctionRecord
 # Stdlib path detection (used for user-code filtering)
 # ---------------------------------------------------------------------------
 
+
 def _stdlib_prefixes() -> tuple:
     """Return normalised filesystem prefixes for Python's stdlib and site-packages."""
     paths = []
@@ -59,6 +60,7 @@ def _stdlib_prefixes() -> tuple:
     # Include the *user* site-packages directory (e.g. ~/.local/lib/…)
     try:
         import site
+
         user_sp = site.getusersitepackages()
         if isinstance(user_sp, str) and user_sp:
             paths.append(os.path.normpath(user_sp))
@@ -77,10 +79,21 @@ _ANON_FUNC_NAMES = frozenset(
 
 # Import-machinery function names that are never useful to surface in reports
 _IMPORT_MACHINERY_NAMES = frozenset(
-    {"_path_hook", "find_spec", "find_module", "find_loader",
-     "_find_and_load", "_find_and_load_unlocked", "_load_unlocked",
-     "_call_with_frames_cleaned_up", "exec_module", "_load",
-     "module_from_spec", "create_module", "source_to_code"}
+    {
+        "_path_hook",
+        "find_spec",
+        "find_module",
+        "find_loader",
+        "_find_and_load",
+        "_find_and_load_unlocked",
+        "_load_unlocked",
+        "_call_with_frames_cleaned_up",
+        "exec_module",
+        "_load",
+        "module_from_spec",
+        "create_module",
+        "source_to_code",
+    }
 )
 
 
@@ -144,7 +157,8 @@ class CProfileBridge:
         # Use a temporary file to avoid consuming the original profile data
         # pstats.Stats() can load from a file without modifying the original
         import tempfile
-        with tempfile.NamedTemporaryFile(suffix='.prof', delete=False) as tmp:
+
+        with tempfile.NamedTemporaryFile(suffix=".prof", delete=False) as tmp:
             self._profile.dump_stats(tmp.name)
             stats = pstats.Stats(tmp.name, stream=buf)
             os.unlink(tmp.name)  # Clean up temp file

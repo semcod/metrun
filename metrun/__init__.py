@@ -84,49 +84,49 @@ from metrun.toon import (
 
 if __name__ == "__main__":
     __all__ = [
-    # profiler
-    "ExecutionTracer",
-    "FunctionRecord",
-    "trace",
-    "section",
-    "get_records",
-    "reset",
-    # bottleneck
-    "Bottleneck",
-    "BottleneckEngine",
-    "analyse",
-    "LOOP_THRESHOLD",
-    "DEP_THRESHOLD",
-    "SLOW_THRESHOLD",
-    # report
-    "generate_report",
-    "print_report",
-    # cprofile bridge
-    "CProfileBridge",
-    # flamegraph
-    "render_ascii",
-    "print_ascii",
-    "render_svg",
-    "render_svg_string",
-    # records I/O
-    "record_to_payload",
-    "records_to_payload",
-    "dump_records_json",
-    "load_records_json",
-    "load_records_file",
-    "save_records_json",
-    # critical path
-    "CriticalPath",
-    "CriticalPathNode",
-    "find_critical_path",
-    "format_critical_path",
-    "print_critical_path",
-    # suggestions
-    "Suggestion",
-    "suggest",
-    "format_suggestions",
-    "print_suggestions",
-    # toon
-    "generate_toon",
-    "save_toon",
-]
+        # profiler
+        "ExecutionTracer",
+        "FunctionRecord",
+        "trace",
+        "section",
+        "get_records",
+        "reset",
+        # bottleneck
+        "Bottleneck",
+        "BottleneckEngine",
+        "analyse",
+        "LOOP_THRESHOLD",
+        "DEP_THRESHOLD",
+        "SLOW_THRESHOLD",
+        # report
+        "generate_report",
+        "print_report",
+        # cprofile bridge
+        "CProfileBridge",
+        # flamegraph
+        "render_ascii",
+        "print_ascii",
+        "render_svg",
+        "render_svg_string",
+        # records I/O
+        "record_to_payload",
+        "records_to_payload",
+        "dump_records_json",
+        "load_records_json",
+        "load_records_file",
+        "save_records_json",
+        # critical path
+        "CriticalPath",
+        "CriticalPathNode",
+        "find_critical_path",
+        "format_critical_path",
+        "print_critical_path",
+        # suggestions
+        "Suggestion",
+        "suggest",
+        "format_suggestions",
+        "print_suggestions",
+        # toon
+        "generate_toon",
+        "save_toon",
+    ]

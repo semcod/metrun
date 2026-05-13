@@ -1,4 +1,5 @@
 """Test records example works with CLI."""
+
 from pathlib import Path
 
 from click.testing import CliRunner

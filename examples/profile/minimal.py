@@ -1,4 +1,5 @@
 """Minimal example: trace decorator + report."""
+
 from metrun import analyse, get_records, print_report, trace
 
 

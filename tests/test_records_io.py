@@ -2,7 +2,12 @@ from click.testing import CliRunner
 
 from metrun import FunctionRecord
 from metrun.cli import cli
-from metrun.records_io import dump_records_json, load_records_file, load_records_json, save_records_json
+from metrun.records_io import (
+    dump_records_json,
+    load_records_file,
+    load_records_json,
+    save_records_json,
+)
 
 
 def _make_records(language: str = "javascript"):

@@ -1,5 +1,3 @@
-# System Architecture Analysis
-
 ## Overview
 
 - **Project**: /home/tom/github/semcod/metrun
@@ -10,8 +8,6 @@
 - **Total Classes**: 8
 - **Modules**: 14
 - **Entry Points**: 37
-
-## Architecture by Module
 
 ### metrun.records_io
 - **Functions**: 20
@@ -264,8 +260,6 @@ get_stats [metrun.cprofile_bridge.CProfileBridge]
 render_svg_string [metrun.flamegraph]
 ```
 
-## Key Classes
-
 ### metrun.profiler.ExecutionTracer
 > Thread-local call-stack tracer.
 
@@ -355,8 +349,6 @@ Example output::
 
     🧨 Critical Path  (
 - **Output to**: lines.append, lines.append, enumerate, None.join, lines.append
-
-## Behavioral Patterns
 
 ### state_machine_ExecutionTracer
 - **Type**: state_machine
