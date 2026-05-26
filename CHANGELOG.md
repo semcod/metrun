@@ -2,6 +2,17 @@
 
 ## [Unreleased]
 
+## [0.1.14] - 2026-05-26
+
+### Docs
+- Update README.md
+
+### Other
+- Update metrun/cli.py
+
+
+## [Unreleased]
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),

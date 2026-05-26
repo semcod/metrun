@@ -415,5 +415,8 @@ def flame(prof_file: str, output: str, width: int) -> None:
 # ---------------------------------------------------------------------------
 
 
+main = cli
+
+
 if __name__ == "__main__":
-    main = cli
+    main()
