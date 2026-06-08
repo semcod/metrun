@@ -1,0 +1,95 @@
+// LESS format — define @variables here as needed
+
+app {
+  name: metrun;
+  version: 0.1.14;
+  description: "Execution Intelligence Tool — Bottleneck Engine + Human Report Generator";
+  license: Apache-2.0;
+  keywords: "profiling, performance, bottleneck, tracing, flamegraph";
+}
+
+dependencies {
+  runtime: "click>=7.0, goal>=2.1.218, costs>=0.1.20, pfix>=0.1.60";
+  flamegraph: flameprof>=0.4;
+  dev: "pytest>=7, flameprof>=0.4, goal>=2.1.218, costs>=0.1.20, pfix>=0.1.60";
+}
+
+interface[type="cli"] {
+  framework: click;
+}
+interface[type="cli"] page[name="metrun"] {
+  entry: metrun.cli:main;
+}
+
+workflow[name="install"] {
+  trigger: manual;
+  step-1: run cmd=pip install -e .[dev];
+}
+
+workflow[name="test"] {
+  trigger: manual;
+  step-1: run cmd=pytest -q;
+}
+
+workflow[name="build"] {
+  trigger: manual;
+  step-1: run cmd=python -m build;
+}
+
+workflow[name="clean"] {
+  trigger: manual;
+  step-1: run cmd=rm -rf build/ dist/ *.egg-info;
+}
+
+workflow[name="health"] {
+  trigger: manual;
+  step-1: run cmd=docker compose ps;
+  step-2: run cmd=docker compose exec app echo "Health check passed";
+}
+
+workflow[name="all"] {
+  trigger: manual;
+  step-1: run cmd=taskfile run install;
+  step-2: run cmd=taskfile run lint;
+  step-3: run cmd=taskfile run test;
+}
+
+workflow[name="fmt"] {
+  trigger: manual;
+  step-1: run cmd=ruff format .;
+}
+
+workflow[name="help"] {
+  trigger: manual;
+  step-1: run cmd=echo "metrun — available tasks:";
+  step-2: run cmd=echo "";
+  step-3: run cmd=taskfile list;
+}
+
+workflow[name="lint"] {
+  trigger: manual;
+  step-1: run cmd=ruff check .;
+}
+
+workflow[name="format"] {
+  trigger: manual;
+  step-1: run cmd=ruff format .;
+}
+
+env_vars {
+  keys: OPENROUTER_API_KEY, LLM_MODEL, PFIX_AUTO_APPLY, PFIX_AUTO_INSTALL_DEPS, PFIX_AUTO_RESTART, PFIX_MAX_RETRIES, PFIX_DRY_RUN, PFIX_ENABLED, PFIX_GIT_COMMIT, PFIX_GIT_PREFIX, PFIX_CREATE_BACKUPS;
+}
+
+deploy {
+  target: pip;
+}
+
+environment[name="local"] {
+  runtime: python;
+  env_file: .env;
+  template_file: .env.example;
+  python_version: >=3.9;
+  vars: LLM_MODEL, OPENROUTER_API_KEY, PFIX_AUTO_APPLY, PFIX_AUTO_INSTALL_DEPS, PFIX_AUTO_RESTART, PFIX_CREATE_BACKUPS, PFIX_DRY_RUN, PFIX_ENABLED, PFIX_GIT_COMMIT, PFIX_GIT_PREFIX, PFIX_MAX_RETRIES;
+  runtime_llm: OPENROUTER_API_KEY;
+  runtime_pfix: PFIX_AUTO_APPLY, PFIX_AUTO_INSTALL_DEPS, PFIX_AUTO_RESTART, PFIX_CREATE_BACKUPS, PFIX_DRY_RUN, PFIX_ENABLED, PFIX_GIT_COMMIT, PFIX_GIT_PREFIX, PFIX_MAX_RETRIES;
+}
