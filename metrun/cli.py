@@ -94,6 +94,12 @@ def cli() -> None:
     Profiles Python scripts and surfaces bottlenecks with human-readable
     diagnosis and actionable fix suggestions.
     """
+    try:
+        from metrun.autoupdate import check_for_updates
+        check_for_updates("metrun")
+    except Exception:
+        pass
+
 
 
 # ---------------------------------------------------------------------------
